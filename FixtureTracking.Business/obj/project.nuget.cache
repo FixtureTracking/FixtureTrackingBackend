@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "P1NO488bzzrH5KEbTggic12PBMrp6r+eDDQOfEGcd4hbYXBLuRevWWB6/ni2mnfOyNPiUrY+50nvLxmaRTv4rg==",
+  "dgSpecHash": "2EoI5KsoPqtA8r4movR4cG5cCv8haMPq3PY1r51akQAHlS+a95ZLCG7u5hPHwzec0E71grGTVCopcx2HxrXceA==",
   "success": true,
   "projectFilePath": "C:\\Users\\CEVIK\\source\\repos\\FixtureTrackingBackend\\FixtureTracking.Business\\FixtureTracking.Business.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\CEVIK\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Users\\CEVIK\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

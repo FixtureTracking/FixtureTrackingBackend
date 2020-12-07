@@ -1,0 +1,9 @@
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\bin\Debug\netstandard2.1\FixtureTracking.Business.deps.json
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\bin\Debug\netstandard2.1\FixtureTracking.Business.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\bin\Debug\netstandard2.1\FixtureTracking.Business.pdb
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.csprojAssemblyReference.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.AssemblyInfoInputs.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.AssemblyInfo.cs
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.csproj.CoreCompileInputs.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.Business\obj\Debug\netstandard2.1\FixtureTracking.Business.pdb

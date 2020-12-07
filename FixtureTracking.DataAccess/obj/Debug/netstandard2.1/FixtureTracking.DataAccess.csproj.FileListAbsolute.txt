@@ -1,0 +1,14 @@
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.DataAccess.deps.json
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.DataAccess.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.DataAccess.pdb
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.Core.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.Entities.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.Core.pdb
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\bin\Debug\netstandard2.1\FixtureTracking.Entities.pdb
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.csprojAssemblyReference.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.AssemblyInfoInputs.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.AssemblyInfo.cs
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.csproj.CopyComplete
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.dll
+C:\Users\CEVIK\source\repos\FixtureTrackingBackend\FixtureTracking.DataAccess\obj\Debug\netstandard2.1\FixtureTracking.DataAccess.pdb
