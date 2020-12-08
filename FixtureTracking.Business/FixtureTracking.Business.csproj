@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FixtureTracking.Core\FixtureTracking.Core.csproj" />
     <ProjectReference Include="..\FixtureTracking.DataAccess\FixtureTracking.DataAccess.csproj" />
     <ProjectReference Include="..\FixtureTracking.Entities\FixtureTracking.Entities.csproj" />
   </ItemGroup>

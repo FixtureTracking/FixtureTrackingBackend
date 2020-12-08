@@ -1,4 +1,6 @@
 ﻿using FixtureTracking.Business.Abstract;
+using FixtureTracking.Business.Constants;
+using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
 using System.Collections.Generic;
@@ -15,29 +17,34 @@ namespace FixtureTracking.Business.Concrete
             _companyDal = companyDal;
         }
 
-        public void Add(Company company)
+        public IResult Add(Company company)
         {
             _companyDal.Add(company);
+            return new SuccessResult(Messages.CompanyAdded);
         }
 
-        public void Delete(Company company)
+        public IResult Delete(Company company)
         {
             _companyDal.Delete(company);
+            return new SuccessResult(Messages.CompanyDeleted);
+
         }
 
-        public Company GetById(int companyId)
+        public IDataResult<Company> GetById(int companyId)
         {
-            return _companyDal.Get(c => c.Id == companyId);
+            return new SuccessDataResult<Company>(_companyDal.Get(c => c.Id == companyId));
         }
 
-        public List<Company> GetList()
+        public IDataResult<List<Company>> GetList()
         {
-            return _companyDal.GetList().ToList();
+            return new SuccessDataResult<List<Company>>(_companyDal.GetList().ToList());
         }
 
-        public void Update(Company company)
+        public IResult Update(Company company)
         {
             _companyDal.Update(company);
+            return new SuccessResult(Messages.CompanyUpdated);
+
         }
     }
 }

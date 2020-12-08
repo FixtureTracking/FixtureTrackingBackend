@@ -1,16 +1,15 @@
-﻿using FixtureTracking.Entities.Concrete;
-using System;
+﻿using FixtureTracking.Core.Utilities.Results;
+using FixtureTracking.Entities.Concrete;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FixtureTracking.Business.Abstract
 {
     public interface ICompanyService
     {
-        Company GetById(int companyId);
-        List<Company> GetList();
-        void Add(Company company);
-        void Update(Company company);
-        void Delete(Company company);
+        IDataResult<Company> GetById(int companyId);
+        IDataResult<List<Company>> GetList();
+        IResult Add(Company company);
+        IResult Update(Company company);
+        IResult Delete(Company company);
     }
 }
