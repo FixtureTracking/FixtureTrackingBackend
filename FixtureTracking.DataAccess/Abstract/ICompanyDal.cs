@@ -1,6 +1,9 @@
-﻿namespace FixtureTracking.DataAccess.Abstract
+﻿using FixtureTracking.Core.DataAccess;
+using FixtureTracking.Entities.Concrete;
+
+namespace FixtureTracking.DataAccess.Abstract
 {
-    public interface ICompanyDal
+    public interface ICompanyDal : IEntityRepository<Company>
     {
     }
 }
