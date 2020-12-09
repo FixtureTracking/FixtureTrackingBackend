@@ -7,7 +7,9 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework.Contexts
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"Server=localhost;Port=5432;Database=fixture_management;User Id=postgres;Password=1244");
+            optionsBuilder
+                .UseNpgsql(@"Server=localhost;Port=5432;Database=fixture_management;User Id=postgres;Password=1244")
+                .UseSnakeCaseNamingConvention();
         }
 
         public DbSet<Company> Companies { get; set; }
