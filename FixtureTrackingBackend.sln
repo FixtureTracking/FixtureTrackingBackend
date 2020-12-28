@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixtureTracking.DataAccess"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixtureTracking.Entities", "FixtureTracking.Entities\FixtureTracking.Entities.csproj", "{EB9B5D15-8115-4660-93A4-BFA577744249}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FixtureTracking.Tests", "FixtureTracking.Tests\FixtureTracking.Tests.csproj", "{C34CE2C7-5194-4118-9575-B35B8E8B67A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FixtureTracking.Business.Tests", "FixtureTracking.Business.Tests\FixtureTracking.Business.Tests.csproj", "{C34CE2C7-5194-4118-9575-B35B8E8B67A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
