@@ -13,5 +13,6 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework.Contexts
         }
 
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Fixture> Fixtures { get; set; }
     }
 }

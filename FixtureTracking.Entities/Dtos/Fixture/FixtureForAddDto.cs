@@ -9,7 +9,6 @@ namespace FixtureTracking.Entities.Dtos.Fixture
         public string Description { get; set; }
         public decimal Price { get; set; }
         public string PictureUrl { get; set; }
-        public DateTime CreatedAt { get; set; }
         public DateTime DatePurchase { get; set; }
         public DateTime DateWarranty { get; set; }
         public int SupplierId { get; set; }

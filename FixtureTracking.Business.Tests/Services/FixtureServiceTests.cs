@@ -172,15 +172,31 @@ namespace FixtureTracking.Tests.Services
         public void Update_WhenUpdatedFixture_ShouldUpdate()
         {
             // Arrange
-            FixtureForUpdateDto fixtureForUpdateDto = new FixtureForUpdateDto();
-            var mockFixtureDal = new MockFixtureDal().MockUpdate();
+            Fixture fixture = new Fixture();
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
-            sut.Update(fixtureForUpdateDto);
+            sut.Update(fixture);
 
             // Assert
             mockFixtureDal.VerifyUpdate(Times.Once());
+        }
+
+        [Fact]
+        public void Update_WhenUpdatedNotExistsFixture_ShouldReturnErrorResult()
+        {
+            // Arrange
+            Fixture fixture = new Fixture();
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
+
+            // Act
+            var result = sut.Update(fixture);
+
+            // Assert
+            mockFixtureDal.VerifyUpdate(Times.Never());
+            Assert.False(result.Success);
         }
 
         [Fact]

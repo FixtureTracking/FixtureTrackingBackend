@@ -12,11 +12,11 @@ namespace FixtureTracking.Business.Concrete
 {
     public class FixtureManager : IFixtureService
     {
-        private readonly IFixtureDal _fixtureDal;
+        private readonly IFixtureDal fixtureDal;
 
         public FixtureManager(IFixtureDal fixtureDal)
         {
-            _fixtureDal = fixtureDal;
+            this.fixtureDal = fixtureDal;
         }
 
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
@@ -26,7 +26,7 @@ namespace FixtureTracking.Business.Concrete
                 // TODO : refactoring
                 CategoryId = fixtureForAddDto.CategoryId,
                 CompanyId = fixtureForAddDto.CompanyId,
-                CreatedAt = fixtureForAddDto.CreatedAt,
+                CreatedAt = DateTime.Now,
                 DatePurchase = fixtureForAddDto.DatePurchase,
                 DateWarranty = fixtureForAddDto.DateWarranty,
                 Description = fixtureForAddDto.Description,
@@ -38,7 +38,7 @@ namespace FixtureTracking.Business.Concrete
                 SupplierId = fixtureForAddDto.SupplierId,
                 UpdatedAt = DateTime.Now
             };
-            _fixtureDal.Add(fixture);
+            fixtureDal.Add(fixture);
             return new SuccessDataResult<Guid>(fixture.Id, Messages.FixtureAdded);
         }
 
@@ -47,7 +47,7 @@ namespace FixtureTracking.Business.Concrete
             var fixture = GetById(fixtureId).Data;
             if (fixture != null)
             {
-                _fixtureDal.Delete(fixture);
+                fixtureDal.Delete(fixture);
                 return new SuccessResult(Messages.FixtureDeleted);
             }
             return new ErrorResult(Messages.FixtureNotFound);
@@ -55,50 +55,38 @@ namespace FixtureTracking.Business.Concrete
 
         public IDataResult<Fixture> GetById(Guid fixtureId)
         {
-            return new SuccessDataResult<Fixture>(_fixtureDal.Get(f => f.Id == fixtureId));
+            return new SuccessDataResult<Fixture>(fixtureDal.Get(f => f.Id == fixtureId));
         }
 
         public IDataResult<List<Fixture>> GetList()
         {
-            return new SuccessDataResult<List<Fixture>>(_fixtureDal.GetList().ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList().ToList());
         }
 
         public IDataResult<List<Fixture>> GetListByCategoryId(short categoryId)
         {
-            return new SuccessDataResult<List<Fixture>>(_fixtureDal.GetList(f => f.CategoryId == categoryId).ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.CategoryId == categoryId).ToList());
         }
 
         public IDataResult<List<Fixture>> GetListByCompanyId(short companyId)
         {
-            return new SuccessDataResult<List<Fixture>>(_fixtureDal.GetList(f => f.CompanyId == companyId).ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.CompanyId == companyId).ToList());
         }
 
         public IDataResult<List<Fixture>> GetListBySupplierId(int supplierId)
         {
-            return new SuccessDataResult<List<Fixture>>(_fixtureDal.GetList(f => f.SupplierId == supplierId).ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.SupplierId == supplierId).ToList());
         }
 
-        public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
+        public IResult Update(Fixture fixture)
         {
-            var fixture = new Fixture()
+            if (GetById(fixture.Id).Data != null)
             {
-                Id = fixtureForUpdateDto.Id,
-                CategoryId = fixtureForUpdateDto.CategoryId,
-                CompanyId = fixtureForUpdateDto.CompanyId,
-                CreatedAt = fixtureForUpdateDto.CreatedAt,
-                DatePurchase = fixtureForUpdateDto.DatePurchase,
-                DateWarranty = fixtureForUpdateDto.DateWarranty,
-                Description = fixtureForUpdateDto.Description,
-                IsActive = fixtureForUpdateDto.IsActive,
-                IsEnable = true,
-                Name = fixtureForUpdateDto.Name,
-                PictureUrl = fixtureForUpdateDto.PictureUrl,
-                Price = fixtureForUpdateDto.Price,
-                SupplierId = fixtureForUpdateDto.SupplierId,
-                UpdatedAt = DateTime.Now
-            };
-            _fixtureDal.Update(fixture);
-            return new SuccessResult(Messages.FixtureUpdated);
+                fixture.UpdatedAt = DateTime.Now;
+                fixtureDal.Update(fixture);
+                return new SuccessResult(Messages.FixtureUpdated);
+            }
+            return new ErrorResult(Messages.FixtureNotFound);
         }
     }
 }
