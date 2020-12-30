@@ -11,5 +11,10 @@
         public static string FixtureUpdated = "Fixture updated";
         public static string FixtureDeleted = "Fixture deleted";
         public static string FixtureNotFound = "Fixture not found";
+
+        public static string DebitAdded = "Debit added";
+        public static string DebitUpdated = "Debit updated";
+        public static string DebitDeleted = "Debit deleted";
+        public static string DebitNotFound = "Debit not found";
     }
 }
