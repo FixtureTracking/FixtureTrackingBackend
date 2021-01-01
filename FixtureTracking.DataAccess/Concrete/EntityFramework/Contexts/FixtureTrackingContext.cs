@@ -12,7 +12,6 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework.Contexts
                 .UseSnakeCaseNamingConvention();
         }
 
-        public DbSet<Company> Companies { get; set; }
         public DbSet<Fixture> Fixtures { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace FixtureTracking.Tests.Mocks
+namespace FixtureTracking.Business.Tests.Mocks
 {
     public class MockEntityRepository<TEntity, TRepository> : Mock<TRepository>
         where TEntity : class, IEntity, new()

@@ -14,6 +14,5 @@ namespace FixtureTracking.Entities.Concrete
         public DateTime DateReturn { get; set; }
         public Guid FixtureId { get; set; }
         public Guid UserId { get; set; }
-        public short DepartmentId { get; set; }
     }
 }

@@ -9,6 +9,5 @@ namespace FixtureTracking.Entities.Dtos.Debit
         public DateTime DateDebit { get; set; }
         public Guid FixtureId { get; set; }
         public Guid UserId { get; set; }
-        public short DepartmentId { get; set; }
     }
 }

@@ -131,47 +131,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetListByDepartmentId_WhenCalledWithDepartmentId_ShouldReturnDebits()
-        {
-            // Arrange
-            short departmentId = 1;
-            Debit debit = new Debit()
-            {
-                Id = Guid.NewGuid(),
-                DepartmentId = departmentId
-            };
-            List<Debit> debits = new List<Debit>
-            {
-                debit
-            };
-
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
-
-            // Act
-            var result = sut.GetListByDepartmentId(departmentId);
-
-            // Assert
-            Assert.NotEmpty(result.Data);
-        }
-
-        [Fact]
-        public void GetListByDepartmentId_WhenCalledWithNotExistsDepartmentId_ShouldReturnEmptyList()
-        {
-            // Arrange
-            short departmentId = 1;
-            List<Debit> debits = new List<Debit>();
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
-
-            // Act
-            var result = sut.GetListByDepartmentId(departmentId);
-
-            // Assert
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
         public void Add_WhenAddedNewDebit_ShouldAddedAndReturnId()
         {
             // Arrange

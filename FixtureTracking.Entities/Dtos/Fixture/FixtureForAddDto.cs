@@ -13,6 +13,5 @@ namespace FixtureTracking.Entities.Dtos.Fixture
         public DateTime DateWarranty { get; set; }
         public int SupplierId { get; set; }
         public short CategoryId { get; set; }
-        public short CompanyId { get; set; }
     }
 }

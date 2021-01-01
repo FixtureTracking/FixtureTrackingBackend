@@ -12,7 +12,7 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<List<Fixture>> GetList();
         IDataResult<List<Fixture>> GetListBySupplierId(int supplierId);
         IDataResult<List<Fixture>> GetListByCategoryId(short categoryId);
-        IDataResult<List<Fixture>> GetListByCompanyId(short companyId);
+        IDataResult<List<Fixture>> GetListByPositionId(short positionId);
         IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto);
         IResult Update(Fixture fixture);
         IResult Delete(Guid fixtureId);

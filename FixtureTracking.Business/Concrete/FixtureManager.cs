@@ -25,13 +25,11 @@ namespace FixtureTracking.Business.Concrete
             {
                 // TODO : refactoring
                 CategoryId = fixtureForAddDto.CategoryId,
-                CompanyId = fixtureForAddDto.CompanyId,
                 CreatedAt = DateTime.Now,
                 DatePurchase = fixtureForAddDto.DatePurchase,
                 DateWarranty = fixtureForAddDto.DateWarranty,
                 Description = fixtureForAddDto.Description,
-                IsActive = true,
-                IsEnable = true,
+                FixturePositionId = 1,
                 Name = fixtureForAddDto.Name,
                 PictureUrl = fixtureForAddDto.PictureUrl,
                 Price = fixtureForAddDto.Price,
@@ -68,9 +66,9 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.CategoryId == categoryId).ToList());
         }
 
-        public IDataResult<List<Fixture>> GetListByCompanyId(short companyId)
+        public IDataResult<List<Fixture>> GetListByPositionId(short positionId)
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.CompanyId == companyId).ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList());
         }
 
         public IDataResult<List<Fixture>> GetListBySupplierId(int supplierId)

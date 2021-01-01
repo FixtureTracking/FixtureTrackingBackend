@@ -10,9 +10,6 @@ namespace FixtureTracking.Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<CompanyManager>().As<ICompanyService>();
-            builder.RegisterType<EfCompanyDal>().As<ICompanyDal>();
-
             builder.RegisterType<FixtureManager>().As<IFixtureService>();
             builder.RegisterType<EfFixtureDal>().As<IFixtureDal>();
         }

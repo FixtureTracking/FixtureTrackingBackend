@@ -26,7 +26,6 @@ namespace FixtureTracking.Business.Concrete
                 CreatedAt = DateTime.Now,
                 DateDebit = debitForAddDto.DateDebit,
                 DateReturn = DateTime.MaxValue,
-                DepartmentId = debitForAddDto.DepartmentId,
                 Description = debitForAddDto.Description,
                 FixtureId = debitForAddDto.FixtureId,
                 IsReturn = false,
@@ -56,11 +55,6 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<Debit>> GetList()
         {
             return new SuccessDataResult<List<Debit>>(debitDal.GetList().ToList());
-        }
-
-        public IDataResult<List<Debit>> GetListByDepartmentId(short departmentId)
-        {
-            return new SuccessDataResult<List<Debit>>(debitDal.GetList(d => d.DepartmentId == departmentId).ToList());
         }
 
         public IDataResult<List<Debit>> GetListByFixtureId(Guid fixtureId)

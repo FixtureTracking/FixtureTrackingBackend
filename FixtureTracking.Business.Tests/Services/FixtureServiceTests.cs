@@ -1,13 +1,13 @@
 ﻿using FixtureTracking.Business.Concrete;
+using FixtureTracking.Business.Tests.Mocks;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Fixture;
-using FixtureTracking.Tests.Mocks;
 using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace FixtureTracking.Tests.Services
+namespace FixtureTracking.Business.Tests.Services
 {
     public class FixtureServiceTests
     {
@@ -129,14 +129,14 @@ namespace FixtureTracking.Tests.Services
         }
 
         [Fact]
-        public void GetListByCompanyId_WhenCalledWithCompanyId_ShouldReturnFixtures()
+        public void GetListByPositionId_WhenCalledWithPositionId_ShouldReturnFixtures()
         {
             // Arrange
-            short companyId = 3;
+            short positionId = 1;
             Fixture fixture = new Fixture()
             {
                 Id = Guid.NewGuid(),
-                CompanyId = companyId
+                FixturePositionId = positionId
             };
             List<Fixture> fixtures = new List<Fixture>
             {
@@ -146,7 +146,7 @@ namespace FixtureTracking.Tests.Services
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
-            var result = sut.GetListByCompanyId(companyId);
+            var result = sut.GetListByPositionId(positionId);
 
             // Assert
             Assert.NotEmpty(result.Data);
