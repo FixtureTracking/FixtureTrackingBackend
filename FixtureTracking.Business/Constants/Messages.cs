@@ -16,5 +16,10 @@
         public static string CategoryUpdated = "Category updated";
         public static string CategoryDeleted = "Category deleted";
         public static string CategoryNotFound = "Category not found";
+
+        public static string SupplierAdded = "Supplier added";
+        public static string SupplierUpdated = "Supplier updated";
+        public static string SupplierDeleted = "Supplier deleted";
+        public static string SupplierNotFound = "Supplier not found";
     }
 }
