@@ -128,30 +128,30 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             int supplierId = 111;
-            var mockSupplierDal = new MockSupplierDal().MockDelete().MockGet(null);
+            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
             var result = sut.Delete(supplierId);
 
             // Assert
-            mockSupplierDal.VerifyDelete(Times.Never());
+            mockSupplierDal.VerifyUpdate(Times.Never());
             Assert.False(result.Success);
         }
 
         [Fact]
-        public void Delete_WhenDeletedSupplier_ShouldDelete()
+        public void Delete_WhenDeletedSupplier_ShouldUpdateEnableStatus()
         {
             // Arrange
             int supplierId = 1;
-            var mockSupplierDal = new MockSupplierDal().MockDelete().MockGet(new Supplier());
+            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(new Supplier());
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
             sut.Delete(supplierId);
 
             // Assert
-            mockSupplierDal.VerifyDelete(Times.Once());
+            mockSupplierDal.VerifyUpdate(Times.Once());
         }
     }
 }

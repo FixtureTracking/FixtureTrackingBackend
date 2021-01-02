@@ -41,7 +41,11 @@ namespace FixtureTracking.Business.Concrete
             var debit = GetById(debitId).Data;
             if (debit != null)
             {
-                debitDal.Delete(debit);
+                debit.IsReturn = true;
+                debit.DateReturn = DateTime.Now;
+                debit.UpdatedAt = DateTime.Now;
+
+                debitDal.Update(debit);
                 return new SuccessResult(Messages.DebitDeleted);
             }
             return new ErrorResult(Messages.DebitNotFound);

@@ -130,7 +130,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             short categoryId = 111;
-            var mockCategoryDal = new MockCategoryDal().MockDelete().MockGet(null);
+            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
@@ -142,18 +142,18 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Deleted_WhenDeletedCategory_ShouldDelete()
+        public void Deleted_WhenDeletedCategory_ShouldUpdateEnableStatus()
         {
             // Arrange
             short categoryId = 1;
-            var mockCategoryDal = new MockCategoryDal().MockDelete().MockGet(new Category());
+            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(new Category());
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             sut.Delete(categoryId);
 
             // Assert
-            mockCategoryDal.VerifyDelete(Times.Once());
+            mockCategoryDal.VerifyUpdate(Times.Once());
         }
 
     }

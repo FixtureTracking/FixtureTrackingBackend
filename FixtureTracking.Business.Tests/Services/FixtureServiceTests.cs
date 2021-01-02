@@ -203,19 +203,19 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid fixtureId = Guid.Empty;
-            var mockFixtureDal = new MockFixtureDal().MockDelete().MockGet(null);
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.Delete(fixtureId);
 
             // Assert
-            mockFixtureDal.VerifyDelete(Times.Never());
+            mockFixtureDal.VerifyUpdate(Times.Never());
             Assert.False(result.Success);
         }
 
         [Fact]
-        public void Delete_WhenDeletedFixture_ShouldDelete()
+        public void Delete_WhenDeletedFixture_ShouldUpdateFixturePosition()
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
@@ -223,14 +223,14 @@ namespace FixtureTracking.Business.Tests.Services
             {
                 Id = fixtureId
             };
-            var mockFixtureDal = new MockFixtureDal().MockDelete().MockGet(fixture);
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             sut.Delete(fixtureId);
 
             // Assert
-            mockFixtureDal.VerifyDelete(Times.Once());
+            mockFixtureDal.VerifyUpdate(Times.Once());
         }
     }
 }

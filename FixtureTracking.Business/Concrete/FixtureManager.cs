@@ -44,7 +44,10 @@ namespace FixtureTracking.Business.Concrete
             var fixture = GetById(fixtureId).Data;
             if (fixture != null)
             {
-                fixtureDal.Delete(fixture);
+                fixture.FixturePositionId = 0;
+                fixture.UpdatedAt = DateTime.Now;
+
+                fixtureDal.Update(fixture);
                 return new SuccessResult(Messages.FixtureDeleted);
             }
             return new ErrorResult(Messages.FixtureNotFound);

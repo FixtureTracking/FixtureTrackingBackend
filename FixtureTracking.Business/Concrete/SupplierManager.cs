@@ -38,7 +38,10 @@ namespace FixtureTracking.Business.Concrete
             var supplier = GetById(supplierId).Data;
             if (supplier != null)
             {
-                supplierDal.Delete(supplier);
+                supplier.IsEnable = false;
+                supplier.UpdatedAt = DateTime.Now;
+
+                supplierDal.Update(supplier);
                 return new SuccessResult(Messages.SupplierDeleted);
             }
             return new ErrorResult(Messages.SupplierNotFound);

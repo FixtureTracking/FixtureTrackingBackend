@@ -38,7 +38,10 @@ namespace FixtureTracking.Business.Concrete
             var category = GetById(categoryId).Data;
             if (category != null)
             {
-                categoryDal.Delete(category);
+                category.IsEnable = false;
+                category.UpdatedAt = DateTime.Now;
+
+                categoryDal.Update(category);
                 return new SuccessResult(Messages.CategoryDeleted);
             }
             return new ErrorResult(Messages.CategoryNotFound);

@@ -181,19 +181,19 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid debitId = Guid.Empty;
-            var mockDebitDal = new MockDebitDal().MockDelete().MockGet(null);
+            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
             var sut = new DebitManager(mockDebitDal.Object);
 
             // Act
             var result = sut.Delete(debitId);
 
             // Assert
-            mockDebitDal.VerifyDelete(Times.Never());
+            mockDebitDal.VerifyUpdate(Times.Never());
             Assert.False(result.Success);
         }
 
         [Fact]
-        public void Delete_WhenDeletedDebit_ShouldDelete()
+        public void Delete_WhenDeletedDebit_ShouldUpdateReturnStatus()
         {
             // Arrange
             Guid debitId = Guid.NewGuid();
@@ -201,14 +201,14 @@ namespace FixtureTracking.Business.Tests.Services
             {
                 Id = debitId
             };
-            var mockDebitDal = new MockDebitDal().MockDelete().MockGet(debit);
+            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(debit);
             var sut = new DebitManager(mockDebitDal.Object);
 
             // Act
             sut.Delete(debitId);
 
             // Assert
-            mockDebitDal.VerifyDelete(Times.Once());
+            mockDebitDal.VerifyUpdate(Times.Once());
         }
     }
 }
