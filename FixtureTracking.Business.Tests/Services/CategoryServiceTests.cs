@@ -79,7 +79,7 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Add_WhenAddedNewCategory_ShouldAddedAndReturnId()
+        public void Add_WhenAddedNewCategory_ShouldAddAndReturnId()
         {
             // Arrange
             var categoryForAddDto = new CategoryForAddDto();
@@ -98,12 +98,12 @@ namespace FixtureTracking.Business.Tests.Services
         public void Update_WhenUpdatedNotExistsCategory_ShouldReturnErrorResult()
         {
             // Arrange
-            var category = new Category();
+            var categoryForUpdateDto = new CategoryForUpdateDto();
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
-            var result = sut.Update(category);
+            var result = sut.Update(categoryForUpdateDto);
 
             // Assert
             mockCategoryDal.VerifyUpdate(Times.Never());
@@ -111,15 +111,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedCategory_ShouldUpdated()
+        public void Update_WhenUpdatedCategory_ShouldUpdate()
         {
             // Arrange
-            var category = new Category();
-            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(category);
+            var categoryForUpdateDto = new CategoryForUpdateDto();
+            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(new Category());
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
-            sut.Update(category);
+            sut.Update(categoryForUpdateDto);
 
             // Assert
             mockCategoryDal.VerifyUpdate(Times.Once());
@@ -142,7 +142,7 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Deleted_WhenDeletedCategory_ShouldDeleted()
+        public void Deleted_WhenDeletedCategory_ShouldDelete()
         {
             // Arrange
             short categoryId = 1;

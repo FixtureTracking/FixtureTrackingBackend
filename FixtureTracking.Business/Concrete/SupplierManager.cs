@@ -54,12 +54,15 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Supplier>>(supplierDal.GetList(s => s.IsEnable == true).ToList());
         }
 
-        public IResult Update(Supplier supplier)
+        public IResult Update(SupplierForUpdateDto supplierForUpdateDto)
         {
-            var isExistsSupplier = GetById(supplier.Id).Data != null;
-            if (isExistsSupplier)
+            var supplier = GetById(supplierForUpdateDto.Id).Data;
+            if (supplier != null)
             {
+                supplier.Description = supplierForUpdateDto.Description;
+                supplier.Name = supplierForUpdateDto.Name;
                 supplier.UpdatedAt = DateTime.Now;
+
                 supplierDal.Update(supplier);
                 return new SuccessResult(Messages.SupplierUpdated);
             }

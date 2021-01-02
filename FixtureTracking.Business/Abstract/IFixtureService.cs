@@ -14,7 +14,7 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<List<Fixture>> GetListByCategoryId(short categoryId);
         IDataResult<List<Fixture>> GetListByPositionId(short positionId);
         IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto);
-        IResult Update(Fixture fixture);
+        IResult Update(FixtureForUpdateDto fixtureForUpdateDto);
         IResult Delete(Guid fixtureId);
     }
 }

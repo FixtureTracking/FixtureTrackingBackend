@@ -10,7 +10,7 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<Category> GetById(short categoryId);
         IDataResult<List<Category>> GetList();
         IDataResult<short> Add(CategoryForAddDto categoryForAddDto);
-        IResult Update(Category category);
+        IResult Update(CategoryForUpdateDto categoryForUpdateDto);
         IResult Delete(short categoryId);
     }
 }

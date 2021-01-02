@@ -67,10 +67,17 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Debit>>(debitDal.GetList(d => d.UserId == userId).ToList());
         }
 
-        public IResult Update(Debit debit)
+        public IResult Update(DebitForUpdateDto debitForUpdateDto)
         {
-            if (GetById(debit.Id).Data != null)
+            var debit = GetById(debitForUpdateDto.Id).Data;
+            if (debit != null)
             {
+                debit.DateDebit = debitForUpdateDto.DateDebit;
+                debit.Description = debitForUpdateDto.Description;
+                debit.FixtureId = debitForUpdateDto.FixtureId;
+                debit.UserId = debitForUpdateDto.UserId;
+                debit.UpdatedAt = DateTime.Now;
+
                 debitDal.Update(debit);
                 return new SuccessResult(Messages.DebitUpdated);
             }

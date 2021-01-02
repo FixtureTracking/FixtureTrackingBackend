@@ -78,7 +78,7 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Add_WhenAddedNewSupplier_ShouldAddedAndReturnId()
+        public void Add_WhenAddedNewSupplier_ShouldAddAndReturnId()
         {
             // Arrange
             var supplierForAddDto = new SupplierForAddDto();
@@ -96,12 +96,12 @@ namespace FixtureTracking.Business.Tests.Services
         public void Update_WhenUpdatedNotExistsSupplier_ShouldReturnErrorResult()
         {
             // Arrange
-            var supplier = new Supplier();
+            var supplierForUpdateDto = new SupplierForUpdateDto();
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
-            var result = sut.Update(supplier);
+            var result = sut.Update(supplierForUpdateDto);
 
             // Assert
             mockSupplierDal.VerifyUpdate(Times.Never());
@@ -112,12 +112,12 @@ namespace FixtureTracking.Business.Tests.Services
         public void Update_WhenUpdatedSupplier_ShouldUpdate()
         {
             // Arrange
-            var supplier = new Supplier();
-            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(supplier);
+            var supplierForUpdateDto = new SupplierForUpdateDto();
+            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(new Supplier());
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
-            sut.Update(supplier);
+            sut.Update(supplierForUpdateDto);
 
             // Assert
             mockSupplierDal.VerifyUpdate(Times.Once());
@@ -143,7 +143,7 @@ namespace FixtureTracking.Business.Tests.Services
         public void Delete_WhenDeletedSupplier_ShouldDelete()
         {
             // Arrange
-            int supplierId = 111;
+            int supplierId = 1;
             var mockSupplierDal = new MockSupplierDal().MockDelete().MockGet(new Supplier());
             var sut = new SupplierManager(mockSupplierDal.Object);
 

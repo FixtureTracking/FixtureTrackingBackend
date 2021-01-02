@@ -23,7 +23,6 @@ namespace FixtureTracking.Business.Concrete
         {
             var fixture = new Fixture()
             {
-                // TODO : refactoring
                 CategoryId = fixtureForAddDto.CategoryId,
                 CreatedAt = DateTime.Now,
                 DatePurchase = fixtureForAddDto.DatePurchase,
@@ -76,11 +75,21 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.SupplierId == supplierId).ToList());
         }
 
-        public IResult Update(Fixture fixture)
+        public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
         {
-            if (GetById(fixture.Id).Data != null)
+            var fixture = GetById(fixtureForUpdateDto.Id).Data;
+            if (fixture != null)
             {
+                fixture.CategoryId = fixtureForUpdateDto.CategoryId;
+                fixture.DatePurchase = fixtureForUpdateDto.DatePurchase;
+                fixture.DateWarranty = fixtureForUpdateDto.DateWarranty;
+                fixture.Description = fixtureForUpdateDto.Description;
+                fixture.Name = fixtureForUpdateDto.Name;
+                fixture.PictureUrl = fixtureForUpdateDto.PictureUrl;
+                fixture.Price = fixtureForUpdateDto.Price;
+                fixture.SupplierId = fixtureForUpdateDto.SupplierId;
                 fixture.UpdatedAt = DateTime.Now;
+
                 fixtureDal.Update(fixture);
                 return new SuccessResult(Messages.FixtureUpdated);
             }

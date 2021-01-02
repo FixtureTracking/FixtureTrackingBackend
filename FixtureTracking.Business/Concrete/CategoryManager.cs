@@ -54,11 +54,15 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Category>>(categoryDal.GetList(c => c.IsEnable == true).ToList());
         }
 
-        public IResult Update(Category category)
+        public IResult Update(CategoryForUpdateDto categoryForUpdateDto)
         {
-            var isExistsCategory = GetById(category.Id).Data != null;
-            if (isExistsCategory)
+            var category = GetById(categoryForUpdateDto.Id).Data;
+            if (category != null)
             {
+                category.Description = categoryForUpdateDto.Description;
+                category.Name = categoryForUpdateDto.Name;
+                category.UpdatedAt = DateTime.Now;
+
                 categoryDal.Update(category);
                 return new SuccessResult(Messages.CategoryUpdated);
             }
