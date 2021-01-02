@@ -11,5 +11,10 @@
         public static string DebitUpdated = "Debit updated";
         public static string DebitDeleted = "Debit deleted";
         public static string DebitNotFound = "Debit not found";
+
+        public static string CategoryAdded = "Category added";
+        public static string CategoryUpdated = "Category updated";
+        public static string CategoryDeleted = "Category deleted";
+        public static string CategoryNotFound = "Category not found";
     }
 }
