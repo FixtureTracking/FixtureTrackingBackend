@@ -21,5 +21,11 @@
         public static string SupplierUpdated = "Supplier updated";
         public static string SupplierDeleted = "Supplier deleted";
         public static string SupplierNotFound = "Supplier not found";
+
+        public static string DepartmentAdded = "Department added";
+        public static string DepartmentUpdated = "Department updated";
+        public static string DepartmentClaimUpdated = "Department - Operation Claims updated";
+        public static string DepartmentDeleted = "Department deleted";
+        public static string DepartmentNotFound = "Department not found";
     }
 }
