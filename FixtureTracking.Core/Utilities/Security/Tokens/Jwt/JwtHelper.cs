@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Extensions;
 using FixtureTracking.Core.Utilities.Security.Encryption;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +25,7 @@ namespace FixtureTracking.Core.Utilities.Security.Tokens.Jwt
         public AccessToken CreateToken(User user, string[] claimNames)
         {
             accessTokenExpiration = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration);
+
             var securityKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey);
             var signingCredentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
 
@@ -49,8 +51,10 @@ namespace FixtureTracking.Core.Utilities.Security.Tokens.Jwt
         private IEnumerable<Claim> SetClaims(User user, string[] claimNames)
         {
             var claims = new List<Claim>();
-            claims.Add(new Claim("id", user.Id.ToString()));
-
+            claims.AddNameIdentifier(user.Id.ToString());
+            claims.AddEmail(user.Email);
+            claims.AddName($"{user.FirstName} {user.LastName}");
+            claims.AddRoles(claimNames);
             return claims;
         }
     }
