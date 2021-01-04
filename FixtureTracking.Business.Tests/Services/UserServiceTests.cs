@@ -1,5 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
-using FixtureTracking.Business.Tests.Mocks;
+using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
