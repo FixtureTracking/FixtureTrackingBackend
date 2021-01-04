@@ -27,5 +27,8 @@
         public static string DepartmentClaimUpdated = "Department - Operation Claims updated";
         public static string DepartmentDeleted = "Department deleted";
         public static string DepartmentNotFound = "Department not found";
+
+        public static string UserDeleted = "User deleted";
+        public static string UserNotFound = "User not found";
     }
 }
