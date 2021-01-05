@@ -30,5 +30,10 @@
 
         public static string UserDeleted = "User deleted";
         public static string UserNotFound = "User not found";
+
+        public static string AuthUserRegistered = "User registered";
+        public static string AuthEmailExists = "Email already exists";
+        public static string AuthUsernameExists = "Username already exists";
+        public static string AuthUserNotFound = "Email or password wrong";
     }
 }
