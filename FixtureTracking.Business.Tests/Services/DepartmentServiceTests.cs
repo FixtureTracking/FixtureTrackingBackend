@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Department;
 using Moq;
@@ -16,7 +17,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetById(departmentId);
@@ -31,7 +32,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int departmentId = 1;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(new Department());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetById(departmentId);
@@ -46,7 +47,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetOperationClaimNames(departmentId);
@@ -66,7 +67,7 @@ namespace FixtureTracking.Business.Tests.Services
                 OperationClaimNames = operationClaimNames
             };
             var mockDepartmentDal = new MockDepartmentDal().MockGet(department);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetOperationClaimNames(departmentId);
@@ -80,7 +81,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var mockDepartmentDal = new MockDepartmentDal().MockGetList(new List<Department>());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetList();
@@ -98,7 +99,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new Department()
             };
             var mockDepartmentDal = new MockDepartmentDal().MockGetList(departments);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.GetList();
@@ -108,12 +109,44 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetUsers_WhenNotExistsDepartment_ShouldReturnErrorResult()
+        {
+            // Arrange
+            int departmentId = 111;
+            var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
+            var mockUserService = new MockUserService();
+            var sut = new DepartmentManager(mockDepartmentDal.Object, mockUserService.Object);
+
+            // Act
+            var result = sut.GetUsers(departmentId);
+
+            // Assert
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public void GetUsers_WhenCalledUsers_ShouldReturnUsers()
+        {
+            // Arrange
+            int departmentId = 1;
+            var mockDepartmentDal = new MockDepartmentDal().MockGet(new Department());
+            var mockUserService = new MockUserService().MockGetListByDepartmentId(new List<Core.Entities.Concrete.User>());
+            var sut = new DepartmentManager(mockDepartmentDal.Object, mockUserService.Object);
+
+            // Act
+            var result = sut.GetUsers(departmentId);
+
+            // Assert
+            Assert.NotNull(result.Data);
+        }
+
+        [Fact]
         public void Add_WhenAddedNewDepartment_ShouldAddAndReturnId()
         {
             // Arrange
             var departmentForAddDto = new DepartmentForAddDto();
             var mockDepartmentDal = new MockDepartmentDal().MockAdd(new Department());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.Add(departmentForAddDto);
@@ -128,7 +161,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var departmentForUpdateDto = new DepartmentForUpdateDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.Update(departmentForUpdateDto);
@@ -144,7 +177,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var departmentForUpdateDto = new DepartmentForUpdateDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(new Department());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             sut.Update(departmentForUpdateDto);
@@ -159,7 +192,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var departmentForUpdateClaimDto = new DepartmentForUpdateClaimDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.UpdateOperationClaim(departmentForUpdateClaimDto);
@@ -175,7 +208,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var departmentForUpdateClaimDto = new DepartmentForUpdateClaimDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(new Department());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             sut.UpdateOperationClaim(departmentForUpdateClaimDto);
@@ -190,7 +223,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             var result = sut.Delete(departmentId);
@@ -206,7 +239,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var departmentId = 1;
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(new Department());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
+            var sut = new DepartmentManager(mockDepartmentDal.Object, null);
 
             // Act
             sut.Delete(departmentId);

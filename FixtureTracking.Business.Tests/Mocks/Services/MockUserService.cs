@@ -2,6 +2,7 @@
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
 using Moq;
+using System.Collections.Generic;
 
 namespace FixtureTracking.Business.Tests.Mocks.Services
 {
@@ -26,6 +27,14 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
         public MockUserService MockGetClaims(IDataResult<string[]> result)
         {
             Setup(x => x.GetClaims(It.IsAny<User>()))
+                .Returns(result);
+
+            return this;
+        }
+
+        public MockUserService MockGetListByDepartmentId(List<User> result)
+        {
+            Setup(x => x.GetListByDepartmentId(It.IsAny<int>()))
                 .Returns(result);
 
             return this;

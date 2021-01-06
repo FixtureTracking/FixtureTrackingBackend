@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -13,10 +14,12 @@ namespace FixtureTracking.Business.Concrete
     public class DepartmentManager : IDepartmentService
     {
         private readonly IDepartmentDal departmentDal;
+        private readonly IUserService userService;
 
-        public DepartmentManager(IDepartmentDal departmentDal)
+        public DepartmentManager(IDepartmentDal departmentDal, IUserService userService)
         {
             this.departmentDal = departmentDal;
+            this.userService = userService;
         }
 
         public IDataResult<int> Add(DepartmentForAddDto departmentForAddDto)
@@ -64,6 +67,14 @@ namespace FixtureTracking.Business.Concrete
             if (department != null)
                 return new SuccessDataResult<string[]>(department.OperationClaimNames);
             return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
+        }
+
+        public IDataResult<List<User>> GetUsers(int departmentId)
+        {
+            var department = GetById(departmentId).Data;
+            if (department != null)
+                return new SuccessDataResult<List<User>>(userService.GetListByDepartmentId(departmentId));
+            return new ErrorDataResult<List<User>>(Messages.DepartmentNotFound);
         }
 
         public IResult Update(DepartmentForUpdateDto departmentForUpdateDto)

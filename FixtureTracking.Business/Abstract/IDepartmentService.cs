@@ -1,4 +1,5 @@
-﻿using FixtureTracking.Core.Utilities.Results;
+﻿using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Department;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<Department> GetById(int departmentId);
         IDataResult<string[]> GetOperationClaimNames(int departmentId);
         IDataResult<List<Department>> GetList();
+        IDataResult<List<User>> GetUsers(int departmentId);
         IDataResult<int> Add(DepartmentForAddDto departmentForAddDto);
         IResult Update(DepartmentForUpdateDto departmentForUpdateDto);
         IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto);
