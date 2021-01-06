@@ -3,6 +3,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
+using FixtureTracking.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace FixtureTracking.Business.Concrete
     {
         private readonly IUserDal userDal;
         private readonly IDepartmentService departmentService;
+        private readonly IDebitService debitService;
 
-        public UserManager(IUserDal userDal, IDepartmentService departmentService)
+        public UserManager(IUserDal userDal, IDepartmentService departmentService, IDebitService debitService)
         {
             this.userDal = userDal;
             this.departmentService = departmentService;
+            this.debitService = debitService;
         }
 
         public Guid Add(User user)
@@ -63,14 +66,22 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
         }
 
+        public IDataResult<List<Debit>> GetDebits(Guid userId)
+        {
+            var user = GetById(userId).Data;
+            if (user != null)
+                return new SuccessDataResult<List<Debit>>(debitService.GetListByUserId(userId).Data);
+            return new ErrorDataResult<List<Debit>>(Messages.UserNotFound);
+        }
+
         public IDataResult<List<User>> GetList()
         {
             return new SuccessDataResult<List<User>>(userDal.GetList(u => u.IsEnable == true).ToList());
         }
 
-        public IDataResult<List<User>> GetListByDepartmentId(int departmentId)
+        public List<User> GetListByDepartmentId(int departmentId)
         {
-            return new SuccessDataResult<List<User>>(userDal.GetList(u => u.DepartmentId == departmentId).ToList());
+            return userDal.GetList(u => u.DepartmentId == departmentId).ToList();
         }
     }
 }

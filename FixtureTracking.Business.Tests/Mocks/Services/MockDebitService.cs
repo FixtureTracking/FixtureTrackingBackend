@@ -16,5 +16,13 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
 
             return this;
         }
+
+        public MockDebitService MockGetListByUserId(IDataResult<List<Debit>> result)
+        {
+            Setup(x => x.GetListByUserId(It.IsAny<Guid>()))
+                .Returns(result);
+
+            return this;
+        }
     }
 }
