@@ -102,7 +102,7 @@ namespace FixtureTracking.Business.Tests.Services
             var result = sut.GetListByFixtureId(fixtureId);
 
             // Assert
-            Assert.NotEmpty(result.Data);
+            Assert.NotEmpty(result);
         }
 
         [Fact]
@@ -127,7 +127,7 @@ namespace FixtureTracking.Business.Tests.Services
             var result = sut.GetListByUserId(userId);
 
             // Assert
-            Assert.NotEmpty(result.Data);
+            Assert.NotEmpty(result);
         }
 
         [Fact]

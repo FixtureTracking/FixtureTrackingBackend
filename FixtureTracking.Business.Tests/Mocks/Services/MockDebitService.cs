@@ -1,5 +1,4 @@
 ﻿using FixtureTracking.Business.Abstract;
-using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Entities.Concrete;
 using Moq;
 using System;
@@ -9,7 +8,7 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
 {
     public class MockDebitService : Mock<IDebitService>
     {
-        public MockDebitService MockGetListByFixtureId(IDataResult<List<Debit>> result)
+        public MockDebitService MockGetListByFixtureId(List<Debit> result)
         {
             Setup(x => x.GetListByFixtureId(It.IsAny<Guid>()))
                 .Returns(result);
@@ -17,7 +16,7 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
             return this;
         }
 
-        public MockDebitService MockGetListByUserId(IDataResult<List<Debit>> result)
+        public MockDebitService MockGetListByUserId(List<Debit> result)
         {
             Setup(x => x.GetListByUserId(It.IsAny<Guid>()))
                 .Returns(result);

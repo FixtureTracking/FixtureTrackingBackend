@@ -10,8 +10,8 @@ namespace FixtureTracking.Business.Abstract
     {
         IDataResult<Debit> GetById(Guid debitId);
         IDataResult<List<Debit>> GetList();
-        IDataResult<List<Debit>> GetListByFixtureId(Guid fixtureId);
-        IDataResult<List<Debit>> GetListByUserId(Guid userId);
+        List<Debit> GetListByFixtureId(Guid fixtureId);
+        List<Debit> GetListByUserId(Guid userId);
         IDataResult<Guid> Add(DebitForAddDto debitForAddDto);
         IResult Update(DebitForUpdateDto debitForUpdateDto);
         IResult Delete(Guid debitId);

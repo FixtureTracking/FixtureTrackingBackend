@@ -64,7 +64,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var fixture = GetById(fixtureId).Data;
             if (fixture != null)
-                return new SuccessDataResult<List<Debit>>(debitService.GetListByFixtureId(fixtureId).Data);
+                return new SuccessDataResult<List<Debit>>(debitService.GetListByFixtureId(fixtureId));
             return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
         }
 

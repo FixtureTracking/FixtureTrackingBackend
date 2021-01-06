@@ -70,7 +70,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = GetById(userId).Data;
             if (user != null)
-                return new SuccessDataResult<List<Debit>>(debitService.GetListByUserId(userId).Data);
+                return new SuccessDataResult<List<Debit>>(debitService.GetListByUserId(userId));
             return new ErrorDataResult<List<Debit>>(Messages.UserNotFound);
         }
 

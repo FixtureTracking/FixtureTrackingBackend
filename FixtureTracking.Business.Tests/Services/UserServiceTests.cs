@@ -169,9 +169,8 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var dataResult = new SuccessDataResult<List<Debit>>(new List<Debit>());
             var mockUserDal = new MockUserDal().MockGet(new User());
-            var mockDebitService = new MockDebitService().MockGetListByUserId(dataResult);
+            var mockDebitService = new MockDebitService().MockGetListByUserId(new List<Debit>());
             var sut = new UserManager(mockUserDal.Object, null, mockDebitService.Object);
 
             // Act

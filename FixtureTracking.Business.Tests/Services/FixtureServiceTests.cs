@@ -1,7 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Business.Tests.Mocks.Services;
-using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Fixture;
 using Moq;
@@ -86,9 +85,8 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var fixtureId = Guid.NewGuid();
-            var dataResult = new SuccessDataResult<List<Debit>>(new List<Debit>());
             var mockFixtureDal = new MockFixtureDal().MockGet(new Fixture());
-            var mockDebitService = new MockDebitService().MockGetListByFixtureId(dataResult);
+            var mockDebitService = new MockDebitService().MockGetListByFixtureId(new List<Debit>());
             var sut = new FixtureManager(mockFixtureDal.Object, mockDebitService.Object);
 
             // Act

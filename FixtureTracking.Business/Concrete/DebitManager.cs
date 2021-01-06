@@ -61,14 +61,14 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Debit>>(debitDal.GetList().ToList());
         }
 
-        public IDataResult<List<Debit>> GetListByFixtureId(Guid fixtureId)
+        public List<Debit> GetListByFixtureId(Guid fixtureId)
         {
-            return new SuccessDataResult<List<Debit>>(debitDal.GetList(d => d.FixtureId == fixtureId).ToList());
+            return debitDal.GetList(d => d.FixtureId == fixtureId).ToList();
         }
 
-        public IDataResult<List<Debit>> GetListByUserId(Guid userId)
+        public List<Debit> GetListByUserId(Guid userId)
         {
-            return new SuccessDataResult<List<Debit>>(debitDal.GetList(d => d.UserId == userId).ToList());
+            return debitDal.GetList(d => d.UserId == userId).ToList();
         }
 
         public IResult Update(DebitForUpdateDto debitForUpdateDto)
