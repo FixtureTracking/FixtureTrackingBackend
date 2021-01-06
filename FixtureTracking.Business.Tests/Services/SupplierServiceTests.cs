@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Supplier;
 using Moq;
@@ -16,7 +17,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int supplierId = 111;
             var mockSupplierDal = new MockSupplierDal().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.GetById(supplierId);
@@ -35,7 +36,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = supplierId
             };
             var mockSupplierDal = new MockSupplierDal().MockGet(supplier);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.GetById(supplierId);
@@ -50,7 +51,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var suppliers = new List<Supplier>();
             var mockSupplierDal = new MockSupplierDal().MockGetList(suppliers);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.GetList();
@@ -68,7 +69,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new Supplier()
             };
             var mockSupplierDal = new MockSupplierDal().MockGetList(suppliers);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.GetList();
@@ -78,12 +79,44 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetFixtures_WhenNotExistsSupplier_ShouldReturnErrorResult()
+        {
+            // Arrange
+            int supplierId = 111;
+            var mockSupplierDal = new MockSupplierDal().MockGet(null);
+            var mockFixtureService = new MockFixtureService();
+            var sut = new SupplierManager(mockSupplierDal.Object, mockFixtureService.Object);
+
+            // Act
+            var result = sut.GetFixtures(supplierId);
+
+            // Assert
+            Assert.False(result.Success);
+        }
+
+        [Fact]
+        public void GetFixtures_WhenCalledFixtures_ShouldReturnFixtures()
+        {
+            // Arrange
+            int supplierId = 1;
+            var mockSupplierDal = new MockSupplierDal().MockGet(new Supplier());
+            var mockFixtureService = new MockFixtureService().MockGetListBySupplierId(new List<Fixture>());
+            var sut = new SupplierManager(mockSupplierDal.Object, mockFixtureService.Object);
+
+            // Act
+            var result = sut.GetFixtures(supplierId);
+
+            // Assert
+            Assert.NotNull(result.Data);
+        }
+
+        [Fact]
         public void Add_WhenAddedNewSupplier_ShouldAddAndReturnId()
         {
             // Arrange
             var supplierForAddDto = new SupplierForAddDto();
             var mockSupplierDal = new MockSupplierDal().MockAdd(new Supplier());
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.Add(supplierForAddDto);
@@ -98,7 +131,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var supplierForUpdateDto = new SupplierForUpdateDto();
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.Update(supplierForUpdateDto);
@@ -114,7 +147,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var supplierForUpdateDto = new SupplierForUpdateDto();
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(new Supplier());
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             sut.Update(supplierForUpdateDto);
@@ -129,7 +162,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int supplierId = 111;
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             var result = sut.Delete(supplierId);
@@ -145,7 +178,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             int supplierId = 1;
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(new Supplier());
-            var sut = new SupplierManager(mockSupplierDal.Object);
+            var sut = new SupplierManager(mockSupplierDal.Object, null);
 
             // Act
             sut.Delete(supplierId);

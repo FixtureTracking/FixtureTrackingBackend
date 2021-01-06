@@ -4,7 +4,6 @@ using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Category;
 using Moq;
-using System;
 using System.Collections.Generic;
 using Xunit;
 

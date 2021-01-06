@@ -1,7 +1,6 @@
 ﻿using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Category;
-using System;
 using System.Collections.Generic;
 
 namespace FixtureTracking.Business.Abstract

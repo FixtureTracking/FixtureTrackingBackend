@@ -9,6 +9,7 @@ namespace FixtureTracking.Business.Abstract
     {
         IDataResult<Supplier> GetById(int supplierId);
         IDataResult<List<Supplier>> GetList();
+        IDataResult<List<Fixture>> GetFixtures(int supplierId);
         IDataResult<int> Add(SupplierForAddDto supplierForAddDto);
         IResult Update(SupplierForUpdateDto supplierForUpdateDto);
         IResult Delete(int supplierId);
