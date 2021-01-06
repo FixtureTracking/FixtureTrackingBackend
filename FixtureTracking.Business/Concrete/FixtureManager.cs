@@ -13,10 +13,12 @@ namespace FixtureTracking.Business.Concrete
     public class FixtureManager : IFixtureService
     {
         private readonly IFixtureDal fixtureDal;
+        private readonly IDebitService debitService;
 
-        public FixtureManager(IFixtureDal fixtureDal)
+        public FixtureManager(IFixtureDal fixtureDal, IDebitService debitService)
         {
             this.fixtureDal = fixtureDal;
+            this.debitService = debitService;
         }
 
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
@@ -58,24 +60,32 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<Fixture>(fixtureDal.Get(f => f.Id == fixtureId));
         }
 
+        public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
+        {
+            var fixture = GetById(fixtureId).Data;
+            if (fixture != null)
+                return new SuccessDataResult<List<Debit>>(debitService.GetListByFixtureId(fixtureId).Data);
+            return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
+        }
+
         public IDataResult<List<Fixture>> GetList()
         {
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList().ToList());
         }
 
-        public IDataResult<List<Fixture>> GetListByCategoryId(short categoryId)
+        public List<Fixture> GetListByCategoryId(short categoryId)
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.CategoryId == categoryId).ToList());
+            return fixtureDal.GetList(f => f.CategoryId == categoryId).ToList();
         }
 
-        public IDataResult<List<Fixture>> GetListByPositionId(short positionId)
+        public List<Fixture> GetListByPositionId(short positionId)
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList());
+            return fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList();
         }
 
-        public IDataResult<List<Fixture>> GetListBySupplierId(int supplierId)
+        public List<Fixture> GetListBySupplierId(int supplierId)
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.SupplierId == supplierId).ToList());
+            return fixtureDal.GetList(f => f.SupplierId == supplierId).ToList();
         }
 
         public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
