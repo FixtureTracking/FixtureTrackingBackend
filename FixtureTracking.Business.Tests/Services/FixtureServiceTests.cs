@@ -1,6 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
-using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Fixture;
 using Moq;
@@ -18,7 +17,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             Guid fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetById(fixtureId);
@@ -37,7 +36,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = fixtureId
             };
             var mockFixtureDal = new MockFixtureDal().MockGet(fixture);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetById(fixtureId);
@@ -56,7 +55,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new Fixture()
             };
             var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetList();
@@ -71,7 +70,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetDebits(fixtureId);
@@ -85,9 +84,8 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var fixtureId = Guid.NewGuid();
-            var mockFixtureDal = new MockFixtureDal().MockGet(new Fixture());
-            var mockDebitService = new MockDebitService().MockGetListByFixtureId(new List<Debit>());
-            var sut = new FixtureManager(mockFixtureDal.Object, mockDebitService.Object);
+            var mockFixtureDal = new MockFixtureDal().MockGetDebits(new List<Debit>()).MockGet(new Fixture());
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetDebits(fixtureId);
@@ -104,7 +102,7 @@ namespace FixtureTracking.Business.Tests.Services
             int supplierId = 111;
             List<Fixture> fixtures = new List<Fixture>();
             var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListBySupplierId(supplierId);
@@ -128,7 +126,7 @@ namespace FixtureTracking.Business.Tests.Services
                 fixture
             };
             var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListBySupplierId(supplierId);
@@ -152,7 +150,7 @@ namespace FixtureTracking.Business.Tests.Services
                 fixture
             };
             var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListByCategoryId(categoryId);
@@ -176,7 +174,7 @@ namespace FixtureTracking.Business.Tests.Services
                 fixture
             };
             var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListByPositionId(positionId);
@@ -191,7 +189,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             FixtureForAddDto fixtureForAddDto = new FixtureForAddDto();
             var mockFixtureDal = new MockFixtureDal().MockAdd(new Fixture());
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.Add(fixtureForAddDto);
@@ -206,7 +204,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var fixtureForUpdateDto = new FixtureForUpdateDto();
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.Update(fixtureForUpdateDto);
@@ -222,7 +220,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var fixtureForUpdateDto = new FixtureForUpdateDto();
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(new Fixture());
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             sut.Update(fixtureForUpdateDto);
@@ -237,7 +235,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             Guid fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.Delete(fixtureId);
@@ -257,7 +255,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = fixtureId
             };
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
-            var sut = new FixtureManager(mockFixtureDal.Object, null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             sut.Delete(fixtureId);

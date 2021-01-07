@@ -13,12 +13,10 @@ namespace FixtureTracking.Business.Concrete
     public class FixtureManager : IFixtureService
     {
         private readonly IFixtureDal fixtureDal;
-        private readonly IDebitService debitService;
 
-        public FixtureManager(IFixtureDal fixtureDal, IDebitService debitService)
+        public FixtureManager(IFixtureDal fixtureDal)
         {
             this.fixtureDal = fixtureDal;
-            this.debitService = debitService;
         }
 
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
@@ -64,7 +62,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var fixture = GetById(fixtureId).Data;
             if (fixture != null)
-                return new SuccessDataResult<List<Debit>>(debitService.GetListByFixtureId(fixtureId));
+                return new SuccessDataResult<List<Debit>>(fixtureDal.GetDebits(fixture));
             return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
         }
 

@@ -8,14 +8,6 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
 {
     public class MockDebitService : Mock<IDebitService>
     {
-        public MockDebitService MockGetListByFixtureId(List<Debit> result)
-        {
-            Setup(x => x.GetListByFixtureId(It.IsAny<Guid>()))
-                .Returns(result);
-
-            return this;
-        }
-
         public MockDebitService MockGetListByUserId(List<Debit> result)
         {
             Setup(x => x.GetListByUserId(It.IsAny<Guid>()))
