@@ -13,12 +13,10 @@ namespace FixtureTracking.Business.Concrete
     public class SupplierManager : ISupplierService
     {
         private readonly ISupplierDal supplierDal;
-        private readonly IFixtureService fixtureService;
 
-        public SupplierManager(ISupplierDal supplierDal, IFixtureService fixtureService)
+        public SupplierManager(ISupplierDal supplierDal)
         {
             this.supplierDal = supplierDal;
-            this.fixtureService = fixtureService;
         }
 
         public IDataResult<int> Add(SupplierForAddDto supplierForAddDto)
@@ -58,7 +56,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var supplier = GetById(supplierId).Data;
             if (supplier != null)
-                return new SuccessDataResult<List<Fixture>>(fixtureService.GetListBySupplierId(supplierId));
+                return new SuccessDataResult<List<Fixture>>(supplierDal.GetFixtures(supplier));
             return new ErrorDataResult<List<Fixture>>(Messages.SupplierNotFound);
         }
 
