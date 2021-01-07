@@ -14,12 +14,10 @@ namespace FixtureTracking.Business.Concrete
     public class DepartmentManager : IDepartmentService
     {
         private readonly IDepartmentDal departmentDal;
-        private readonly IUserService userService;
 
-        public DepartmentManager(IDepartmentDal departmentDal, IUserService userService)
+        public DepartmentManager(IDepartmentDal departmentDal)
         {
             this.departmentDal = departmentDal;
-            this.userService = userService;
         }
 
         public IDataResult<int> Add(DepartmentForAddDto departmentForAddDto)
@@ -73,7 +71,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var department = GetById(departmentId).Data;
             if (department != null)
-                return new SuccessDataResult<List<User>>(userService.GetListByDepartmentId(departmentId));
+                return new SuccessDataResult<List<User>>(departmentDal.GetUsers(department));
             return new ErrorDataResult<List<User>>(Messages.DepartmentNotFound);
         }
 
