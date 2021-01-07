@@ -1,6 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
-using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Supplier;
 using Moq;

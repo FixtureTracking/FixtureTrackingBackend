@@ -13,12 +13,10 @@ namespace FixtureTracking.Business.Concrete
     public class UserManager : IUserService
     {
         private readonly IUserDal userDal;
-        private readonly IDebitService debitService;
 
-        public UserManager(IUserDal userDal, IDebitService debitService)
+        public UserManager(IUserDal userDal)
         {
             this.userDal = userDal;
-            this.debitService = debitService;
         }
 
         public Guid Add(User user)
@@ -65,7 +63,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = GetById(userId).Data;
             if (user != null)
-                return new SuccessDataResult<List<Debit>>(debitService.GetListByUserId(userId));
+                return new SuccessDataResult<List<Debit>>(userDal.GetDebits(user));
             return new ErrorDataResult<List<Debit>>(Messages.UserNotFound);
         }
 

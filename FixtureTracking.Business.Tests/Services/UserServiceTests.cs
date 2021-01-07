@@ -1,6 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
-using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Entities.Concrete;
 using Moq;
@@ -18,7 +17,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockGet(null);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetById(userId);
@@ -33,7 +32,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userId = Guid.NewGuid();
             var mockUserDal = new MockUserDal().MockGet(new User());
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetById(userId);
@@ -48,7 +47,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var username = "user";
             var mockUserDal = new MockUserDal().MockGet(new User());
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetByUsername(username);
@@ -63,7 +62,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var email = "user@mail.com";
             var mockUserDal = new MockUserDal().MockGet(new User());
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetByEmail(email);
@@ -77,7 +76,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var mockUserDal = new MockUserDal().MockGetList(new List<User>());
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetList();
@@ -97,7 +96,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new User()
             };
             var mockUserDal = new MockUserDal().MockGetList(users);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetList();
@@ -113,7 +112,7 @@ namespace FixtureTracking.Business.Tests.Services
             string[] claimNames = { "Fixture.GetById", "Fixture.GetList" };
             var user = new User();
             var mockUserDal = new MockUserDal().MockGetClaims(claimNames);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetClaims(user);
@@ -128,8 +127,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockGet(null);
-            var mockDebitService = new MockDebitService();
-            var sut = new UserManager(mockUserDal.Object, mockDebitService.Object);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetDebits(userId);
@@ -143,9 +141,8 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var mockUserDal = new MockUserDal().MockGet(new User());
-            var mockDebitService = new MockDebitService().MockGetListByUserId(new List<Debit>());
-            var sut = new UserManager(mockUserDal.Object, mockDebitService.Object);
+            var mockUserDal = new MockUserDal().MockGetDebits(new List<Debit>()).MockGet(new User());
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetDebits(userId);
@@ -168,7 +165,7 @@ namespace FixtureTracking.Business.Tests.Services
                 },
             };
             var mockUserDal = new MockUserDal().MockGetList(users);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetListByDepartmentId(departmentId);
@@ -183,7 +180,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var user = new User();
             var mockUserDal = new MockUserDal().MockAdd(user);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.Add(user);
@@ -198,7 +195,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockUpdate().MockGet(null);
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.Delete(userId);
@@ -214,7 +211,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userId = Guid.NewGuid();
             var mockUserDal = new MockUserDal().MockUpdate().MockGet(new User());
-            var sut = new UserManager(mockUserDal.Object, null);
+            var sut = new UserManager(mockUserDal.Object);
 
             // Act
             sut.Delete(userId);
