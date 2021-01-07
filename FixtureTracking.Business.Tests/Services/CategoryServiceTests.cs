@@ -1,6 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
-using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Category;
 using Moq;
@@ -17,7 +16,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetById(categoryId);
@@ -36,7 +35,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = categoryId
             };
             var mockCategoryDal = new MockCategoryDal().MockGet(category);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetById(categoryId);
@@ -51,7 +50,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var categories = new List<Category>();
             var mockCategoryDal = new MockCategoryDal().MockGetList(categories);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetList();
@@ -70,7 +69,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new Category()
             };
             var mockCategoryDal = new MockCategoryDal().MockGetList(categories);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetList();
@@ -85,8 +84,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockGet(null);
-            var mockFixtureService = new MockFixtureService();
-            var sut = new CategoryManager(mockCategoryDal.Object, mockFixtureService.Object);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetFixtures(categoryId);
@@ -100,9 +98,8 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             short categoryId = 1;
-            var mockCategoryDal = new MockCategoryDal().MockGet(new Category());
-            var mockFixtureService = new MockFixtureService().MockGetListByCategoryId(new List<Fixture>());
-            var sut = new CategoryManager(mockCategoryDal.Object, mockFixtureService.Object);
+            var mockCategoryDal = new MockCategoryDal().MockGetFixtures(new List<Fixture>()).MockGet(new Category());
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetFixtures(categoryId);
@@ -119,7 +116,7 @@ namespace FixtureTracking.Business.Tests.Services
             var categoryForAddDto = new CategoryForAddDto();
             var category = new Category();
             var mockCategoryDal = new MockCategoryDal().MockAdd(category);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.Add(categoryForAddDto);
@@ -134,7 +131,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var categoryForUpdateDto = new CategoryForUpdateDto();
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.Update(categoryForUpdateDto);
@@ -150,7 +147,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var categoryForUpdateDto = new CategoryForUpdateDto();
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(new Category());
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             sut.Update(categoryForUpdateDto);
@@ -165,7 +162,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.Delete(categoryId);
@@ -181,7 +178,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             short categoryId = 1;
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(new Category());
-            var sut = new CategoryManager(mockCategoryDal.Object, null);
+            var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             sut.Delete(categoryId);

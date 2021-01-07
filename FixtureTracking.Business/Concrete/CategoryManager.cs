@@ -13,12 +13,10 @@ namespace FixtureTracking.Business.Concrete
     public class CategoryManager : ICategoryService
     {
         private readonly ICategoryDal categoryDal;
-        private readonly IFixtureService fixtureService;
 
-        public CategoryManager(ICategoryDal categoryDal, IFixtureService fixtureService)
+        public CategoryManager(ICategoryDal categoryDal)
         {
             this.categoryDal = categoryDal;
-            this.fixtureService = fixtureService;
         }
 
         public IDataResult<short> Add(CategoryForAddDto categoryForAddDto)
@@ -58,7 +56,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var category = GetById(categoryId).Data;
             if (category != null)
-                return new SuccessDataResult<List<Fixture>>(fixtureService.GetListByCategoryId(categoryId));
+                return new SuccessDataResult<List<Fixture>>(categoryDal.GetFixtures(category));
             return new ErrorDataResult<List<Fixture>>(Messages.CategoryNotFound);
         }
 
