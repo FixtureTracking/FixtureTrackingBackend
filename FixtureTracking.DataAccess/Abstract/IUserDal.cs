@@ -5,5 +5,6 @@ namespace FixtureTracking.DataAccess.Abstract
 {
     public interface IUserDal : IEntityRepository<User>
     {
+        string[] GetClaims(User user);
     }
 }

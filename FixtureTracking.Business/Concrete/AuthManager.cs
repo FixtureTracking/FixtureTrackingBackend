@@ -28,7 +28,7 @@ namespace FixtureTracking.Business.Concrete
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
                 return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
 
-            var claims = userService.GetClaims(user).Data;
+            var claims = userService.GetClaims(user);
             var accessToken = tokenHelper.CreateToken(user, claims);
 
             return new SuccessDataResult<AccessToken>(accessToken);

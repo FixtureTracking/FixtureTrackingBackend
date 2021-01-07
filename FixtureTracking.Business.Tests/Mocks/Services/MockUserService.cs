@@ -24,7 +24,7 @@ namespace FixtureTracking.Business.Tests.Mocks.Services
             return this;
         }
 
-        public MockUserService MockGetClaims(IDataResult<string[]> result)
+        public MockUserService MockGetClaims(string[] result)
         {
             Setup(x => x.GetClaims(It.IsAny<User>()))
                 .Returns(result);

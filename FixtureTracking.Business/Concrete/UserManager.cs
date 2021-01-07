@@ -13,13 +13,11 @@ namespace FixtureTracking.Business.Concrete
     public class UserManager : IUserService
     {
         private readonly IUserDal userDal;
-        private readonly IDepartmentService departmentService;
         private readonly IDebitService debitService;
 
-        public UserManager(IUserDal userDal, IDepartmentService departmentService, IDebitService debitService)
+        public UserManager(IUserDal userDal, IDebitService debitService)
         {
             this.userDal = userDal;
-            this.departmentService = departmentService;
             this.debitService = debitService;
         }
 
@@ -58,12 +56,9 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<User>(userDal.Get(u => u.Username == username));
         }
 
-        public IDataResult<string[]> GetClaims(User user)
+        public string[] GetClaims(User user)
         {
-            var claimResult = departmentService.GetOperationClaimNames(user.DepartmentId);
-            if (claimResult.Success)
-                return new SuccessDataResult<string[]>(claimResult.Data);
-            return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
+            return userDal.GetClaims(user);
         }
 
         public IDataResult<List<Debit>> GetDebits(Guid userId)

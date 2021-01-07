@@ -111,8 +111,7 @@ namespace FixtureTracking.Business.Tests.Services
             HashingHelper.CreatePasswordHash(userForLoginDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User() { PasswordHash = passwordHash, PasswordSalt = passwordSalt };
             var emailDataResult = new SuccessDataResult<User>(user);
-            var claimsDataResult = new SuccessDataResult<string[]>(data: Array.Empty<string>());
-            var mockUserService = new MockUserService().MockGetByEMail(emailDataResult).MockGetClaims(claimsDataResult);
+            var mockUserService = new MockUserService().MockGetByEMail(emailDataResult).MockGetClaims(Array.Empty<string>());
             var mockTokenHelper = new MockTokenHelper().MockAccessToken(new Core.Utilities.Security.Tokens.AccessToken());
             var sut = new AuthManager(mockUserService.Object, mockTokenHelper.Object);
 

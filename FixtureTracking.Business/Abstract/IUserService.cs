@@ -12,8 +12,8 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<User> GetByUsername(string username);
         IDataResult<User> GetByEmail(string email);
         IDataResult<List<User>> GetList();
-        IDataResult<string[]> GetClaims(User user);
         IDataResult<List<Debit>> GetDebits(Guid userId);
+        string[] GetClaims(User user);
         List<User> GetListByDepartmentId(int departmentId);
         Guid Add(User user);
         // TODO : Update methods - user
