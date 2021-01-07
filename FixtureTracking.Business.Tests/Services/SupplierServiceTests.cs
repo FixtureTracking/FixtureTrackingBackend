@@ -108,6 +108,7 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
+            Assert.True(result.Success);
         }
 
         [Fact]

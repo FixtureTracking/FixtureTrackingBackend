@@ -58,7 +58,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var supplier = GetById(supplierId).Data;
             if (supplier != null)
-                return new ErrorDataResult<List<Fixture>>(fixtureService.GetListBySupplierId(supplierId));
+                return new SuccessDataResult<List<Fixture>>(fixtureService.GetListBySupplierId(supplierId));
             return new ErrorDataResult<List<Fixture>>(Messages.SupplierNotFound);
         }
 
