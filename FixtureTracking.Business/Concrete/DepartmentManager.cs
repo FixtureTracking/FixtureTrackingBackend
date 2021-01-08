@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.DepartmentValidations;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -20,6 +22,7 @@ namespace FixtureTracking.Business.Concrete
             this.departmentDal = departmentDal;
         }
 
+        [ValidationAspect(typeof(DepartmentForAddValidator), Priority = 1)]
         public IDataResult<int> Add(DepartmentForAddDto departmentForAddDto)
         {
             var department = new Department()
@@ -75,6 +78,7 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<User>>(Messages.DepartmentNotFound);
         }
 
+        [ValidationAspect(typeof(DepartmentForUpdateValidator), Priority = 1)]
         public IResult Update(DepartmentForUpdateDto departmentForUpdateDto)
         {
             var department = GetById(departmentForUpdateDto.Id).Data;
@@ -90,6 +94,7 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.DepartmentNotFound);
         }
 
+        [ValidationAspect(typeof(DepartmentForUpdateClaimsValidator), Priority = 1)]
         public IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto)
         {
             var department = GetById(departmentForUpdateClaimDto.Id).Data;
