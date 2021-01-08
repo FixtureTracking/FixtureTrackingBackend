@@ -1,6 +1,8 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Concrete;
+using FixtureTracking.Core.Utilities.Interceptors.Autofac;
 using FixtureTracking.Core.Utilities.Security.Tokens;
 using FixtureTracking.Core.Utilities.Security.Tokens.Jwt;
 using FixtureTracking.DataAccess.Abstract;
@@ -32,6 +34,13 @@ namespace FixtureTracking.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new Castle.DynamicProxy.ProxyGenerationOptions()
+            {
+                Selector = new AspectInterceptorSelector()
+            }).SingleInstance();
         }
     }
 }
