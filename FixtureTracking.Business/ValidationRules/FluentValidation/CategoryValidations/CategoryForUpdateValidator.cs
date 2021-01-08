@@ -1,7 +1,7 @@
 ﻿using FixtureTracking.Entities.Dtos.Category;
 using FluentValidation;
 
-namespace FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidation
+namespace FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations
 {
     public class CategoryForUpdateValidator : AbstractValidator<CategoryForUpdateDto>
     {
@@ -10,7 +10,7 @@ namespace FixtureTracking.Business.ValidationRules.FluentValidation.CategoryVali
             RuleFor(c => c.Id).NotEmpty();
 
             RuleFor(c => c.Name).NotEmpty();
-            RuleFor(c => c.Name).Length(2, 50);
+            RuleFor(c => c.Name).Length(5, 50);
 
             RuleFor(c => c.Description).MaximumLength(120);
         }

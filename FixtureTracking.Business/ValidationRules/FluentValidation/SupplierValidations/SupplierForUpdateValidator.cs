@@ -1,7 +1,7 @@
 ﻿using FixtureTracking.Entities.Dtos.Supplier;
 using FluentValidation;
 
-namespace FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidation
+namespace FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidations
 {
     public class SupplierForUpdateValidator : AbstractValidator<SupplierForUpdateDto>
     {

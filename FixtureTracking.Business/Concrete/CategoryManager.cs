@@ -1,6 +1,6 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
-using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidation;
+using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
