@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidation;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -19,6 +21,7 @@ namespace FixtureTracking.Business.Concrete
             this.categoryDal = categoryDal;
         }
 
+        [ValidationAspect(typeof(CategoryForAddValidator), Priority = 1)]
         public IDataResult<short> Add(CategoryForAddDto categoryForAddDto)
         {
             var category = new Category()
@@ -65,6 +68,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Category>>(categoryDal.GetList(c => c.IsEnable == true).ToList());
         }
 
+        [ValidationAspect(typeof(CategoryForUpdateValidator), Priority = 1)]
         public IResult Update(CategoryForUpdateDto categoryForUpdateDto)
         {
             var category = GetById(categoryForUpdateDto.Id).Data;
