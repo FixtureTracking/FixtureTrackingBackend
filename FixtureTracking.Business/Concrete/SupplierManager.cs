@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidation;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -19,6 +21,7 @@ namespace FixtureTracking.Business.Concrete
             this.supplierDal = supplierDal;
         }
 
+        [ValidationAspect(typeof(SupplierForAddValidator), Priority = 1)]
         public IDataResult<int> Add(SupplierForAddDto supplierForAddDto)
         {
             var supplier = new Supplier()
@@ -65,6 +68,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Supplier>>(supplierDal.GetList(s => s.IsEnable == true).ToList());
         }
 
+        [ValidationAspect(typeof(SupplierForUpdateValidator), Priority = 1)]
         public IResult Update(SupplierForUpdateDto supplierForUpdateDto)
         {
             var supplier = GetById(supplierForUpdateDto.Id).Data;
