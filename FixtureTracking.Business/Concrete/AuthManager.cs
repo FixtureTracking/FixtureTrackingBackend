@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidations;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Core.Utilities.Security.Hashing;
@@ -20,6 +22,7 @@ namespace FixtureTracking.Business.Concrete
             this.tokenHelper = tokenHelper;
         }
 
+        [ValidationAspect(typeof(UserForLoginValidator), Priority = 1)]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             var user = userService.GetByEmail(userForLoginDto.Email).Data;
@@ -34,6 +37,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
+        [ValidationAspect(typeof(UserForRegisterValidator), Priority = 1)]
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
             var isEmailExists = userService.GetByEmail(userForRegisterDto.Email).Data != null;
