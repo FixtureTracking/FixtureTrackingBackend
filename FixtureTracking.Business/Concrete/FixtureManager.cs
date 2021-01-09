@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.FixtureValidations;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -19,6 +21,7 @@ namespace FixtureTracking.Business.Concrete
             this.fixtureDal = fixtureDal;
         }
 
+        [ValidationAspect(typeof(FixtureForAddValidator), Priority = 1)]
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
         {
             var fixture = new Fixture()
@@ -86,6 +89,7 @@ namespace FixtureTracking.Business.Concrete
             return fixtureDal.GetList(f => f.SupplierId == supplierId).ToList();
         }
 
+        [ValidationAspect(typeof(FixtureForUpdateValidator), Priority = 1)]
         public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
         {
             var fixture = GetById(fixtureForUpdateDto.Id).Data;
