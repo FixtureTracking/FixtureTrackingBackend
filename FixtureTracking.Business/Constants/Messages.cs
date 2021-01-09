@@ -1,4 +1,6 @@
-﻿namespace FixtureTracking.Business.Constants
+﻿using System;
+
+namespace FixtureTracking.Business.Constants
 {
     public static class Messages
     {
@@ -35,5 +37,12 @@
         public static string AuthEmailExists = "Email already exists";
         public static string AuthUsernameExists = "Username already exists";
         public static string AuthUserNotFound = "Email or password wrong";
+
+        public static string EmailIsNotValid = "'Email' is not a valid email address.";
+        public static string UsernameIsNotValid = "'Username' is not a valid username. 'Username' must be 3-20 characters and contain only lowercase letters and dots.";
+        public static string PasswordIsNotValid = "'Password' is not a valid password. 'Password' must be 6-20 characters, include at least one lowercase letter, one uppercase letter, a special character and a digit.";
+
+        public static string BirthDateIsNotValid_LessThan(DateTime dateLessThan) => $"'Birth Date' must be less than '{dateLessThan.ToShortDateString()}'.";
+        public static string BirthDateIsNotValid_GreaterThan(DateTime dateGreaterThan) => $"'Birth Date' must be greater than '{dateGreaterThan.ToShortDateString()}'.";
     }
 }

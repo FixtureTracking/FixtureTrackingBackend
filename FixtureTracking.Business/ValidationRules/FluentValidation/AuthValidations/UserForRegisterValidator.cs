@@ -1,4 +1,5 @@
-﻿using FixtureTracking.Entities.Dtos.User;
+﻿using FixtureTracking.Business.Constants;
+using FixtureTracking.Entities.Dtos.User;
 using FluentValidation;
 using System;
 
@@ -13,16 +14,13 @@ namespace FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidati
             var dateGreaterThan = dateNow.AddYears(-100);
 
             RuleFor(u => u.BirthDate).NotEmpty();
-            RuleFor(u => u.BirthDate).LessThan(dateLessThan)
-                .WithMessage($"'Birth Date' must be less than '{dateLessThan.ToShortDateString()}'.");
-            RuleFor(u => u.BirthDate).GreaterThan(dateGreaterThan)
-                .WithMessage($"'Birth Date' must be greater than '{dateGreaterThan.ToShortDateString()}'.");
+            RuleFor(u => u.BirthDate).LessThan(dateLessThan).WithMessage(Messages.BirthDateIsNotValid_LessThan(dateLessThan));
+            RuleFor(u => u.BirthDate).GreaterThan(dateGreaterThan).WithMessage(Messages.BirthDateIsNotValid_GreaterThan(dateGreaterThan));
 
             RuleFor(u => u.DepartmentId).NotEmpty();
 
             RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.Email).Matches(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")
-                .WithMessage("'Email' is not a valid email address.");
+            RuleFor(u => u.Email).Matches(RegexExpressions.EmailRegex).WithMessage(Messages.EmailIsNotValid);
             RuleFor(u => u.Email).MaximumLength(50);
 
             RuleFor(u => u.FirstName).NotEmpty();
@@ -33,13 +31,11 @@ namespace FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidati
 
             RuleFor(u => u.Password).NotEmpty();
             RuleFor(u => u.Password).Length(6, 20);
-            RuleFor(u => u.Password).Matches(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,20}$")
-                .WithMessage("'Password' is not a valid password. 'Password' must be 6-20 characters, include at least one lowercase letter, one uppercase letter, a special character and a digit.");
+            RuleFor(u => u.Password).Matches(RegexExpressions.PasswordRegex).WithMessage(Messages.PasswordIsNotValid);
 
             RuleFor(u => u.Username).NotEmpty();
             RuleFor(u => u.Username).Length(3, 20);
-            RuleFor(u => u.Username).Matches(@"^(?=[a-z0-9.]{3,20}$)(?!.*[.]{2})[^.].*[^.]$")
-                .WithMessage("'Username' is not a valid username. 'Username' must be 3-20 characters and contain only lowercase letters and dots.");
+            RuleFor(u => u.Username).Matches(RegexExpressions.UsernameRegex).WithMessage(Messages.UsernameIsNotValid);
         }
     }
 }
