@@ -1,5 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
+using FixtureTracking.Business.ValidationRules.FluentValidation.DebitValidations;
+using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -19,6 +21,7 @@ namespace FixtureTracking.Business.Concrete
             this.debitDal = debitDal;
         }
 
+        [ValidationAspect(typeof(DebitForAddValidator), Priority = 1)]
         public IDataResult<Guid> Add(DebitForAddDto debitForAddDto)
         {
             var debit = new Debit()
@@ -71,6 +74,7 @@ namespace FixtureTracking.Business.Concrete
             return debitDal.GetList(d => d.UserId == userId).ToList();
         }
 
+        [ValidationAspect(typeof(DebitForUpdateValidator), Priority = 1)]
         public IResult Update(DebitForUpdateDto debitForUpdateDto)
         {
             var debit = GetById(debitForUpdateDto.Id).Data;
