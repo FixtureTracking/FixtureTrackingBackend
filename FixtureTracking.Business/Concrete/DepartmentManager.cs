@@ -1,6 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DepartmentValidations;
+using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.Results;
@@ -23,6 +24,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(DepartmentForAddValidator), Priority = 1)]
+        [CacheRemoveAspect("IDepartmentService.Get")]
         public IDataResult<int> Add(DepartmentForAddDto departmentForAddDto)
         {
             var department = new Department()
@@ -38,6 +40,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<int>(department.Id, Messages.DepartmentAdded);
         }
 
+        [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult Delete(int departmentId)
         {
             var department = GetById(departmentId).Data;
@@ -52,16 +55,19 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.DepartmentNotFound);
         }
 
+        [CacheAspect()]
         public IDataResult<Department> GetById(int departmentId)
         {
             return new SuccessDataResult<Department>(departmentDal.Get(d => d.Id == departmentId));
         }
 
+        [CacheAspect(duration: 2)]
         public IDataResult<List<Department>> GetList()
         {
             return new SuccessDataResult<List<Department>>(departmentDal.GetList(d => d.IsEnable == true).ToList());
         }
 
+        [CacheAspect()]
         public IDataResult<string[]> GetOperationClaimNames(int departmentId)
         {
             var department = GetById(departmentId).Data;
@@ -70,6 +76,7 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
         }
 
+        [CacheAspect(duration: 1)]
         public IDataResult<List<User>> GetUsers(int departmentId)
         {
             var department = GetById(departmentId).Data;
@@ -79,6 +86,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(DepartmentForUpdateValidator), Priority = 1)]
+        [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult Update(DepartmentForUpdateDto departmentForUpdateDto)
         {
             var department = GetById(departmentForUpdateDto.Id).Data;
@@ -95,6 +103,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(DepartmentForUpdateClaimsValidator), Priority = 1)]
+        [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto)
         {
             var department = GetById(departmentForUpdateClaimDto.Id).Data;

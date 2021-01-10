@@ -1,6 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.FixtureValidations;
+using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -22,6 +23,9 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(FixtureForAddValidator), Priority = 1)]
+        [CacheRemoveAspect("IFixtureService.Get")]
+        [CacheRemoveAspect("ICategoryService.GetFixtures")]
+        [CacheRemoveAspect("ISupplierService.GetFixtures")]
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
         {
             var fixture = new Fixture()
@@ -42,6 +46,9 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<Guid>(fixture.Id, Messages.FixtureAdded);
         }
 
+        [CacheRemoveAspect("IFixtureService.Get")]
+        [CacheRemoveAspect("ICategoryService.GetFixtures")]
+        [CacheRemoveAspect("ISupplierService.GetFixtures")]
         public IResult Delete(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
@@ -56,11 +63,13 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.FixtureNotFound);
         }
 
+        [CacheAspect()]
         public IDataResult<Fixture> GetById(Guid fixtureId)
         {
             return new SuccessDataResult<Fixture>(fixtureDal.Get(f => f.Id == fixtureId));
         }
 
+        [CacheAspect(duration: 1)]
         public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
@@ -69,27 +78,34 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
         }
 
+        [CacheAspect(duration: 2)]
         public IDataResult<List<Fixture>> GetList()
         {
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList().ToList());
         }
 
+        [CacheAspect(duration: 2)]
         public List<Fixture> GetListByCategoryId(short categoryId)
         {
             return fixtureDal.GetList(f => f.CategoryId == categoryId).ToList();
         }
 
+        [CacheAspect(duration: 2)]
         public List<Fixture> GetListByPositionId(short positionId)
         {
             return fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList();
         }
 
+        [CacheAspect(duration: 2)]
         public List<Fixture> GetListBySupplierId(int supplierId)
         {
             return fixtureDal.GetList(f => f.SupplierId == supplierId).ToList();
         }
 
         [ValidationAspect(typeof(FixtureForUpdateValidator), Priority = 1)]
+        [CacheRemoveAspect("IFixtureService.Get")]
+        [CacheRemoveAspect("ICategoryService.GetFixtures")]
+        [CacheRemoveAspect("ISupplierService.GetFixtures")]
         public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
         {
             var fixture = GetById(fixtureForUpdateDto.Id).Data;

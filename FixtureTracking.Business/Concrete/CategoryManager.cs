@@ -1,6 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations;
+using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -22,6 +23,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(CategoryForAddValidator), Priority = 1)]
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IDataResult<short> Add(CategoryForAddDto categoryForAddDto)
         {
             var category = new Category()
@@ -36,6 +38,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<short>(category.Id, Messages.CategoryAdded);
         }
 
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Delete(short categoryId)
         {
             var category = GetById(categoryId).Data;
@@ -50,11 +53,13 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.CategoryNotFound);
         }
 
+        [CacheAspect()]
         public IDataResult<Category> GetById(short categoryId)
         {
             return new SuccessDataResult<Category>(categoryDal.Get(c => c.Id == categoryId));
         }
 
+        [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(short categoryId)
         {
             var category = GetById(categoryId).Data;
@@ -63,12 +68,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Fixture>>(Messages.CategoryNotFound);
         }
 
+        [CacheAspect(duration: 2)]
         public IDataResult<List<Category>> GetList()
         {
             return new SuccessDataResult<List<Category>>(categoryDal.GetList(c => c.IsEnable == true).ToList());
         }
 
         [ValidationAspect(typeof(CategoryForUpdateValidator), Priority = 1)]
+        [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Update(CategoryForUpdateDto categoryForUpdateDto)
         {
             var category = GetById(categoryForUpdateDto.Id).Data;

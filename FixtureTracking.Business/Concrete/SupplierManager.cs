@@ -1,6 +1,7 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidations;
+using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -22,6 +23,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [ValidationAspect(typeof(SupplierForAddValidator), Priority = 1)]
+        [CacheRemoveAspect("ISupplierService.Get")]
         public IDataResult<int> Add(SupplierForAddDto supplierForAddDto)
         {
             var supplier = new Supplier()
@@ -36,6 +38,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<int>(supplier.Id, Messages.SupplierAdded);
         }
 
+        [CacheRemoveAspect("ISupplierService.Get")]
         public IResult Delete(int supplierId)
         {
             var supplier = GetById(supplierId).Data;
@@ -50,11 +53,13 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.SupplierNotFound);
         }
 
+        [CacheAspect()]
         public IDataResult<Supplier> GetById(int supplierId)
         {
             return new SuccessDataResult<Supplier>(supplierDal.Get(s => s.Id == supplierId));
         }
 
+        [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(int supplierId)
         {
             var supplier = GetById(supplierId).Data;
@@ -63,12 +68,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Fixture>>(Messages.SupplierNotFound);
         }
 
+        [CacheAspect(duration: 2)]
         public IDataResult<List<Supplier>> GetList()
         {
             return new SuccessDataResult<List<Supplier>>(supplierDal.GetList(s => s.IsEnable == true).ToList());
         }
 
         [ValidationAspect(typeof(SupplierForUpdateValidator), Priority = 1)]
+        [CacheRemoveAspect("ISupplierService.Get")]
         public IResult Update(SupplierForUpdateDto supplierForUpdateDto)
         {
             var supplier = GetById(supplierForUpdateDto.Id).Data;
