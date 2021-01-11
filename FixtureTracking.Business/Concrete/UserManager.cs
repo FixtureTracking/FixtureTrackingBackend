@@ -68,7 +68,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<User>(userDal.Get(u => u.Username == username));
         }
 
-        public string[] GetClaims(User user)
+        public string[] GetClaimsForLogin(User user)
         {
             return userDal.GetClaims(user);
         }
@@ -95,6 +95,23 @@ namespace FixtureTracking.Business.Concrete
         public List<User> GetListByDepartmentId(int departmentId)
         {
             return userDal.GetList(u => u.DepartmentId == departmentId).ToList();
+        }
+
+        public User GetUserByEmailForLogin(string email)
+        {
+            return userDal.Get(u => u.Email == email);
+        }
+
+        [SecuredOperationAspect("User.Any", Priority = 1)]
+        public bool IsAlreadyExistsEmail(string email)
+        {
+            return userDal.Any(u => u.Email == email);
+        }
+
+        [SecuredOperationAspect("User.Any", Priority = 1)]
+        public bool IsAlreadyExistsUsername(string username)
+        {
+            return userDal.Any(u => u.Username == username);
         }
     }
 }

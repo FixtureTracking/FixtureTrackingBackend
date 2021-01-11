@@ -1,31 +1,38 @@
 ﻿using FixtureTracking.Business.Abstract;
 using FixtureTracking.Core.Entities.Concrete;
-using FixtureTracking.Core.Utilities.Results;
 using Moq;
 
 namespace FixtureTracking.Business.Tests.Mocks.Services
 {
     public class MockUserService : Mock<IUserService>
     {
-        public MockUserService MockGetByEMail(IDataResult<User> result)
+        public MockUserService MockIsAlreadyExistsEmail(bool result)
         {
-            Setup(x => x.GetByEmail(It.IsAny<string>()))
+            Setup(x => x.IsAlreadyExistsEmail(It.IsAny<string>()))
                 .Returns(result);
 
             return this;
         }
 
-        public MockUserService MockGetByUsername(IDataResult<User> result)
+        public MockUserService MockIsAlreadyExistsUsername(bool result)
         {
-            Setup(x => x.GetByUsername(It.IsAny<string>()))
+            Setup(x => x.IsAlreadyExistsUsername(It.IsAny<string>()))
                 .Returns(result);
 
             return this;
         }
 
-        public MockUserService MockGetClaims(string[] result)
+        public MockUserService MockGetClaimsForLogin(string[] result)
         {
-            Setup(x => x.GetClaims(It.IsAny<User>()))
+            Setup(x => x.GetClaimsForLogin(It.IsAny<User>()))
+                .Returns(result);
+
+            return this;
+        }
+
+        public MockUserService MockGetUserByEmailForLogin(User result)
+        {
+            Setup(x => x.GetUserByEmailForLogin(It.IsAny<string>()))
                 .Returns(result);
 
             return this;

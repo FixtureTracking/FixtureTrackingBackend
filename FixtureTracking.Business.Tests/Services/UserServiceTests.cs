@@ -106,22 +106,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetClaims_WhenCalledClaims_ShouldReturnClaimNameArray()
-        {
-            // Arrange
-            string[] claimNames = { "Fixture.GetById", "Fixture.GetList" };
-            var user = new User();
-            var mockUserDal = new MockUserDal().MockGetClaims(claimNames);
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act
-            var result = sut.GetClaims(user);
-
-            // Assert
-            Assert.NotNull(result);
-        }
-
-        [Fact]
         public void GetDebits_WhenNotExistsUser_ShouldReturnErrorResult()
         {
             // Arrange
@@ -175,6 +159,38 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void IsAlreadyExistsEmail_WhenCalledEmailExists_ShouldReturnExistStatus()
+        {
+            // Arrange
+            var existStatus = true;
+            var email = "already-exists@mail.com";
+            var mockUserDal = new MockUserDal().MockAny(existStatus);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.IsAlreadyExistsEmail(email);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsAlreadyExistsUsername_WhenCalledUsernameExists_ShouldReturnExistStatus()
+        {
+            // Arrange
+            var existStatus = false;
+            var username = "not.exists";
+            var mockUserDal = new MockUserDal().MockAny(existStatus);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.IsAlreadyExistsUsername(username);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
         public void Add_WhenAddedNewUser_ShouldAddAndReturnId()
         {
             // Arrange
@@ -218,6 +234,37 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             mockUserDal.VerifyUpdate(Times.Once());
+        }
+
+        [Fact]
+        public void GetClaimsForLogin_WhenCalledClaimsForLogin_ShouldReturnClaimNameArray()
+        {
+            // Arrange
+            string[] claimNames = { "Fixture.Get", "Fixture.List" };
+            var user = new User();
+            var mockUserDal = new MockUserDal().MockGetClaims(claimNames);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.GetClaimsForLogin(user);
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void GetUserByEmailForLogin_WhenCalledUserForLogin_ShouldReturnUser()
+        {
+            // Arrange
+            var email = "user@mail.com";
+            var mockUserDal = new MockUserDal().MockGet(new User());
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.GetUserByEmailForLogin(email);
+
+            // Assert
+            Assert.NotNull(result);
         }
 
     }

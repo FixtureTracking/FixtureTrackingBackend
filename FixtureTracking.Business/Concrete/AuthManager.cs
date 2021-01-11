@@ -26,14 +26,13 @@ namespace FixtureTracking.Business.Concrete
         [ValidationAspect(typeof(UserForLoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
-            // TODO : IsExistsEmail -> user service
-            var user = userService.GetByEmail(userForLoginDto.Email).Data;
+            var user = userService.GetUserByEmailForLogin(userForLoginDto.Email);
             if (user == null)
                 return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
                 return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
 
-            var claims = userService.GetClaims(user);
+            var claims = userService.GetClaimsForLogin(user);
             var accessToken = tokenHelper.CreateToken(user, claims);
 
             return new SuccessDataResult<AccessToken>(accessToken);
@@ -43,12 +42,10 @@ namespace FixtureTracking.Business.Concrete
         [ValidationAspect(typeof(UserForRegisterValidator))]
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
-            var isEmailExists = userService.GetByEmail(userForRegisterDto.Email).Data != null;
-            if (isEmailExists)
+            if (userService.IsAlreadyExistsEmail(userForRegisterDto.Email))
                 return new ErrorDataResult<Guid>(Messages.AuthEmailExists);
 
-            var isUsernameExists = userService.GetByUsername(userForRegisterDto.Username).Data != null;
-            if (isUsernameExists)
+            if (userService.IsAlreadyExistsUsername(userForRegisterDto.Username))
                 return new ErrorDataResult<Guid>(Messages.AuthUsernameExists);
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);

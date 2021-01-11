@@ -3,7 +3,6 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.Tests.Mocks.Helpers;
 using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Entities.Concrete;
-using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Core.Utilities.Security.Hashing;
 using FixtureTracking.Entities.Dtos.User;
 using System;
@@ -18,8 +17,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Email = "user@mail.com" };
-            var dataResult = new SuccessDataResult<User>(new User());
-            var mockUserService = new MockUserService().MockGetByEMail(dataResult);
+            var mockUserService = new MockUserService().MockIsAlreadyExistsEmail(true);
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act
@@ -35,9 +33,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Username = "user" };
-            var emailDataResult = new SuccessDataResult<User>(data: null);
-            var usernameDataResult = new SuccessDataResult<User>(new User());
-            var mockUserService = new MockUserService().MockGetByEMail(emailDataResult).MockGetByUsername(usernameDataResult);
+            var mockUserService = new MockUserService().MockIsAlreadyExistsEmail(false).MockIsAlreadyExistsUsername(true);
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act
@@ -55,12 +51,10 @@ namespace FixtureTracking.Business.Tests.Services
             var userForRegisterDto = new UserForRegisterDto()
             {
                 Email = "new-user@mail.com",
-                Username = "new-user",
+                Username = "new.user",
                 Password = "pAS$w0rD"
             };
-            var emailDataResult = new SuccessDataResult<User>(data: null);
-            var usernameDataResult = new SuccessDataResult<User>(data: null);
-            var mockUserService = new MockUserService().MockGetByEMail(emailDataResult).MockGetByUsername(usernameDataResult);
+            var mockUserService = new MockUserService().MockIsAlreadyExistsEmail(false).MockIsAlreadyExistsUsername(false);
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act
@@ -75,8 +69,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "not.exists@mail.com" };
-            var dataResult = new SuccessDataResult<User>(data: null);
-            var mockUserService = new MockUserService().MockGetByEMail(dataResult);
+            var mockUserService = new MockUserService().MockGetUserByEmailForLogin(null);
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act
@@ -92,8 +85,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "user@mail.com", Password = "password" };
             var user = new User() { PasswordHash = new byte[1], PasswordSalt = new byte[1] };
-            var dataResult = new SuccessDataResult<User>(user);
-            var mockUserService = new MockUserService().MockGetByEMail(dataResult);
+            var mockUserService = new MockUserService().MockGetUserByEmailForLogin(user);
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act
@@ -110,8 +102,7 @@ namespace FixtureTracking.Business.Tests.Services
             var userForLoginDto = new UserForLoginDto() { Email = "user@mail.com", Password = "Pa$$w0RD" };
             HashingHelper.CreatePasswordHash(userForLoginDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User() { PasswordHash = passwordHash, PasswordSalt = passwordSalt };
-            var emailDataResult = new SuccessDataResult<User>(user);
-            var mockUserService = new MockUserService().MockGetByEMail(emailDataResult).MockGetClaims(Array.Empty<string>());
+            var mockUserService = new MockUserService().MockGetUserByEmailForLogin(user).MockGetClaimsForLogin(Array.Empty<string>());
             var mockTokenHelper = new MockTokenHelper().MockAccessToken(new Core.Utilities.Security.Tokens.AccessToken());
             var sut = new AuthManager(mockUserService.Object, mockTokenHelper.Object);
 

@@ -13,10 +13,16 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<User> GetByEmail(string email);
         IDataResult<List<User>> GetList();
         IDataResult<List<Debit>> GetDebits(Guid userId);
-        string[] GetClaims(User user);
         List<User> GetListByDepartmentId(int departmentId);
+        bool IsAlreadyExistsEmail(string email);
+        bool IsAlreadyExistsUsername(string username);
         Guid Add(User user);
         // TODO : Update methods - user
         IResult Delete(Guid userId);
+
+
+        // For Login Methods - Not Required Authorization
+        string[] GetClaimsForLogin(User user);
+        User GetUserByEmailForLogin(string email);
     }
 }

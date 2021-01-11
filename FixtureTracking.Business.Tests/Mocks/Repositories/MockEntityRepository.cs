@@ -27,6 +27,14 @@ namespace FixtureTracking.Business.Tests.Mocks.Repositories
             return this;
         }
 
+        public MockEntityRepository<TEntity, TRepository> MockAny(bool result)
+        {
+            Setup(x => x.Any(It.IsAny<Expression<Func<TEntity, bool>>>()))
+               .Returns(result);
+
+            return this;
+        }
+
         public MockEntityRepository<TEntity, TRepository> MockAdd(TEntity result)
         {
             Setup(x => x.Add(It.IsAny<TEntity>()))
