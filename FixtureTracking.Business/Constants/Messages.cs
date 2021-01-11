@@ -4,6 +4,9 @@ namespace FixtureTracking.Business.Constants
 {
     public static class Messages
     {
+        /// <summary>
+        /// Service Messages
+        /// </summary>
         public static string FixtureAdded = "Fixture added";
         public static string FixtureUpdated = "Fixture updated";
         public static string FixtureDeleted = "Fixture deleted";
@@ -38,6 +41,14 @@ namespace FixtureTracking.Business.Constants
         public static string AuthUsernameExists = "Username already exists";
         public static string AuthUserNotFound = "Email or password wrong";
 
+        /// <summary>
+        /// Business Aspect Messages
+        /// </summary>
+        public static string AuthorizationDenied = "Authorization denied";
+
+        /// <summary>
+        /// Validation Messages
+        /// </summary>
         public static string EmailIsNotValid = "'Email' is not a valid email address.";
         public static string UsernameIsNotValid = "'Username' is not a valid username. 'Username' must be 3-20 characters and contain only lowercase letters and dots.";
         public static string PasswordIsNotValid = "'Password' is not a valid password. 'Password' must be 6-20 characters, include at least one lowercase letter, one uppercase letter, a special character and a digit.";
