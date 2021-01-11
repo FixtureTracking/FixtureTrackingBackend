@@ -9,6 +9,7 @@ namespace FixtureTracking.Core.DataAccess
     {
         T Get(Expression<Func<T, bool>> filter);
         IList<T> GetList(Expression<Func<T, bool>> fiter = null);
+        bool Any(Expression<Func<T, bool>> filter);
         T Add(T entity);
         void Update(T entity);
         void Delete(T entity);

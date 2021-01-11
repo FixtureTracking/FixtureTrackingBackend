@@ -20,6 +20,12 @@ namespace FixtureTracking.Core.DataAccess.EntityFramework
             return entity;
         }
 
+        public bool Any(Expression<Func<TEntity, bool>> filter)
+        {
+            using var context = new TContext();
+            return context.Set<TEntity>().Any(filter);
+        }
+
         public void Delete(TEntity entity)
         {
             using var context = new TContext();
