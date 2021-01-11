@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Business.Abstract;
+using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidations;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
@@ -22,9 +23,10 @@ namespace FixtureTracking.Business.Concrete
             this.tokenHelper = tokenHelper;
         }
 
-        [ValidationAspect(typeof(UserForLoginValidator), Priority = 1)]
+        [ValidationAspect(typeof(UserForLoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
+            // TODO : IsExistsEmail -> user service
             var user = userService.GetByEmail(userForLoginDto.Email).Data;
             if (user == null)
                 return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
@@ -37,7 +39,8 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
-        [ValidationAspect(typeof(UserForRegisterValidator), Priority = 1)]
+        [SecuredOperationAspect("Auth.Register", Priority = 1)]
+        [ValidationAspect(typeof(UserForRegisterValidator))]
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
             var isEmailExists = userService.GetByEmail(userForRegisterDto.Email).Data != null;

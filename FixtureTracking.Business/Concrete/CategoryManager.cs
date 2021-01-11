@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Business.Abstract;
+using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
@@ -22,7 +23,8 @@ namespace FixtureTracking.Business.Concrete
             this.categoryDal = categoryDal;
         }
 
-        [ValidationAspect(typeof(CategoryForAddValidator), Priority = 1)]
+        [SecuredOperationAspect("Category.Add", Priority = 1)]
+        [ValidationAspect(typeof(CategoryForAddValidator))]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IDataResult<short> Add(CategoryForAddDto categoryForAddDto)
         {
@@ -38,6 +40,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<short>(category.Id, Messages.CategoryAdded);
         }
 
+        [SecuredOperationAspect("Category.Delete", Priority = 1)]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Delete(short categoryId)
         {
@@ -53,12 +56,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.CategoryNotFound);
         }
 
+        [SecuredOperationAspect("Category.Get", Priority = 1)]
         [CacheAspect()]
         public IDataResult<Category> GetById(short categoryId)
         {
             return new SuccessDataResult<Category>(categoryDal.Get(c => c.Id == categoryId));
         }
 
+        [SecuredOperationAspect("Category.GetFixtures", Priority = 1)]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(short categoryId)
         {
@@ -68,13 +73,15 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Fixture>>(Messages.CategoryNotFound);
         }
 
+        [SecuredOperationAspect("Category.List", Priority = 1)]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Category>> GetList()
         {
             return new SuccessDataResult<List<Category>>(categoryDal.GetList(c => c.IsEnable == true).ToList());
         }
 
-        [ValidationAspect(typeof(CategoryForUpdateValidator), Priority = 1)]
+        [SecuredOperationAspect("Category.Update", Priority = 1)]
+        [ValidationAspect(typeof(CategoryForUpdateValidator))]
         [CacheRemoveAspect("ICategoryService.Get")]
         public IResult Update(CategoryForUpdateDto categoryForUpdateDto)
         {

@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Business.Abstract;
+using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DepartmentValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
@@ -23,7 +24,8 @@ namespace FixtureTracking.Business.Concrete
             this.departmentDal = departmentDal;
         }
 
-        [ValidationAspect(typeof(DepartmentForAddValidator), Priority = 1)]
+        [SecuredOperationAspect("Department.Add", Priority = 1)]
+        [ValidationAspect(typeof(DepartmentForAddValidator))]
         [CacheRemoveAspect("IDepartmentService.Get")]
         public IDataResult<int> Add(DepartmentForAddDto departmentForAddDto)
         {
@@ -40,6 +42,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<int>(department.Id, Messages.DepartmentAdded);
         }
 
+        [SecuredOperationAspect("Department.Delete", Priority = 1)]
         [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult Delete(int departmentId)
         {
@@ -55,18 +58,21 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.DepartmentNotFound);
         }
 
+        [SecuredOperationAspect("Department.Get", Priority = 1)]
         [CacheAspect()]
         public IDataResult<Department> GetById(int departmentId)
         {
             return new SuccessDataResult<Department>(departmentDal.Get(d => d.Id == departmentId));
         }
 
+        [SecuredOperationAspect("Department.List", Priority = 1)]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Department>> GetList()
         {
             return new SuccessDataResult<List<Department>>(departmentDal.GetList(d => d.IsEnable == true).ToList());
         }
 
+        [SecuredOperationAspect("Department.GetOperationClaimNames", Priority = 1)]
         [CacheAspect()]
         public IDataResult<string[]> GetOperationClaimNames(int departmentId)
         {
@@ -76,6 +82,7 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
         }
 
+        [SecuredOperationAspect("Department.GetUsers", Priority = 1)]
         [CacheAspect(duration: 1)]
         public IDataResult<List<User>> GetUsers(int departmentId)
         {
@@ -85,7 +92,8 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<User>>(Messages.DepartmentNotFound);
         }
 
-        [ValidationAspect(typeof(DepartmentForUpdateValidator), Priority = 1)]
+        [SecuredOperationAspect("Department.Update", Priority = 1)]
+        [ValidationAspect(typeof(DepartmentForUpdateValidator))]
         [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult Update(DepartmentForUpdateDto departmentForUpdateDto)
         {
@@ -102,7 +110,8 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.DepartmentNotFound);
         }
 
-        [ValidationAspect(typeof(DepartmentForUpdateClaimsValidator), Priority = 1)]
+        [SecuredOperationAspect("Department.UpdateClaim", Priority = 1)]
+        [ValidationAspect(typeof(DepartmentForUpdateClaimsValidator))]
         [CacheRemoveAspect("IDepartmentService.Get")]
         public IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto)
         {

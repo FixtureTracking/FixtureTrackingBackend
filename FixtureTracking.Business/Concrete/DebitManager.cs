@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Business.Abstract;
+using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DebitValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
@@ -22,7 +23,8 @@ namespace FixtureTracking.Business.Concrete
             this.debitDal = debitDal;
         }
 
-        [ValidationAspect(typeof(DebitForAddValidator), Priority = 1)]
+        [SecuredOperationAspect("Debit.Add", Priority = 1)]
+        [ValidationAspect(typeof(DebitForAddValidator))]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IDataResult<Guid> Add(DebitForAddDto debitForAddDto)
@@ -42,6 +44,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<Guid>(debit.Id, Messages.DebitAdded);
         }
 
+        [SecuredOperationAspect("Debit.Delete", Priority = 1)]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IResult Delete(Guid debitId)
@@ -59,31 +62,36 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.DebitNotFound);
         }
 
+        [SecuredOperationAspect("Debit.Get", Priority = 1)]
         [CacheAspect()]
         public IDataResult<Debit> GetById(Guid debitId)
         {
             return new SuccessDataResult<Debit>(debitDal.Get(d => d.Id == debitId));
         }
 
+        [SecuredOperationAspect("Debit.List", Priority = 1)]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Debit>> GetList()
         {
             return new SuccessDataResult<List<Debit>>(debitDal.GetList().ToList());
         }
 
+        [SecuredOperationAspect("Debit.List", Priority = 1)]
         [CacheAspect(duration: 2)]
         public List<Debit> GetListByFixtureId(Guid fixtureId)
         {
             return debitDal.GetList(d => d.FixtureId == fixtureId).ToList();
         }
 
+        [SecuredOperationAspect("Debit.List", Priority = 1)]
         [CacheAspect(duration: 2)]
         public List<Debit> GetListByUserId(Guid userId)
         {
             return debitDal.GetList(d => d.UserId == userId).ToList();
         }
 
-        [ValidationAspect(typeof(DebitForUpdateValidator), Priority = 1)]
+        [SecuredOperationAspect("Debit.Update", Priority = 1)]
+        [ValidationAspect(typeof(DebitForUpdateValidator))]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IResult Update(DebitForUpdateDto debitForUpdateDto)
