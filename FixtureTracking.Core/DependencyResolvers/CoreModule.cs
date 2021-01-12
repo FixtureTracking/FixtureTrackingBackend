@@ -3,6 +3,7 @@ using FixtureTracking.Core.CrossCuttingConcerns.Caching.Microsoft;
 using FixtureTracking.Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace FixtureTracking.Core.DependencyResolvers
 {
@@ -13,6 +14,7 @@ namespace FixtureTracking.Core.DependencyResolvers
             services.AddMemoryCache();
             services.AddSingleton<ICacheManager, MemoryCacheManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<Stopwatch>();
         }
     }
 }
