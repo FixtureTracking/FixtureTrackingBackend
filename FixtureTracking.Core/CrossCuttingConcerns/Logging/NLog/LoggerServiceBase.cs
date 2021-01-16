@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Layouts;
+using NLog;
+using NLog.LayoutRenderers;
 using NLog.Web;
 
 namespace FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog
@@ -9,6 +11,8 @@ namespace FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog
 
         public LoggerServiceBase(string name)
         {
+            LayoutRenderer.Register<MethodNameLayout>("method-name");
+
             logger = NLogBuilder.ConfigureNLog("nlog.config").GetLogger(name);
         }
 
