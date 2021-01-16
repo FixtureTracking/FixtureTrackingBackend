@@ -1,8 +1,12 @@
 ﻿using Castle.DynamicProxy;
 using FixtureTracking.Core.CrossCuttingConcerns.Logging;
 using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog;
+using FixtureTracking.Core.Extensions;
 using FixtureTracking.Core.Utilities.Interceptors.Autofac;
+using FixtureTracking.Core.Utilities.IoC;
 using FixtureTracking.Core.Utilities.Messages;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +15,7 @@ namespace FixtureTracking.Core.Aspects.Autofac.Logging
     public class LogAspect : MethodInterception
     {
         private readonly LoggerServiceBase loggerServiceBase;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public LogAspect(Type loggerService)
         {
@@ -18,6 +23,7 @@ namespace FixtureTracking.Core.Aspects.Autofac.Logging
                 throw new Exception(AspectMessages.WrongLoggerType);
 
             loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
+            httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         protected override void OnBefore(IInvocation invocation)
@@ -39,9 +45,12 @@ namespace FixtureTracking.Core.Aspects.Autofac.Logging
                 });
             }
 
+            var claimNameIdendifier = httpContextAccessor.HttpContext.User.NameIdentifier();
+
             var logDetail = new LogDetail()
             {
                 MethodName = $"{invocation.Method.ReflectedType.Name}.{invocation.Method.Name}",
+                ClaimId = claimNameIdendifier,
                 LogParameters = logPrameters
             };
 
