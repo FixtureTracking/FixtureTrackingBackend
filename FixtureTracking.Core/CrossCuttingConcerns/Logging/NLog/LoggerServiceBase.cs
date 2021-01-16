@@ -12,40 +12,40 @@ namespace FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog
             logger = NLogBuilder.ConfigureNLog("nlog.config").GetLogger(name);
         }
 
-        public void Debug(string message)
+        public void Debug(object message)
         {
             if (logger.IsEnabled(LogLevel.Debug))
-                logger.Debug(message);
+                logger.Debug("{@message}", message);
         }
 
-        public void Error(string message)
+        public void Error(object message)
         {
             if (logger.IsEnabled(LogLevel.Error))
-                logger.Error(message);
+                logger.Error("{@message}", message);
         }
 
-        public void Fatal(string message)
+        public void Fatal(object message)
         {
             if (logger.IsEnabled(LogLevel.Fatal))
-                logger.Fatal(message);
+                logger.Fatal("{@message}", message);
         }
 
-        public void Info(string message)
+        public void Info(object message)
         {
             if (logger.IsEnabled(LogLevel.Info))
-                logger.Info(message);
+                logger.Info("{@message}", message);
         }
 
-        public void Trace(string message)
+        public void Trace(object message)
         {
             if (logger.IsEnabled(LogLevel.Trace))
-                logger.Trace(message);
+                logger.Trace("{@message}", message);
         }
 
-        public void Warn(string message)
+        public void Warn(object message)
         {
             if (logger.IsEnabled(LogLevel.Warn))
-                logger.Warn(message);
+                logger.Warn("{@message}", message);
         }
     }
 }
