@@ -12,6 +12,7 @@ namespace FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog
         public LoggerServiceBase(string name)
         {
             LayoutRenderer.Register<MethodNameLayout>("method-name");
+            LayoutRenderer.Register<ClaimLayout>("claim");
 
             logger = NLogBuilder.ConfigureNLog("nlog.config").GetLogger(name);
         }
