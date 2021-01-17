@@ -23,7 +23,7 @@ namespace FixtureTracking.Business.Concrete
             this.supplierDal = supplierDal;
         }
 
-        [SecuredOperationAspect("Supplier.Add", Priority = 1)]
+        [SecuredOperationAspect("Supplier.Add")]
         [ValidationAspect(typeof(SupplierForAddValidator))]
         [CacheRemoveAspect("ISupplierService.Get")]
         public IDataResult<int> Add(SupplierForAddDto supplierForAddDto)
@@ -40,7 +40,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<int>(supplier.Id, Messages.SupplierAdded);
         }
 
-        [SecuredOperationAspect("Supplier.Delete", Priority = 1)]
+        [SecuredOperationAspect("Supplier.Delete")]
         [CacheRemoveAspect("ISupplierService.Get")]
         public IResult Delete(int supplierId)
         {
@@ -56,14 +56,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.SupplierNotFound);
         }
 
-        [SecuredOperationAspect("Supplier.Get", Priority = 1)]
+        [SecuredOperationAspect("Supplier.Get")]
         [CacheAspect()]
         public IDataResult<Supplier> GetById(int supplierId)
         {
             return new SuccessDataResult<Supplier>(supplierDal.Get(s => s.Id == supplierId));
         }
 
-        [SecuredOperationAspect("Supplier.GetFixtures", Priority = 1)]
+        [SecuredOperationAspect("Supplier.GetFixtures")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(int supplierId)
         {
@@ -73,14 +73,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Fixture>>(Messages.SupplierNotFound);
         }
 
-        [SecuredOperationAspect("Supplier.List", Priority = 1)]
+        [SecuredOperationAspect("Supplier.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Supplier>> GetList()
         {
             return new SuccessDataResult<List<Supplier>>(supplierDal.GetList(s => s.IsEnable == true).ToList());
         }
 
-        [SecuredOperationAspect("Supplier.Update", Priority = 1)]
+        [SecuredOperationAspect("Supplier.Update")]
         [ValidationAspect(typeof(SupplierForUpdateValidator))]
         [CacheRemoveAspect("ISupplierService.Get")]
         public IResult Update(SupplierForUpdateDto supplierForUpdateDto)

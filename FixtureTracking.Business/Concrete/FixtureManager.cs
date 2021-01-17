@@ -23,7 +23,7 @@ namespace FixtureTracking.Business.Concrete
             this.fixtureDal = fixtureDal;
         }
 
-        [SecuredOperationAspect("Fixture.Add", Priority = 1)]
+        [SecuredOperationAspect("Fixture.Add")]
         [ValidationAspect(typeof(FixtureForAddValidator))]
         [CacheRemoveAspect("IFixtureService.Get")]
         [CacheRemoveAspect("ICategoryService.GetFixtures")]
@@ -48,7 +48,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<Guid>(fixture.Id, Messages.FixtureAdded);
         }
 
-        [SecuredOperationAspect("Fixture.Delete", Priority = 1)]
+        [SecuredOperationAspect("Fixture.Delete")]
         [CacheRemoveAspect("IFixtureService.Get")]
         [CacheRemoveAspect("ICategoryService.GetFixtures")]
         [CacheRemoveAspect("ISupplierService.GetFixtures")]
@@ -66,14 +66,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.FixtureNotFound);
         }
 
-        [SecuredOperationAspect("Fixture.Get", Priority = 1)]
+        [SecuredOperationAspect("Fixture.Get")]
         [CacheAspect()]
         public IDataResult<Fixture> GetById(Guid fixtureId)
         {
             return new SuccessDataResult<Fixture>(fixtureDal.Get(f => f.Id == fixtureId));
         }
 
-        [SecuredOperationAspect("Fixture.GetDebits", Priority = 1)]
+        [SecuredOperationAspect("Fixture.GetDebits")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
         {
@@ -83,35 +83,35 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
         }
 
-        [SecuredOperationAspect("Fixture.List", Priority = 1)]
+        [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Fixture>> GetList()
         {
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList().ToList());
         }
 
-        [SecuredOperationAspect("Fixture.List", Priority = 1)]
+        [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListByCategoryId(short categoryId)
         {
             return fixtureDal.GetList(f => f.CategoryId == categoryId).ToList();
         }
 
-        [SecuredOperationAspect("Fixture.List", Priority = 1)]
+        [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListByPositionId(short positionId)
         {
             return fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList();
         }
 
-        [SecuredOperationAspect("Fixture.List", Priority = 1)]
+        [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListBySupplierId(int supplierId)
         {
             return fixtureDal.GetList(f => f.SupplierId == supplierId).ToList();
         }
 
-        [SecuredOperationAspect("Fixture.Update", Priority = 1)]
+        [SecuredOperationAspect("Fixture.Update")]
         [ValidationAspect(typeof(FixtureForUpdateValidator))]
         [CacheRemoveAspect("IFixtureService.Get")]
         [CacheRemoveAspect("ICategoryService.GetFixtures")]

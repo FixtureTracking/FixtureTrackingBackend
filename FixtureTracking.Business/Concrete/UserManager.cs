@@ -21,7 +21,7 @@ namespace FixtureTracking.Business.Concrete
             this.userDal = userDal;
         }
 
-        [SecuredOperationAspect("User.Add", Priority = 1)]
+        [SecuredOperationAspect("User.Add")]
         [CacheRemoveAspect("IUserService.Get")]
         [CacheRemoveAspect("IDepartmentService.GetUsers")]
         public Guid Add(User user)
@@ -30,7 +30,7 @@ namespace FixtureTracking.Business.Concrete
             return user.Id;
         }
 
-        [SecuredOperationAspect("User.Delete", Priority = 1)]
+        [SecuredOperationAspect("User.Delete")]
         [CacheRemoveAspect("IUserService.Get")]
         [CacheRemoveAspect("IDepartmentService.GetUsers")]
         public IResult Delete(Guid userId)
@@ -47,21 +47,21 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorResult(Messages.UserNotFound);
         }
 
-        [SecuredOperationAspect("User.Get", Priority = 1)]
+        [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetByEmail(string email)
         {
             return new SuccessDataResult<User>(userDal.Get(u => u.Email == email));
         }
 
-        [SecuredOperationAspect("User.Get", Priority = 1)]
+        [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetById(Guid userId)
         {
             return new SuccessDataResult<User>(userDal.Get(u => u.Id == userId));
         }
 
-        [SecuredOperationAspect("User.Get", Priority = 1)]
+        [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetByUsername(string username)
         {
@@ -73,7 +73,7 @@ namespace FixtureTracking.Business.Concrete
             return userDal.GetClaims(user);
         }
 
-        [SecuredOperationAspect("User.GetDebits", Priority = 1)]
+        [SecuredOperationAspect("User.GetDebits")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Debit>> GetDebits(Guid userId)
         {
@@ -83,14 +83,14 @@ namespace FixtureTracking.Business.Concrete
             return new ErrorDataResult<List<Debit>>(Messages.UserNotFound);
         }
 
-        [SecuredOperationAspect("User.List", Priority = 1)]
+        [SecuredOperationAspect("User.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<User>> GetList()
         {
             return new SuccessDataResult<List<User>>(userDal.GetList(u => u.IsEnable == true).ToList());
         }
 
-        [SecuredOperationAspect("User.List", Priority = 1)]
+        [SecuredOperationAspect("User.List")]
         [CacheAspect(duration: 2)]
         public List<User> GetListByDepartmentId(int departmentId)
         {
@@ -102,13 +102,13 @@ namespace FixtureTracking.Business.Concrete
             return userDal.Get(u => u.Email == email);
         }
 
-        [SecuredOperationAspect("User.Any", Priority = 1)]
+        [SecuredOperationAspect("User.Any")]
         public bool IsAlreadyExistsEmail(string email)
         {
             return userDal.Any(u => u.Email == email);
         }
 
-        [SecuredOperationAspect("User.Any", Priority = 1)]
+        [SecuredOperationAspect("User.Any")]
         public bool IsAlreadyExistsUsername(string username)
         {
             return userDal.Any(u => u.Username == username);

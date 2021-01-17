@@ -38,7 +38,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
-        [SecuredOperationAspect("Auth.Register", Priority = 1)]
+        [SecuredOperationAspect("Auth.Register")]
         [ValidationAspect(typeof(UserForRegisterValidator))]
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
