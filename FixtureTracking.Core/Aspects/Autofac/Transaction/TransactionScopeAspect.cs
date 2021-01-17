@@ -1,6 +1,5 @@
 ﻿using Castle.DynamicProxy;
 using FixtureTracking.Core.Utilities.Interceptors.Autofac;
-using System;
 using System.Transactions;
 
 namespace FixtureTracking.Core.Aspects.Autofac.Transaction
@@ -16,7 +15,7 @@ namespace FixtureTracking.Core.Aspects.Autofac.Transaction
                 invocation.Proceed();
                 transactionScope.Complete();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 transactionScope.Dispose();
                 throw e;

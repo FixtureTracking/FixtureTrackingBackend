@@ -10,14 +10,14 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 
-namespace FixtureTracking.Core.Aspects.Autofac.Logging
+namespace FixtureTracking.Core.Aspects.Autofac.Exception
 {
-    public class LogAspect : MethodInterception
+    public class ExceptionLogAspect : MethodInterception
     {
         private readonly LoggerServiceBase loggerServiceBase;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public LogAspect(Type loggerService)
+        public ExceptionLogAspect(Type loggerService)
         {
             if (loggerService.BaseType != typeof(LoggerServiceBase))
                 throw new System.Exception(AspectMessages.WrongLoggerType);
@@ -26,12 +26,15 @@ namespace FixtureTracking.Core.Aspects.Autofac.Logging
             httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
-        protected override void OnBefore(IInvocation invocation)
+        protected override void OnException(IInvocation invocation, System.Exception e)
         {
-            loggerServiceBase.Info(GetLogDetail(invocation));
+            var logDetailWithException = GetLogDetail(invocation);
+            logDetailWithException.ExceptionMessage = e.Message;
+
+            loggerServiceBase.Error(logDetailWithException);
         }
 
-        private LogDetail GetLogDetail(IInvocation invocation)
+        private LogDetailWithException GetLogDetail(IInvocation invocation)
         {
             var logPrameters = new List<LogParameter>();
 
@@ -47,14 +50,14 @@ namespace FixtureTracking.Core.Aspects.Autofac.Logging
 
             var claimNameIdendifier = httpContextAccessor.HttpContext.User.NameIdentifier();
 
-            var logDetail = new LogDetail()
+            var logDetailWithException = new LogDetailWithException()
             {
                 MethodName = $"{invocation.Method.ReflectedType.Name}.{invocation.Method.Name}",
                 ClaimId = claimNameIdendifier,
                 LogParameters = logPrameters
             };
 
-            return logDetail;
+            return logDetailWithException;
         }
     }
 }
