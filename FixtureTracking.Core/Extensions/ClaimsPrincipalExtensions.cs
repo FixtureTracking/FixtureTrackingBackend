@@ -18,7 +18,7 @@ namespace FixtureTracking.Core.Extensions
 
         public static string NameIdentifier(this ClaimsPrincipal claimsPrincipal)
         {
-            return claimsPrincipal?.Claims(ClaimTypes.NameIdentifier)[0];
+            return claimsPrincipal?.Claims(ClaimTypes.NameIdentifier).FirstOrDefault();
         }
     }
 }
