@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace FixtureTracking.Core.Utilities.CustomExceptions
+﻿namespace FixtureTracking.Core.Utilities.CustomExceptions
 {
-    public class AuthorizationException : Exception
+    public class AuthorizationException : HttpStatusException
     {
-        public AuthorizationException(string message) : base(message) { }
+        public AuthorizationException(string message) : base(message, 401) { }
     }
 }

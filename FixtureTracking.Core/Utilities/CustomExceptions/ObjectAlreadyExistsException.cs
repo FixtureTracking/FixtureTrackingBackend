@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace FixtureTracking.Core.Utilities.CustomExceptions
+﻿namespace FixtureTracking.Core.Utilities.CustomExceptions
 {
-    public class ObjectAlreadyExistsException : Exception
+    public class ObjectAlreadyExistsException : HttpStatusException
     {
-        public ObjectAlreadyExistsException(string message) : base(message) { }
+        public ObjectAlreadyExistsException(string message) : base(message, 400) { }
     }
 }

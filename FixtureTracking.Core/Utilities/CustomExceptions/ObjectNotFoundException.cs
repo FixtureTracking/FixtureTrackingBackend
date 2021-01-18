@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace FixtureTracking.Core.Utilities.CustomExceptions
+﻿namespace FixtureTracking.Core.Utilities.CustomExceptions
 {
-    public class ObjectNotFoundException : Exception
+    public class ObjectNotFoundException : HttpStatusException
     {
-        public ObjectNotFoundException(string message) : base(message) { }
+        public ObjectNotFoundException(string message) : base(message, 404) { }
     }
 }
