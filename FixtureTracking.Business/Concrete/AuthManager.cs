@@ -44,10 +44,10 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
             if (userService.IsAlreadyExistsEmail(userForRegisterDto.Email))
-                return new ErrorDataResult<Guid>(Messages.AuthEmailExists);
+                throw new ObjectAlreadyExistsException(Messages.AuthEmailExists);
 
             if (userService.IsAlreadyExistsUsername(userForRegisterDto.Username))
-                return new ErrorDataResult<Guid>(Messages.AuthUsernameExists);
+                throw new ObjectAlreadyExistsException(Messages.AuthUsernameExists);
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 

@@ -1,5 +1,4 @@
 ﻿using FixtureTracking.Business.Concrete;
-using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.Tests.Mocks.Helpers;
 using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Entities.Concrete;
@@ -14,35 +13,27 @@ namespace FixtureTracking.Business.Tests.Services
     public class AuthServiceTests
     {
         [Fact]
-        public void Register_WhenEmailAlreadyExists_ShouldErrorResult()
+        public void Register_WhenEmailAlreadyExists_ShouldThrowObjectAlreadyExistsException()
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Email = "user@mail.com" };
             var mockUserService = new MockUserService().MockIsAlreadyExistsEmail(true);
             var sut = new AuthManager(mockUserService.Object, null);
 
-            // Act
-            var result = sut.Register(userForRegisterDto);
-
-            // Assert
-            Assert.False(result.Success);
-            Assert.Equal(Messages.AuthEmailExists, result.Message);
+            // Act & Assert
+            Assert.Throws<ObjectAlreadyExistsException>(() => sut.Register(userForRegisterDto));
         }
 
         [Fact]
-        public void Register_WhenUsernameAlreadyExists_ShouldErrorResult()
+        public void Register_WhenUsernameAlreadyExists_ShouldThrowObjectAlreadyExistsException()
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Username = "user" };
             var mockUserService = new MockUserService().MockIsAlreadyExistsEmail(false).MockIsAlreadyExistsUsername(true);
             var sut = new AuthManager(mockUserService.Object, null);
 
-            // Act
-            var result = sut.Register(userForRegisterDto);
-
-            // Assert
-            Assert.False(result.Success);
-            Assert.Equal(Messages.AuthUsernameExists, result.Message);
+            // Act & Assert
+            Assert.Throws<ObjectAlreadyExistsException>(() => sut.Register(userForRegisterDto));
         }
 
         [Fact]
