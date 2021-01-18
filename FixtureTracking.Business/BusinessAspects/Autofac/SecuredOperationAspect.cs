@@ -1,11 +1,11 @@
 ﻿using Castle.DynamicProxy;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Core.Extensions;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Interceptors.Autofac;
 using FixtureTracking.Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace FixtureTracking.Business.BusinessAspects.Autofac
 {
@@ -28,7 +28,7 @@ namespace FixtureTracking.Business.BusinessAspects.Autofac
                 if (roleClaims.Contains(role))
                     return;
             }
-            throw new Exception(Messages.AuthorizationDenied);
+            throw new AuthorizationException(Messages.AuthorizationDenied);
         }
     }
 }
