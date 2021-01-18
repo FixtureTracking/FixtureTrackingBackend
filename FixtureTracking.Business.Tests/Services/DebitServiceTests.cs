@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Debit;
 using Moq;
@@ -12,18 +13,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class DebitServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistsId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistsDebit_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             Guid debitId = Guid.Empty;
             var mockDebitDal = new MockDebitDal().MockGet(null);
             var sut = new DebitManager(mockDebitDal.Object);
 
-            // Act
-            var result = sut.GetById(debitId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(debitId));
         }
 
         [Fact]
@@ -43,21 +41,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
-        }
-
-        [Fact]
-        public void GetList_WhenThereIsNoDebit_ShouldReturnEmptyList()
-        {
-            // Arrange
-            List<Debit> debits = new List<Debit>();
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
-
-            // Act
-            var result = sut.GetList();
-
-            // Assert
-            Assert.Empty(result.Data);
         }
 
         [Fact]
@@ -146,19 +129,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsDebit_ShouldReturnErrorResult()
+        public void Update_WhenUpdatedNotExistsDebit_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var debitForUpdateDto = new DebitForUpdateDto();
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
             var sut = new DebitManager(mockDebitDal.Object);
 
-            // Act
-            var result = sut.Update(debitForUpdateDto);
-
-            // Assert
-            mockDebitDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Update(debitForUpdateDto));
         }
 
         [Fact]
@@ -177,19 +156,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsDebit_ShouldReturnErrorResult()
+        public void Delete_WhenDeletedNotExistsDebit_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             Guid debitId = Guid.Empty;
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
             var sut = new DebitManager(mockDebitDal.Object);
 
-            // Act
-            var result = sut.Delete(debitId);
-
-            // Assert
-            mockDebitDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(debitId));
         }
 
         [Fact]

@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DebitValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -50,23 +51,22 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(Guid debitId)
         {
             var debit = GetById(debitId).Data;
-            if (debit != null)
-            {
-                debit.IsReturn = true;
-                debit.DateReturn = DateTime.Now;
-                debit.UpdatedAt = DateTime.Now;
+            debit.IsReturn = true;
+            debit.DateReturn = DateTime.Now;
+            debit.UpdatedAt = DateTime.Now;
 
-                debitDal.Update(debit);
-                return new SuccessResult(Messages.DebitDeleted);
-            }
-            return new ErrorResult(Messages.DebitNotFound);
+            debitDal.Update(debit);
+            return new SuccessResult(Messages.DebitDeleted);
         }
 
         [SecuredOperationAspect("Debit.Get")]
         [CacheAspect()]
         public IDataResult<Debit> GetById(Guid debitId)
         {
-            return new SuccessDataResult<Debit>(debitDal.Get(d => d.Id == debitId));
+            var debit = debitDal.Get(d => d.Id == debitId);
+            if (debit != null)
+                return new SuccessDataResult<Debit>(debit);
+            throw new ObjectNotFoundException(Messages.DebitNotFound);
         }
 
         [SecuredOperationAspect("Debit.List")]
@@ -97,18 +97,14 @@ namespace FixtureTracking.Business.Concrete
         public IResult Update(DebitForUpdateDto debitForUpdateDto)
         {
             var debit = GetById(debitForUpdateDto.Id).Data;
-            if (debit != null)
-            {
-                debit.DateDebit = debitForUpdateDto.DateDebit;
-                debit.Description = debitForUpdateDto.Description;
-                debit.FixtureId = debitForUpdateDto.FixtureId;
-                debit.UserId = debitForUpdateDto.UserId;
-                debit.UpdatedAt = DateTime.Now;
+            debit.DateDebit = debitForUpdateDto.DateDebit;
+            debit.Description = debitForUpdateDto.Description;
+            debit.FixtureId = debitForUpdateDto.FixtureId;
+            debit.UserId = debitForUpdateDto.UserId;
+            debit.UpdatedAt = DateTime.Now;
 
-                debitDal.Update(debit);
-                return new SuccessResult(Messages.DebitUpdated);
-            }
-            return new ErrorResult(Messages.DebitNotFound);
+            debitDal.Update(debit);
+            return new SuccessResult(Messages.DebitUpdated);
         }
     }
 }
