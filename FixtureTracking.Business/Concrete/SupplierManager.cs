@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -45,22 +46,21 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(int supplierId)
         {
             var supplier = GetById(supplierId).Data;
-            if (supplier != null)
-            {
-                supplier.IsEnable = false;
-                supplier.UpdatedAt = DateTime.Now;
+            supplier.IsEnable = false;
+            supplier.UpdatedAt = DateTime.Now;
 
-                supplierDal.Update(supplier);
-                return new SuccessResult(Messages.SupplierDeleted);
-            }
-            return new ErrorResult(Messages.SupplierNotFound);
+            supplierDal.Update(supplier);
+            return new SuccessResult(Messages.SupplierDeleted);
         }
 
         [SecuredOperationAspect("Supplier.Get")]
         [CacheAspect()]
         public IDataResult<Supplier> GetById(int supplierId)
         {
-            return new SuccessDataResult<Supplier>(supplierDal.Get(s => s.Id == supplierId));
+            var supplier = supplierDal.Get(s => s.Id == supplierId);
+            if (supplier != null)
+                return new SuccessDataResult<Supplier>(supplier);
+            throw new ObjectNotFoundException(Messages.SupplierNotFound);
         }
 
         [SecuredOperationAspect("Supplier.GetFixtures")]
@@ -68,9 +68,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<Fixture>> GetFixtures(int supplierId)
         {
             var supplier = GetById(supplierId).Data;
-            if (supplier != null)
-                return new SuccessDataResult<List<Fixture>>(supplierDal.GetFixtures(supplier));
-            return new ErrorDataResult<List<Fixture>>(Messages.SupplierNotFound);
+            return new SuccessDataResult<List<Fixture>>(supplierDal.GetFixtures(supplier));
         }
 
         [SecuredOperationAspect("Supplier.List")]
@@ -86,16 +84,12 @@ namespace FixtureTracking.Business.Concrete
         public IResult Update(SupplierForUpdateDto supplierForUpdateDto)
         {
             var supplier = GetById(supplierForUpdateDto.Id).Data;
-            if (supplier != null)
-            {
-                supplier.Description = supplierForUpdateDto.Description;
-                supplier.Name = supplierForUpdateDto.Name;
-                supplier.UpdatedAt = DateTime.Now;
+            supplier.Description = supplierForUpdateDto.Description;
+            supplier.Name = supplierForUpdateDto.Name;
+            supplier.UpdatedAt = DateTime.Now;
 
-                supplierDal.Update(supplier);
-                return new SuccessResult(Messages.SupplierUpdated);
-            }
-            return new ErrorResult(Messages.SupplierNotFound);
+            supplierDal.Update(supplier);
+            return new SuccessResult(Messages.SupplierUpdated);
         }
     }
 }

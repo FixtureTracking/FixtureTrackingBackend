@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Supplier;
 using Moq;
@@ -11,18 +12,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class SupplierServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistsId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistsSupplier_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int supplierId = 111;
             var mockSupplierDal = new MockSupplierDal().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
-            // Act
-            var result = sut.GetById(supplierId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(supplierId));
         }
 
         [Fact]
@@ -45,21 +43,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetList_WhenThereIsNoSupplier_ShouldReturnEmptyList()
-        {
-            // Arrange
-            var suppliers = new List<Supplier>();
-            var mockSupplierDal = new MockSupplierDal().MockGetList(suppliers);
-            var sut = new SupplierManager(mockSupplierDal.Object);
-
-            // Act
-            var result = sut.GetList();
-
-            // Assert
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnSuppliers()
         {
             // Arrange
@@ -78,18 +61,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetFixtures_WhenNotExistsSupplier_ShouldReturnErrorResult()
+        public void GetFixtures_WhenNotExistsSupplier_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int supplierId = 111;
             var mockSupplierDal = new MockSupplierDal().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
-            // Act
-            var result = sut.GetFixtures(supplierId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetFixtures(supplierId));
         }
 
         [Fact]
@@ -124,19 +104,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsSupplier_ShouldReturnErrorResult()
+        public void Update_WhenUpdatedNotExistsSupplier_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var supplierForUpdateDto = new SupplierForUpdateDto();
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
-            // Act
-            var result = sut.Update(supplierForUpdateDto);
-
-            // Assert
-            mockSupplierDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Update(supplierForUpdateDto));
         }
 
         [Fact]
@@ -155,19 +131,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsSupplier_ShouldReturnErrorResult()
+        public void Delete_WhenDeletedNotExistsSupplier_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int supplierId = 111;
             var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
             var sut = new SupplierManager(mockSupplierDal.Object);
 
-            // Act
-            var result = sut.Delete(supplierId);
-
-            // Assert
-            mockSupplierDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(supplierId));
         }
 
         [Fact]
