@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Fixture;
 using Moq;
@@ -12,18 +13,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class FixtureServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistsId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistsFixture_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             Guid fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockGet(null);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
-            // Act
-            var result = sut.GetById(fixtureId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(fixtureId));
         }
 
         [Fact]
@@ -65,18 +63,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetDebits_WhenNotExistsFixture_ReturnErrorResult()
+        public void GetDebits_WhenNotExistsFixture_ReturnThrowObjectNotFoundException()
         {
             // Arrange
             var fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockGet(null);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
-            // Act
-            var result = sut.GetDebits(fixtureId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetDebits(fixtureId));
         }
 
         [Fact]
@@ -93,22 +88,6 @@ namespace FixtureTracking.Business.Tests.Services
             // Assert
             Assert.NotNull(result.Data);
             Assert.True(result.Success);
-        }
-
-        [Fact]
-        public void GetListBySupplierId_WhenCalledWithNotExistsSupplierId_ShouldReturnEmptyList()
-        {
-            // Arrange
-            int supplierId = 111;
-            List<Fixture> fixtures = new List<Fixture>();
-            var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act
-            var result = sut.GetListBySupplierId(supplierId);
-
-            // Assert
-            Assert.Empty(result);
         }
 
         [Fact]
@@ -199,19 +178,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsFixture_ShouldReturnErrorResult()
+        public void Update_WhenUpdatedNotExistsFixture_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var fixtureForUpdateDto = new FixtureForUpdateDto();
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
-            // Act
-            var result = sut.Update(fixtureForUpdateDto);
-
-            // Assert
-            mockFixtureDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Update(fixtureForUpdateDto));
         }
 
         [Fact]
@@ -230,19 +205,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsFixture_ShouldReturnErrorResult()
+        public void Delete_WhenDeletedNotExistsFixture_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             Guid fixtureId = Guid.Empty;
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
             var sut = new FixtureManager(mockFixtureDal.Object);
 
-            // Act
-            var result = sut.Delete(fixtureId);
-
-            // Assert
-            mockFixtureDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(fixtureId));
         }
 
         [Fact]

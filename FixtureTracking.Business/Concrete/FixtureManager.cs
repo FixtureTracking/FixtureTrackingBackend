@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.FixtureValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -55,22 +56,21 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
-            if (fixture != null)
-            {
-                fixture.FixturePositionId = 0;
-                fixture.UpdatedAt = DateTime.Now;
+            fixture.FixturePositionId = 0;
+            fixture.UpdatedAt = DateTime.Now;
 
-                fixtureDal.Update(fixture);
-                return new SuccessResult(Messages.FixtureDeleted);
-            }
-            return new ErrorResult(Messages.FixtureNotFound);
+            fixtureDal.Update(fixture);
+            return new SuccessResult(Messages.FixtureDeleted);
         }
 
         [SecuredOperationAspect("Fixture.Get")]
         [CacheAspect()]
         public IDataResult<Fixture> GetById(Guid fixtureId)
         {
-            return new SuccessDataResult<Fixture>(fixtureDal.Get(f => f.Id == fixtureId));
+            var fixture = fixtureDal.Get(f => f.Id == fixtureId);
+            if (fixture != null)
+                return new SuccessDataResult<Fixture>(fixture);
+            throw new ObjectNotFoundException(Messages.FixtureNotFound);
         }
 
         [SecuredOperationAspect("Fixture.GetDebits")]
@@ -78,9 +78,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
-            if (fixture != null)
-                return new SuccessDataResult<List<Debit>>(fixtureDal.GetDebits(fixture));
-            return new ErrorDataResult<List<Debit>>(Messages.FixtureNotFound);
+            return new SuccessDataResult<List<Debit>>(fixtureDal.GetDebits(fixture));
         }
 
         [SecuredOperationAspect("Fixture.List")]
@@ -119,22 +117,18 @@ namespace FixtureTracking.Business.Concrete
         public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
         {
             var fixture = GetById(fixtureForUpdateDto.Id).Data;
-            if (fixture != null)
-            {
-                fixture.CategoryId = fixtureForUpdateDto.CategoryId;
-                fixture.DatePurchase = fixtureForUpdateDto.DatePurchase;
-                fixture.DateWarranty = fixtureForUpdateDto.DateWarranty;
-                fixture.Description = fixtureForUpdateDto.Description;
-                fixture.Name = fixtureForUpdateDto.Name;
-                fixture.PictureUrl = fixtureForUpdateDto.PictureUrl;
-                fixture.Price = fixtureForUpdateDto.Price;
-                fixture.SupplierId = fixtureForUpdateDto.SupplierId;
-                fixture.UpdatedAt = DateTime.Now;
+            fixture.CategoryId = fixtureForUpdateDto.CategoryId;
+            fixture.DatePurchase = fixtureForUpdateDto.DatePurchase;
+            fixture.DateWarranty = fixtureForUpdateDto.DateWarranty;
+            fixture.Description = fixtureForUpdateDto.Description;
+            fixture.Name = fixtureForUpdateDto.Name;
+            fixture.PictureUrl = fixtureForUpdateDto.PictureUrl;
+            fixture.Price = fixtureForUpdateDto.Price;
+            fixture.SupplierId = fixtureForUpdateDto.SupplierId;
+            fixture.UpdatedAt = DateTime.Now;
 
-                fixtureDal.Update(fixture);
-                return new SuccessResult(Messages.FixtureUpdated);
-            }
-            return new ErrorResult(Messages.FixtureNotFound);
+            fixtureDal.Update(fixture);
+            return new SuccessResult(Messages.FixtureUpdated);
         }
     }
 }
