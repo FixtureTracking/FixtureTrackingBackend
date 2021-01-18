@@ -1,8 +1,10 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Category;
 using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -11,18 +13,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class CategoryServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistsCategory_ShouldThrowObjectNotFoundException()
         {
-            // Arrange
+            // Arrange 
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
-            // Act
-            var result = sut.GetById(categoryId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(categoryId));
         }
 
         [Fact]
@@ -45,21 +44,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetList_WhenThereIsNoCategory_ShouldReturnEmptyList()
-        {
-            // Arrange
-            var categories = new List<Category>();
-            var mockCategoryDal = new MockCategoryDal().MockGetList(categories);
-            var sut = new CategoryManager(mockCategoryDal.Object);
-
-            // Act
-            var result = sut.GetList();
-
-            // Assert
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnCategories()
         {
             // Arrange
@@ -79,18 +63,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetFixtures_WhenNotExistsCategory_ShouldReturnErrorResult()
+        public void GetFixtures_WhenNotExistsCategory_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
-            // Act
-            var result = sut.GetFixtures(categoryId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetFixtures(categoryId));
         }
 
         [Fact]
@@ -126,19 +107,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsCategory_ShouldReturnErrorResult()
+        public void Update_WhenUpdatedNotExistsCategory_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var categoryForUpdateDto = new CategoryForUpdateDto();
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
-            // Act
-            var result = sut.Update(categoryForUpdateDto);
-
-            // Assert
-            mockCategoryDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Update(categoryForUpdateDto));
         }
 
         [Fact]
@@ -157,19 +134,16 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Deleted_WhenDeletedNotExistsCategory_ShouldReturnErrorResult()
+        public void Deleted_WhenDeletedNotExistsCategory_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             short categoryId = 111;
             var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
             var sut = new CategoryManager(mockCategoryDal.Object);
 
-            // Act
-            var result = sut.Delete(categoryId);
 
-            // Assert
-            mockCategoryDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(categoryId));
         }
 
         [Fact]

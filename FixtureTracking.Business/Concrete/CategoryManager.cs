@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -45,22 +46,21 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(short categoryId)
         {
             var category = GetById(categoryId).Data;
-            if (category != null)
-            {
-                category.IsEnable = false;
-                category.UpdatedAt = DateTime.Now;
+            category.IsEnable = false;
+            category.UpdatedAt = DateTime.Now;
 
-                categoryDal.Update(category);
-                return new SuccessResult(Messages.CategoryDeleted);
-            }
-            return new ErrorResult(Messages.CategoryNotFound);
+            categoryDal.Update(category);
+            return new SuccessResult(Messages.CategoryDeleted);
         }
 
         [SecuredOperationAspect("Category.Get")]
         [CacheAspect()]
         public IDataResult<Category> GetById(short categoryId)
         {
-            return new SuccessDataResult<Category>(categoryDal.Get(c => c.Id == categoryId));
+            var category = categoryDal.Get(c => c.Id == categoryId);
+            if (category != null)
+                return new SuccessDataResult<Category>(category);
+            throw new ObjectNotFoundException(Messages.CategoryNotFound);
         }
 
         [SecuredOperationAspect("Category.GetFixtures")]
@@ -68,9 +68,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<Fixture>> GetFixtures(short categoryId)
         {
             var category = GetById(categoryId).Data;
-            if (category != null)
-                return new SuccessDataResult<List<Fixture>>(categoryDal.GetFixtures(category));
-            return new ErrorDataResult<List<Fixture>>(Messages.CategoryNotFound);
+            return new SuccessDataResult<List<Fixture>>(categoryDal.GetFixtures(category));
         }
 
         [SecuredOperationAspect("Category.List")]
@@ -86,16 +84,12 @@ namespace FixtureTracking.Business.Concrete
         public IResult Update(CategoryForUpdateDto categoryForUpdateDto)
         {
             var category = GetById(categoryForUpdateDto.Id).Data;
-            if (category != null)
-            {
-                category.Description = categoryForUpdateDto.Description;
-                category.Name = categoryForUpdateDto.Name;
-                category.UpdatedAt = DateTime.Now;
+            category.Description = categoryForUpdateDto.Description;
+            category.Name = categoryForUpdateDto.Name;
+            category.UpdatedAt = DateTime.Now;
 
-                categoryDal.Update(category);
-                return new SuccessResult(Messages.CategoryUpdated);
-            }
-            return new ErrorResult(Messages.CategoryNotFound);
+            categoryDal.Update(category);
+            return new SuccessResult(Messages.CategoryUpdated);
         }
     }
 }
