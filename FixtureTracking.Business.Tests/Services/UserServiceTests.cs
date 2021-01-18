@@ -1,6 +1,7 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using Moq;
 using System;
@@ -12,18 +13,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class UserServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistUser_ShouldThrowObjectNotFoundExcepiton()
         {
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockGet(null);
             var sut = new UserManager(mockUserDal.Object);
 
-            // Act
-            var result = sut.GetById(userId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(userId));
         }
 
         [Fact]
@@ -42,6 +40,18 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetByUsername_WhenCalledNotExistUser_ShouldThrowObjectNotFoundExcepiton()
+        {
+            // Arrange
+            var username = "not.exists.user";
+            var mockUserDal = new MockUserDal().MockGet(null);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetByUsername(username));
+        }
+
+        [Fact]
         public void GetByUsername_WhenCalledWithUsername_ShouldReturnUser()
         {
             // Arrange
@@ -57,6 +67,18 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetByEmail_WhenCalledNotExistUser_ShouldThrowObjectNotFoundExcepiton()
+        {
+            // Arrange
+            var email = "not-exists-user@mail.com";
+            var mockUserDal = new MockUserDal().MockGet(null);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetByEmail(email));
+        }
+
+        [Fact]
         public void GetByEmail_WhenCalledWithEmail_ShouldReturnUser()
         {
             // Arrange
@@ -69,20 +91,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
-        }
-
-        [Fact]
-        public void GetList_WhenThereIsNoUser_ShouldReturnEmptyList()
-        {
-            // Arrange
-            var mockUserDal = new MockUserDal().MockGetList(new List<User>());
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act
-            var result = sut.GetList();
-
-            // Assert
-            Assert.Empty(result.Data);
         }
 
         [Fact]
@@ -106,18 +114,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetDebits_WhenNotExistsUser_ShouldReturnErrorResult()
+        public void GetDebits_WhenNotExistsUser_ShouldThrowObjectNotFoundExcepiton()
         {
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockGet(null);
             var sut = new UserManager(mockUserDal.Object);
 
-            // Act
-            var result = sut.GetDebits(userId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetDebits(userId));
         }
 
         [Fact]
@@ -206,19 +211,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsUser_ShouldReturnErrorResult()
+        public void Delete_WhenDeletedNotExistsUser_ShouldThrowObjectNotFoundExcepiton()
         {
             // Arrange
             var userId = Guid.Empty;
             var mockUserDal = new MockUserDal().MockUpdate().MockGet(null);
             var sut = new UserManager(mockUserDal.Object);
 
-            // Act
-            var result = sut.Delete(userId);
-
-            // Assert
-            mockUserDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(userId));
         }
 
         [Fact]

@@ -3,6 +3,7 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -36,36 +37,41 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(Guid userId)
         {
             var user = GetById(userId).Data;
-            if (user != null)
-            {
-                user.IsEnable = false;
-                user.UpdatedAt = DateTime.Now;
+            user.IsEnable = false;
+            user.UpdatedAt = DateTime.Now;
 
-                userDal.Update(user);
-                return new SuccessResult(Messages.UserDeleted);
-            }
-            return new ErrorResult(Messages.UserNotFound);
+            userDal.Update(user);
+            return new SuccessResult(Messages.UserDeleted);
         }
 
         [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetByEmail(string email)
         {
-            return new SuccessDataResult<User>(userDal.Get(u => u.Email == email));
+            var user = userDal.Get(u => u.Email == email);
+            if (user != null)
+                return new SuccessDataResult<User>(user);
+            throw new ObjectNotFoundException(Messages.UserNotFound);
         }
 
         [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetById(Guid userId)
         {
-            return new SuccessDataResult<User>(userDal.Get(u => u.Id == userId));
+            var user = userDal.Get(u => u.Id == userId);
+            if (user != null)
+                return new SuccessDataResult<User>(user);
+            throw new ObjectNotFoundException(Messages.UserNotFound);
         }
 
         [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetByUsername(string username)
         {
-            return new SuccessDataResult<User>(userDal.Get(u => u.Username == username));
+            var user = userDal.Get(u => u.Username == username);
+            if (user != null)
+                return new SuccessDataResult<User>(user);
+            throw new ObjectNotFoundException(Messages.UserNotFound);
         }
 
         public string[] GetClaimsForLogin(User user)
@@ -78,9 +84,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<Debit>> GetDebits(Guid userId)
         {
             var user = GetById(userId).Data;
-            if (user != null)
-                return new SuccessDataResult<List<Debit>>(userDal.GetDebits(user));
-            return new ErrorDataResult<List<Debit>>(Messages.UserNotFound);
+            return new SuccessDataResult<List<Debit>>(userDal.GetDebits(user));
         }
 
         [SecuredOperationAspect("User.List")]
