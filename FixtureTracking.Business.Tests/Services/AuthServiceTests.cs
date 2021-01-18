@@ -3,6 +3,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.Tests.Mocks.Helpers;
 using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Security.Hashing;
 using FixtureTracking.Entities.Dtos.User;
 using System;
@@ -65,22 +66,19 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Login_WhenNotExistsEmail_ShouldReturnErrorResult()
+        public void Login_WhenNotExistsEmail_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "not.exists@mail.com" };
             var mockUserService = new MockUserService().MockGetUserByEmailForLogin(null);
             var sut = new AuthManager(mockUserService.Object, null);
 
-            // Act
-            var result = sut.Login(userForLoginDto);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Login(userForLoginDto));
         }
 
         [Fact]
-        public void Login_WhenWrongPassword_ShouldReturnErrorResult()
+        public void Login_WhenWrongPassword_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "user@mail.com", Password = "password" };
@@ -88,11 +86,8 @@ namespace FixtureTracking.Business.Tests.Services
             var mockUserService = new MockUserService().MockGetUserByEmailForLogin(user);
             var sut = new AuthManager(mockUserService.Object, null);
 
-            // Act
-            var result = sut.Login(userForLoginDto);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Login(userForLoginDto));
         }
 
         [Fact]
@@ -111,7 +106,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
-            Assert.True(result.Success);
         }
     }
 }

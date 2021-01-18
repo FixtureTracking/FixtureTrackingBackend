@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidations;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Core.Utilities.Security.Hashing;
 using FixtureTracking.Core.Utilities.Security.Tokens;
@@ -28,9 +29,9 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = userService.GetUserByEmailForLogin(userForLoginDto.Email);
             if (user == null)
-                return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
+                throw new ObjectNotFoundException(Messages.AuthUserNotFound);
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
-                return new ErrorDataResult<AccessToken>(Messages.AuthUserNotFound);
+                throw new ObjectNotFoundException(Messages.AuthUserNotFound);
 
             var claims = userService.GetClaimsForLogin(user);
             var accessToken = tokenHelper.CreateToken(user, claims);
