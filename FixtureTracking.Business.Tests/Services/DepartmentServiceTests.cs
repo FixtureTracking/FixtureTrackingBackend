@@ -1,5 +1,6 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Department;
 using Moq;
@@ -11,18 +12,15 @@ namespace FixtureTracking.Business.Tests.Services
     public class DepartmentServiceTests
     {
         [Fact]
-        public void GetById_WhenCalledWithNotExistsId_ShouldReturnNull()
+        public void GetById_WhenCalledNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.GetById(departmentId);
-
-            // Assert
-            Assert.Null(result.Data);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetById(departmentId));
         }
 
         [Fact]
@@ -41,18 +39,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetOperationClaimNames_WhenNotExistsDepartment_ShouldReturnErrorResult()
+        public void GetOperationClaimNames_WhenNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.GetOperationClaimNames(departmentId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetOperationClaimNames(departmentId));
         }
 
         [Fact]
@@ -76,20 +71,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetList_WhenThereIsNoDepartment_ShouldReturnEmptyList()
-        {
-            // Arrange
-            var mockDepartmentDal = new MockDepartmentDal().MockGetList(new List<Department>());
-            var sut = new DepartmentManager(mockDepartmentDal.Object);
-
-            // Act
-            var result = sut.GetList();
-
-            // Assert
-            Assert.Empty(result.Data);
-        }
-
-        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnDepartments()
         {
             // Arrange
@@ -108,18 +89,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetUsers_WhenNotExistsDepartment_ShouldReturnErrorResult()
+        public void GetUsers_WhenNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.GetUsers(departmentId);
-
-            // Assert
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetUsers(departmentId));
         }
 
         [Fact]
@@ -154,19 +132,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsDepartment_ShouldReturnErrorResult()
+        public void Update_WhenUpdatedNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var departmentForUpdateDto = new DepartmentForUpdateDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.Update(departmentForUpdateDto);
-
-            // Assert
-            mockDepartmentDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Update(departmentForUpdateDto));
         }
 
         [Fact]
@@ -185,19 +159,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void UpdateOperationClaim_WhenUpdatedNotExistsDepartment_ShouldReturnErrorResult()
+        public void UpdateOperationClaim_WhenUpdatedNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             var departmentForUpdateClaimDto = new DepartmentForUpdateClaimDto();
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.UpdateOperationClaim(departmentForUpdateClaimDto);
-
-            // Assert
-            mockDepartmentDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.UpdateOperationClaim(departmentForUpdateClaimDto));
         }
 
         [Fact]
@@ -216,19 +186,15 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsDepartment_ShouldReturnErrorResult()
+        public void Delete_WhenDeletedNotExistsDepartment_ShouldThrowObjectNotFoundException()
         {
             // Arrange
             int departmentId = 111;
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(null);
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 
-            // Act
-            var result = sut.Delete(departmentId);
-
-            // Assert
-            mockDepartmentDal.VerifyUpdate(Times.Never());
-            Assert.False(result.Success);
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(departmentId));
         }
 
         [Fact]

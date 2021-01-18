@@ -5,6 +5,7 @@ using FixtureTracking.Business.ValidationRules.FluentValidation.DepartmentValida
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.Entities.Concrete;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
@@ -47,22 +48,21 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(int departmentId)
         {
             var department = GetById(departmentId).Data;
-            if (department != null)
-            {
-                department.IsEnable = false;
-                department.UpdatedAt = DateTime.Now;
+            department.IsEnable = false;
+            department.UpdatedAt = DateTime.Now;
 
-                departmentDal.Update(department);
-                return new SuccessResult(Messages.DepartmentDeleted);
-            }
-            return new ErrorResult(Messages.DepartmentNotFound);
+            departmentDal.Update(department);
+            return new SuccessResult(Messages.DepartmentDeleted);
         }
 
         [SecuredOperationAspect("Department.Get")]
         [CacheAspect()]
         public IDataResult<Department> GetById(int departmentId)
         {
-            return new SuccessDataResult<Department>(departmentDal.Get(d => d.Id == departmentId));
+            var department = departmentDal.Get(d => d.Id == departmentId);
+            if (department != null)
+                return new SuccessDataResult<Department>(department);
+            throw new ObjectNotFoundException(Messages.DepartmentNotFound);
         }
 
         [SecuredOperationAspect("Department.List")]
@@ -77,9 +77,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<string[]> GetOperationClaimNames(int departmentId)
         {
             var department = GetById(departmentId).Data;
-            if (department != null)
-                return new SuccessDataResult<string[]>(department.OperationClaimNames);
-            return new ErrorDataResult<string[]>(Messages.DepartmentNotFound);
+            return new SuccessDataResult<string[]>(department.OperationClaimNames);
         }
 
         [SecuredOperationAspect("Department.GetUsers")]
@@ -87,9 +85,7 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<List<User>> GetUsers(int departmentId)
         {
             var department = GetById(departmentId).Data;
-            if (department != null)
-                return new SuccessDataResult<List<User>>(departmentDal.GetUsers(department));
-            return new ErrorDataResult<List<User>>(Messages.DepartmentNotFound);
+            return new SuccessDataResult<List<User>>(departmentDal.GetUsers(department));
         }
 
         [SecuredOperationAspect("Department.Update")]
@@ -98,16 +94,12 @@ namespace FixtureTracking.Business.Concrete
         public IResult Update(DepartmentForUpdateDto departmentForUpdateDto)
         {
             var department = GetById(departmentForUpdateDto.Id).Data;
-            if (department != null)
-            {
-                department.Description = departmentForUpdateDto.Description;
-                department.Name = departmentForUpdateDto.Name;
-                department.UpdatedAt = DateTime.Now;
+            department.Description = departmentForUpdateDto.Description;
+            department.Name = departmentForUpdateDto.Name;
+            department.UpdatedAt = DateTime.Now;
 
-                departmentDal.Update(department);
-                return new SuccessResult(Messages.DepartmentUpdated);
-            }
-            return new ErrorResult(Messages.DepartmentNotFound);
+            departmentDal.Update(department);
+            return new SuccessResult(Messages.DepartmentUpdated);
         }
 
         [SecuredOperationAspect("Department.UpdateClaim")]
@@ -116,15 +108,11 @@ namespace FixtureTracking.Business.Concrete
         public IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto)
         {
             var department = GetById(departmentForUpdateClaimDto.Id).Data;
-            if (department != null)
-            {
-                department.OperationClaimNames = departmentForUpdateClaimDto.OperationClaimNames;
-                department.UpdatedAt = DateTime.Now;
+            department.OperationClaimNames = departmentForUpdateClaimDto.OperationClaimNames;
+            department.UpdatedAt = DateTime.Now;
 
-                departmentDal.Update(department);
-                return new SuccessResult(Messages.DepartmentClaimUpdated);
-            }
-            return new ErrorResult(Messages.DepartmentNotFound);
+            departmentDal.Update(department);
+            return new SuccessResult(Messages.DepartmentClaimUpdated);
         }
     }
 }
