@@ -3,7 +3,9 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DebitValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -69,6 +71,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.DebitNotFound);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Debit.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Debit>> GetList()
@@ -76,6 +79,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Debit>>(debitDal.GetList().ToList());
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Debit.List")]
         [CacheAspect(duration: 2)]
         public List<Debit> GetListByFixtureId(Guid fixtureId)
@@ -83,6 +87,7 @@ namespace FixtureTracking.Business.Concrete
             return debitDal.GetList(d => d.FixtureId == fixtureId).ToList();
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Debit.List")]
         [CacheAspect(duration: 2)]
         public List<Debit> GetListByUserId(Guid userId)

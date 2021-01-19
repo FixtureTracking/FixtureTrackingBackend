@@ -40,7 +40,7 @@ namespace FixtureTracking.Core.Aspects.Autofac.Performance
             if (stopwatch.Elapsed.TotalSeconds > interval)
             {
                 var logDetail = GetLogDetail(invocation);
-                logDetail.ExceptionMessage = $"Performance | Expected: {interval} seconds *** Actual: {stopwatch.Elapsed.TotalSeconds:0.##} seconds";
+                logDetail.ExceptionMessage = $"Performance (in seconds) | Expected: {interval} *** Actual: {stopwatch.Elapsed.TotalSeconds:0.##}";
                 loggerServiceBase.Warn(logDetail);
             }
 

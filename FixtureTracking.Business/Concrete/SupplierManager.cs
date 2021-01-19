@@ -3,7 +3,9 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.SupplierValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -63,6 +65,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.SupplierNotFound);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Supplier.GetFixtures")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(int supplierId)
@@ -71,6 +74,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(supplierDal.GetFixtures(supplier));
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Supplier.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Supplier>> GetList()

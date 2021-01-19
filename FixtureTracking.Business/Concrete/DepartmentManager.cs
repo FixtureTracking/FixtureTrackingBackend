@@ -3,7 +3,9 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DepartmentValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
@@ -65,6 +67,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.DepartmentNotFound);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Department.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Department>> GetList()
@@ -80,6 +83,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<string[]>(department.OperationClaimNames);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Department.GetUsers")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<User>> GetUsers(int departmentId)

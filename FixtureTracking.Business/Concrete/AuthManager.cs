@@ -2,7 +2,9 @@
 using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.AuthValidations;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
@@ -24,6 +26,7 @@ namespace FixtureTracking.Business.Concrete
             this.tokenHelper = tokenHelper;
         }
 
+        [PerformanceLogAspect(2, typeof(DatabaseLogger))]
         [ValidationAspect(typeof(UserForLoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {

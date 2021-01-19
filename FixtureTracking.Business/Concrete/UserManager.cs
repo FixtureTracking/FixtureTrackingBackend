@@ -2,6 +2,8 @@
 using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
@@ -79,6 +81,7 @@ namespace FixtureTracking.Business.Concrete
             return userDal.GetClaims(user);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("User.GetDebits")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Debit>> GetDebits(Guid userId)
@@ -87,6 +90,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Debit>>(userDal.GetDebits(user));
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("User.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<User>> GetList()
@@ -94,6 +98,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<User>>(userDal.GetList(u => u.IsEnable == true).ToList());
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("User.List")]
         [CacheAspect(duration: 2)]
         public List<User> GetListByDepartmentId(int departmentId)

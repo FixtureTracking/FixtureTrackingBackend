@@ -3,7 +3,9 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.FixtureValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -73,6 +75,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.FixtureNotFound);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.GetDebits")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
@@ -81,6 +84,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Debit>>(fixtureDal.GetDebits(fixture));
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Fixture>> GetList()
@@ -88,6 +92,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList().ToList());
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListByCategoryId(short categoryId)
@@ -95,6 +100,7 @@ namespace FixtureTracking.Business.Concrete
             return fixtureDal.GetList(f => f.CategoryId == categoryId).ToList();
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListByPositionId(short positionId)
@@ -102,6 +108,7 @@ namespace FixtureTracking.Business.Concrete
             return fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList();
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
         public List<Fixture> GetListBySupplierId(int supplierId)

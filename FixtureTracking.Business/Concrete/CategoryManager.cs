@@ -3,7 +3,9 @@ using FixtureTracking.Business.BusinessAspects.Autofac;
 using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.CategoryValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
+using FixtureTracking.Core.Aspects.Autofac.Performance;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
+using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
@@ -63,6 +65,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.CategoryNotFound);
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Category.GetFixtures")]
         [CacheAspect(duration: 1)]
         public IDataResult<List<Fixture>> GetFixtures(short categoryId)
@@ -71,6 +74,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(categoryDal.GetFixtures(category));
         }
 
+        [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Category.List")]
         [CacheAspect(duration: 2)]
         public IDataResult<List<Category>> GetList()
