@@ -29,9 +29,9 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = userService.GetUserByEmailForLogin(userForLoginDto.Email);
             if (user == null)
-                throw new ObjectNotFoundException(Messages.AuthUserNotFound);
+                throw new LogicException(Messages.AuthUserNotFound);
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
-                throw new ObjectNotFoundException(Messages.AuthUserNotFound);
+                throw new LogicException(Messages.AuthUserNotFound);
 
             var claims = userService.GetClaimsForLogin(user);
             var accessToken = tokenHelper.CreateToken(user, claims);
@@ -44,10 +44,10 @@ namespace FixtureTracking.Business.Concrete
         public IDataResult<Guid> Register(UserForRegisterDto userForRegisterDto)
         {
             if (userService.IsAlreadyExistsEmail(userForRegisterDto.Email))
-                throw new ObjectAlreadyExistsException(Messages.AuthEmailExists);
+                throw new LogicException(Messages.AuthEmailExists);
 
             if (userService.IsAlreadyExistsUsername(userForRegisterDto.Username))
-                throw new ObjectAlreadyExistsException(Messages.AuthUsernameExists);
+                throw new LogicException(Messages.AuthUsernameExists);
 
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 

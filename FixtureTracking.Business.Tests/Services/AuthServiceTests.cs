@@ -13,7 +13,7 @@ namespace FixtureTracking.Business.Tests.Services
     public class AuthServiceTests
     {
         [Fact]
-        public void Register_WhenEmailAlreadyExists_ShouldThrowObjectAlreadyExistsException()
+        public void Register_WhenEmailAlreadyExists_ShouldThrowLogicException()
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Email = "user@mail.com" };
@@ -21,11 +21,11 @@ namespace FixtureTracking.Business.Tests.Services
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act & Assert
-            Assert.Throws<ObjectAlreadyExistsException>(() => sut.Register(userForRegisterDto));
+            Assert.Throws<LogicException>(() => sut.Register(userForRegisterDto));
         }
 
         [Fact]
-        public void Register_WhenUsernameAlreadyExists_ShouldThrowObjectAlreadyExistsException()
+        public void Register_WhenUsernameAlreadyExists_ShouldThrowLogicException()
         {
             // Arrange
             var userForRegisterDto = new UserForRegisterDto() { Username = "user" };
@@ -33,7 +33,7 @@ namespace FixtureTracking.Business.Tests.Services
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act & Assert
-            Assert.Throws<ObjectAlreadyExistsException>(() => sut.Register(userForRegisterDto));
+            Assert.Throws<LogicException>(() => sut.Register(userForRegisterDto));
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Login_WhenNotExistsEmail_ShouldThrowObjectNotFoundException()
+        public void Login_WhenNotExistsEmail_ShouldThrowLogicException()
         {
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "not.exists@mail.com" };
@@ -65,11 +65,11 @@ namespace FixtureTracking.Business.Tests.Services
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Login(userForLoginDto));
+            Assert.Throws<LogicException>(() => sut.Login(userForLoginDto));
         }
 
         [Fact]
-        public void Login_WhenWrongPassword_ShouldThrowObjectNotFoundException()
+        public void Login_WhenWrongPassword_ShouldThrowLogicException()
         {
             // Arrange
             var userForLoginDto = new UserForLoginDto() { Email = "user@mail.com", Password = "password" };
@@ -78,7 +78,7 @@ namespace FixtureTracking.Business.Tests.Services
             var sut = new AuthManager(mockUserService.Object, null);
 
             // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Login(userForLoginDto));
+            Assert.Throws<LogicException>(() => sut.Login(userForLoginDto));
         }
 
         [Fact]
