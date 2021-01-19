@@ -2,6 +2,7 @@
 using FixtureTracking.Core.CrossCuttingConcerns.Logging;
 using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog;
 using FixtureTracking.Core.Extensions;
+using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Interceptors.Autofac;
 using FixtureTracking.Core.Utilities.IoC;
 using FixtureTracking.Core.Utilities.Messages;
@@ -28,10 +29,13 @@ namespace FixtureTracking.Core.Aspects.Autofac.Exception
 
         protected override void OnException(IInvocation invocation, System.Exception e)
         {
-            var logDetailWithException = GetLogDetail(invocation);
-            logDetailWithException.ExceptionMessage = e.Message;
+            if (!(e is LogicException))
+            {
+                var logDetailWithException = GetLogDetail(invocation);
+                logDetailWithException.ExceptionMessage = e.Message;
 
-            loggerServiceBase.Error(logDetailWithException);
+                loggerServiceBase.Error(logDetailWithException);
+            }
         }
 
         private LogDetailWithException GetLogDetail(IInvocation invocation)
