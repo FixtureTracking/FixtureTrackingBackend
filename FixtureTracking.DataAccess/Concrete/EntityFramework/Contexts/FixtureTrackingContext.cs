@@ -9,7 +9,7 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseNpgsql(@"Server=localhost;Port=5432;Database=fixture_management;User Id=postgres;Password=1244")
+                .UseNpgsql(_connectionString)
                 .UseSnakeCaseNamingConvention();
         }
 
@@ -20,5 +20,12 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework.Contexts
         public DbSet<FixturePosition> FixturePositions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<User> Users { get; set; }
+
+
+        private static string _connectionString;
+        public static void SetConnectionString(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
     }
 }
