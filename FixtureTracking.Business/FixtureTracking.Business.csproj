@@ -1,18 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FixtureTracking.Core\FixtureTracking.Core.csproj" />
-    <ProjectReference Include="..\FixtureTracking.DataAccess\FixtureTracking.DataAccess.csproj" />
-    <ProjectReference Include="..\FixtureTracking.Entities\FixtureTracking.Entities.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FixtureTracking.DataAccess\FixtureTracking.DataAccess.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.0.0" />
-    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Autofac" Version="6.0.0" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>
