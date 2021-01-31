@@ -74,9 +74,9 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<Fixture>>(categoryDal.GetFixtures(category));
         }
 
-        [PerformanceLogAspect(1, typeof(FileLogger))]
-        [SecuredOperationAspect("Category.List")]
-        [CacheAspect(duration: 2)]
+        //[PerformanceLogAspect(1, typeof(FileLogger))]
+        //[SecuredOperationAspect("Category.List")]
+        //[CacheAspect(duration: 2)]
         public IDataResult<List<Category>> GetList()
         {
             return new SuccessDataResult<List<Category>>(categoryDal.GetList(c => c.IsEnable == true).ToList());

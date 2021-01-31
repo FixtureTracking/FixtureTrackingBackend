@@ -2,7 +2,7 @@
 {
     public interface IResult
     {
-        bool Success { get; }
-        string Message { get; }
+        bool Success { get; set; }
+        string Message { get; set; }
     }
 }
