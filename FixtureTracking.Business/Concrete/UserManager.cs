@@ -24,7 +24,7 @@ namespace FixtureTracking.Business.Concrete
             this.userDal = userDal;
         }
 
-        [SecuredOperationAspect("User.Add")]
+        [SecuredOperationAspect("User.Add,Auth.Register")]
         [CacheRemoveAspect("IUserService.Get")]
         [CacheRemoveAspect("IDepartmentService.GetUsers")]
         public Guid Add(User user)
@@ -111,13 +111,13 @@ namespace FixtureTracking.Business.Concrete
             return userDal.Get(u => u.Email == email);
         }
 
-        [SecuredOperationAspect("User.Any")]
+        [SecuredOperationAspect("User.Any,Auth.Register")]
         public bool IsAlreadyExistsEmail(string email)
         {
             return userDal.Any(u => u.Email == email);
         }
 
-        [SecuredOperationAspect("User.Any")]
+        [SecuredOperationAspect("User.Any,Auth.Register")]
         public bool IsAlreadyExistsUsername(string username)
         {
             return userDal.Any(u => u.Username == username);
