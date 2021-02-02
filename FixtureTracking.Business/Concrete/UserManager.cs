@@ -8,7 +8,7 @@ using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
-using FixtureTracking.Entities.Concrete;
+using FixtureTracking.Entities.Dtos.Debit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,8 +56,8 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.UserNotFound);
         }
 
-        [SecuredOperationAspect("User.Get")]
-        [CacheAspect()]
+        //[SecuredOperationAspect("User.Get")]
+        //[CacheAspect()]
         public IDataResult<User> GetById(Guid userId)
         {
             var user = userDal.Get(u => u.Id == userId);
@@ -81,13 +81,13 @@ namespace FixtureTracking.Business.Concrete
             return userDal.GetClaims(user);
         }
 
-        [PerformanceLogAspect(1, typeof(FileLogger))]
-        [SecuredOperationAspect("User.GetDebits")]
-        [CacheAspect(duration: 1)]
-        public IDataResult<List<Debit>> GetDebits(Guid userId)
+        //[PerformanceLogAspect(1, typeof(FileLogger))]
+        //[SecuredOperationAspect("User.GetDebits")]
+        //[CacheAspect(duration: 1)]
+        public IDataResult<List<DebitForFixtureDetailDto>> GetDebits(Guid userId)
         {
             var user = GetById(userId).Data;
-            return new SuccessDataResult<List<Debit>>(userDal.GetDebits(user));
+            return new SuccessDataResult<List<DebitForFixtureDetailDto>>(userDal.GetDebits(user));
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

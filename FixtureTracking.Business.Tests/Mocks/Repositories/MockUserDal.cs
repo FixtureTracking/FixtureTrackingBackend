@@ -1,6 +1,6 @@
 ﻿using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.DataAccess.Abstract;
-using FixtureTracking.Entities.Concrete;
+using FixtureTracking.Entities.Dtos.Debit;
 using Moq;
 using System.Collections.Generic;
 
@@ -16,7 +16,7 @@ namespace FixtureTracking.Business.Tests.Mocks.Repositories
             return this;
         }
 
-        public MockUserDal MockGetDebits(List<Debit> result)
+        public MockUserDal MockGetDebits(List<DebitForFixtureDetailDto> result)
         {
             Setup(x => x.GetDebits(It.IsAny<User>()))
                 .Returns(result);
