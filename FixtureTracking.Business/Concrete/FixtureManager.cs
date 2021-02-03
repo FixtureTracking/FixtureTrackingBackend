@@ -10,6 +10,7 @@ using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Concrete;
+using FixtureTracking.Entities.Dtos.Debit;
 using FixtureTracking.Entities.Dtos.Fixture;
 using System;
 using System.Collections.Generic;
@@ -78,10 +79,10 @@ namespace FixtureTracking.Business.Concrete
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.GetDebits")]
         [CacheAspect(duration: 1)]
-        public IDataResult<List<Debit>> GetDebits(Guid fixtureId)
+        public IDataResult<List<DebitForUserDetailDto>> GetDebits(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
-            return new SuccessDataResult<List<Debit>>(fixtureDal.GetDebits(fixture));
+            return new SuccessDataResult<List<DebitForUserDetailDto>>(fixtureDal.GetDebits(fixture));
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

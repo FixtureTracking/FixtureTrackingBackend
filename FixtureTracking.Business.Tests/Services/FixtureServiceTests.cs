@@ -2,6 +2,7 @@
 using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
+using FixtureTracking.Entities.Dtos.Debit;
 using FixtureTracking.Entities.Dtos.Fixture;
 using Moq;
 using System;
@@ -75,11 +76,11 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetDebits_WhenCalledDebits_ReturnDebits()
+        public void GetDebits_WhenCalledDebits_ReturnDebitDtos()
         {
             // Arrange
             var fixtureId = Guid.NewGuid();
-            var mockFixtureDal = new MockFixtureDal().MockGetDebits(new List<Debit>()).MockGet(new Fixture());
+            var mockFixtureDal = new MockFixtureDal().MockGetDebits(new List<DebitForUserDetailDto>()).MockGet(new Fixture());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
@@ -87,7 +88,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
-            Assert.True(result.Success);
         }
 
         [Fact]
