@@ -174,7 +174,10 @@ namespace FixtureTracking.Business.Tests.Services
         public void UpdateOperationClaim_WhenUpdatedUpdateClaim_ShouldUpdate()
         {
             // Arrange
-            var departmentForUpdateClaimDto = new DepartmentForUpdateClaimDto();
+            var departmentForUpdateClaimDto = new DepartmentForUpdateClaimDto
+            {
+                OperationClaimNames = new string[] { "Department.UpdateClaim" }
+            };
             var mockDepartmentDal = new MockDepartmentDal().MockUpdate().MockGet(new Department());
             var sut = new DepartmentManager(mockDepartmentDal.Object);
 

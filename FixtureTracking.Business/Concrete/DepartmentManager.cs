@@ -38,7 +38,7 @@ namespace FixtureTracking.Business.Concrete
                 Description = departmentForAddDto.Description,
                 IsEnable = true,
                 Name = departmentForAddDto.Name,
-                OperationClaimNames = new string[] { },
+                OperationClaimNames = new string[] { "User.Me" },
                 UpdatedAt = DateTime.Now
             };
             departmentDal.Add(department);
@@ -112,6 +112,7 @@ namespace FixtureTracking.Business.Concrete
         public IResult UpdateOperationClaim(DepartmentForUpdateClaimDto departmentForUpdateClaimDto)
         {
             var department = GetById(departmentForUpdateClaimDto.Id).Data;
+            departmentForUpdateClaimDto.OperationClaimNames.Append("User.Me");
             department.OperationClaimNames = departmentForUpdateClaimDto.OperationClaimNames;
             department.UpdatedAt = DateTime.Now;
 
