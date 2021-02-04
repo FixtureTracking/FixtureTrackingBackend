@@ -1,6 +1,8 @@
-﻿namespace FixtureTracking.Entities.Dtos.Debit
+﻿using FixtureTracking.Core.Entities;
+
+namespace FixtureTracking.Entities.Dtos.Debit
 {
-    public class DebitForFixtureDetailDto
+    public class DebitForFixtureDetailDto : IDto
     {
         public Concrete.Debit Debit { get; set; }
         public string FixtureName { get; set; }
