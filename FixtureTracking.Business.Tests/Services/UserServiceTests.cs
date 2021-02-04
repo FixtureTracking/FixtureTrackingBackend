@@ -94,6 +94,33 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetDetail_WhenCalledNotExistUser_ShouldThrowObjectNotFoundExcepiton()
+        {
+            // Arrange
+            var userId = Guid.Empty;
+            var mockUserDal = new MockUserDal().MockGetDetail(null);
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.GetDetail(userId));
+        }
+
+        [Fact]
+        public void GetDetail_WhenCalledWithId_ShouldReturnUserDetailDto()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var mockUserDal = new MockUserDal().MockGetDetail(new Entities.Dtos.User.UserForDetailDto()).MockGet(new User());
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.GetDetail(userId);
+
+            // Assert
+            Assert.NotNull(result.Data);
+        }
+
+        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnUsers()
         {
             // Arrange

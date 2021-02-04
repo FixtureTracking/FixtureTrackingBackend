@@ -9,6 +9,7 @@ using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.DataAccess.Abstract;
 using FixtureTracking.Entities.Dtos.Debit;
+using FixtureTracking.Entities.Dtos.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,6 +89,14 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = GetById(userId).Data;
             return new SuccessDataResult<List<DebitForFixtureDetailDto>>(userDal.GetDebits(user));
+        }
+
+        [SecuredOperationAspect("User.Get,User.Me")]
+        [CacheAspect()]
+        public IDataResult<UserForDetailDto> GetDetail(Guid userId)
+        {
+            var user = GetById(userId).Data;
+            return new SuccessDataResult<UserForDetailDto>(userDal.GetDetail(user));
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
