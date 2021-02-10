@@ -209,13 +209,31 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void Delete_WhenFixturePositionIsNotAvailable_ShouldThrowLogicException()
+        {
+            // Arrange
+            Guid fixtureId = Guid.NewGuid();
+            Fixture fixture = new Fixture()
+            {
+                Id = fixtureId,
+                FixturePositionId = 2
+            };
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
+            var sut = new FixtureManager(mockFixtureDal.Object);
+
+            // Act & Assert
+            Assert.Throws<LogicException>(() => sut.Delete(fixtureId));
+        }
+
+        [Fact]
         public void Delete_WhenDeletedFixture_ShouldUpdateFixturePosition()
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
             Fixture fixture = new Fixture()
             {
-                Id = fixtureId
+                Id = fixtureId,
+                FixturePositionId = 1
             };
             var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
             var sut = new FixtureManager(mockFixtureDal.Object);

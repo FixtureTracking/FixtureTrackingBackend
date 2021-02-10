@@ -59,6 +59,9 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
+            if (fixture.FixturePositionId != (short)FixturePositions.Position.Available)
+                throw new LogicException(Messages.FixtureWasNotDeleted);
+
             fixture.FixturePositionId = 0;
             fixture.UpdatedAt = DateTime.Now;
 
