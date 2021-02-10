@@ -141,5 +141,18 @@ namespace FixtureTracking.Business.Concrete
             fixtureDal.Update(fixture);
             return new SuccessResult(Messages.FixtureUpdated);
         }
+
+        [SecuredOperationAspect("Fixture.Update")]
+        [CacheRemoveAspect("IFixtureService.Get")]
+        [CacheRemoveAspect("ICategoryService.GetFixtures")]
+        [CacheRemoveAspect("ISupplierService.GetFixtures")]
+        public IResult UpdatePosition(Guid fixtureId, FixturePositions.Position position)
+        {
+            var fixture = GetById(fixtureId).Data;
+            fixture.FixturePositionId = (short)position;
+
+            fixtureDal.Update(fixture);
+            return new SuccessResult(Messages.FixturePositionUpdated);
+        }
     }
 }

@@ -197,6 +197,35 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void UpdatePosition_WhenUpdatedNotExistsFixture_ShouldThrowObjectNotFoundException()
+        {
+            // Arrange
+            Guid fixtureId = Guid.Empty;
+            var position = FixturePositions.Position.Debit;
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
+            var sut = new FixtureManager(mockFixtureDal.Object);
+
+            // Act & Assert
+            Assert.Throws<ObjectNotFoundException>(() => sut.UpdatePosition(fixtureId, position));
+        }
+
+        [Fact]
+        public void UpdatePosition_WhenUpdatedFixturePosition_ShouldUpdatePosition()
+        {
+            // Arrange
+            Guid fixtureId = Guid.NewGuid();
+            var position = FixturePositions.Position.Debit;
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(new Fixture());
+            var sut = new FixtureManager(mockFixtureDal.Object);
+
+            // Act
+            sut.UpdatePosition(fixtureId, position);
+
+            // Assert
+            mockFixtureDal.VerifyUpdate(Times.Once());
+        }
+
+        [Fact]
         public void Delete_WhenDeletedNotExistsFixture_ShouldThrowObjectNotFoundException()
         {
             // Arrange

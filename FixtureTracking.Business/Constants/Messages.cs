@@ -30,6 +30,7 @@ namespace FixtureTracking.Business.Constants
 
         public static string FixtureAdded = "Fixture added";
         public static string FixtureUpdated = "Fixture updated";
+        public static string FixturePositionUpdated = "Fixture position updated";
         public static string FixtureDeleted = "Fixture deleted";
         public static string FixtureWasNotDeleted = "Fixture was not deleted";
         public static string FixtureNotFound = "Fixture not found";
