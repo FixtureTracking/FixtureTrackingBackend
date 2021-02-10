@@ -1,6 +1,8 @@
 ﻿using FixtureTracking.Business.Concrete;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
+using FixtureTracking.Business.Tests.Mocks.Services;
 using FixtureTracking.Core.Utilities.CustomExceptions;
+using FixtureTracking.Core.Utilities.Results;
 using FixtureTracking.Entities.Concrete;
 using FixtureTracking.Entities.Dtos.Debit;
 using Moq;
@@ -18,7 +20,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             Guid debitId = Guid.Empty;
             var mockDebitDal = new MockDebitDal().MockGet(null);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act & Assert
             Assert.Throws<ObjectNotFoundException>(() => sut.GetById(debitId));
@@ -34,7 +36,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = debitId
             };
             var mockDebitDal = new MockDebitDal().MockGet(debit);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetById(debitId);
@@ -54,7 +56,7 @@ namespace FixtureTracking.Business.Tests.Services
                 new Debit()
             };
             var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetList();
@@ -79,7 +81,7 @@ namespace FixtureTracking.Business.Tests.Services
             };
 
             var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetListByFixtureId(fixtureId);
@@ -104,7 +106,7 @@ namespace FixtureTracking.Business.Tests.Services
             };
 
             var mockDebitDal = new MockDebitDal().MockGetList(debits);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetListByUserId(userId);
@@ -114,12 +116,28 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void Add_WhenFixturePositionIsNotAvailable_ShouldThrowLogicException()
+        {
+            // Arrange
+            DebitForAddDto debitForAddDto = new DebitForAddDto();
+            IDataResult<Fixture> fixtureDataResult = new SuccessDataResult<Fixture>(new Fixture() { FixturePositionId = 2 });
+            var mockDebitDal = new MockDebitDal().MockAdd(new Debit());
+            var mockFixtureService = new MockFixtureService().MockGetById(fixtureDataResult).MockUpdatePostiton(new SuccessResult());
+            var sut = new DebitManager(mockDebitDal.Object, mockFixtureService.Object);
+
+            // Act & Assert
+            Assert.Throws<LogicException>(() => sut.Add(debitForAddDto));
+        }
+
+        [Fact]
         public void Add_WhenAddedNewDebit_ShouldAddAndReturnId()
         {
             // Arrange
             DebitForAddDto debitForAddDto = new DebitForAddDto();
+            IDataResult<Fixture> fixtureDataResult = new SuccessDataResult<Fixture>(new Fixture() { FixturePositionId = 1 });
             var mockDebitDal = new MockDebitDal().MockAdd(new Debit());
-            var sut = new DebitManager(mockDebitDal.Object);
+            var mockFixtureService = new MockFixtureService().MockGetById(fixtureDataResult).MockUpdatePostiton(new SuccessResult());
+            var sut = new DebitManager(mockDebitDal.Object, mockFixtureService.Object);
 
             // Act
             var result = sut.Add(debitForAddDto);
@@ -134,7 +152,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var debitForUpdateDto = new DebitForUpdateDto();
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act & Assert
             Assert.Throws<ObjectNotFoundException>(() => sut.Update(debitForUpdateDto));
@@ -146,7 +164,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             var debitForUpdateDto = new DebitForUpdateDto();
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(new Debit());
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             sut.Update(debitForUpdateDto);
@@ -161,7 +179,7 @@ namespace FixtureTracking.Business.Tests.Services
             // Arrange
             Guid debitId = Guid.Empty;
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act & Assert
             Assert.Throws<ObjectNotFoundException>(() => sut.Delete(debitId));
@@ -177,7 +195,7 @@ namespace FixtureTracking.Business.Tests.Services
                 Id = debitId
             };
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(debit);
-            var sut = new DebitManager(mockDebitDal.Object);
+            var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             sut.Delete(debitId);

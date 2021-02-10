@@ -20,10 +20,12 @@ namespace FixtureTracking.Business.Concrete
     public class DebitManager : IDebitService
     {
         private readonly IDebitDal debitDal;
+        private readonly IFixtureService fixtureService;
 
-        public DebitManager(IDebitDal debitDal)
+        public DebitManager(IDebitDal debitDal, IFixtureService fixtureService)
         {
             this.debitDal = debitDal;
+            this.fixtureService = fixtureService;
         }
 
         [SecuredOperationAspect("Debit.Add")]
@@ -32,6 +34,10 @@ namespace FixtureTracking.Business.Concrete
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IDataResult<Guid> Add(DebitForAddDto debitForAddDto)
         {
+            var fixture = fixtureService.GetById(debitForAddDto.FixtureId).Data;
+            if (fixture.FixturePositionId != (short)FixturePositions.Position.Available)
+                throw new LogicException(Messages.DebitFixtureIsNotAvailable);
+
             var debit = new Debit()
             {
                 CreatedAt = DateTime.Now,
@@ -44,6 +50,8 @@ namespace FixtureTracking.Business.Concrete
                 UserId = debitForAddDto.UserId
             };
             debitDal.Add(debit);
+
+            fixtureService.UpdatePosition(debitForAddDto.FixtureId, FixturePositions.Position.Debit);
             return new SuccessDataResult<Guid>(debit.Id, Messages.DebitAdded);
         }
 
