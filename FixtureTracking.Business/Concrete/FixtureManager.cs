@@ -104,9 +104,9 @@ namespace FixtureTracking.Business.Concrete
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
-        public List<Fixture> GetListByPositionId(short positionId)
+        public IDataResult<List<Fixture>> GetListByPosition(FixturePositions.Position position)
         {
-            return fixtureDal.GetList(f => f.FixturePositionId == positionId).ToList();
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId == (short)position).ToList());
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

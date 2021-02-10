@@ -1,4 +1,5 @@
 ﻿using FixtureTracking.Business.Concrete;
+using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Concrete;
@@ -61,6 +62,21 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotEmpty(result.Data);
+        }
+
+        [Fact]
+        public void GetListByPosition_WhenCalledWithPosition_ShouldReturnFixtures()
+        {
+            // Arrange
+            var position = FixturePositions.Position.Available;
+            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
+            var sut = new FixtureManager(mockFixtureDal.Object);
+
+            // Act
+            var result = sut.GetListByPosition(position);
+
+            // Assert
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -133,30 +149,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Act
             var result = sut.GetListByCategoryId(categoryId);
-
-            // Assert
-            Assert.NotEmpty(result);
-        }
-
-        [Fact]
-        public void GetListByPositionId_WhenCalledWithPositionId_ShouldReturnFixtures()
-        {
-            // Arrange
-            short positionId = 1;
-            Fixture fixture = new Fixture()
-            {
-                Id = Guid.NewGuid(),
-                FixturePositionId = positionId
-            };
-            List<Fixture> fixtures = new List<Fixture>
-            {
-                fixture
-            };
-            var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act
-            var result = sut.GetListByPositionId(positionId);
 
             // Assert
             Assert.NotEmpty(result);
