@@ -90,7 +90,7 @@ namespace FixtureTracking.Business.Concrete
         [CacheAspect(duration: 2)]
         public IDataResult<List<Fixture>> GetList()
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId != 0).ToList());
+            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId != (short)FixturePositions.Position.NotActive).ToList());
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
