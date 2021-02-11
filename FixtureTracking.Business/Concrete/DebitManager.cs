@@ -88,9 +88,9 @@ namespace FixtureTracking.Business.Concrete
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Debit.List")]
         [CacheAspect(duration: 2)]
-        public IDataResult<List<Debit>> GetList()
+        public IDataResult<List<DebitForDetailDto>> GetList()
         {
-            return new SuccessDataResult<List<Debit>>(debitDal.GetList().ToList());
+            return new SuccessDataResult<List<DebitForDetailDto>>(debitDal.GetDetailList());
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

@@ -9,7 +9,7 @@ namespace FixtureTracking.Business.Abstract
     public interface IDebitService
     {
         IDataResult<Debit> GetById(Guid debitId);
-        IDataResult<List<Debit>> GetList();
+        IDataResult<List<DebitForDetailDto>> GetList();
         List<Debit> GetListByFixtureId(Guid fixtureId);
         List<Debit> GetListByUserId(Guid userId);
         IDataResult<Guid> Add(DebitForAddDto debitForAddDto);

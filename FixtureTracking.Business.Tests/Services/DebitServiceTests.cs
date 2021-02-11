@@ -45,7 +45,7 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnDebits()
         {
             // Arrange
-            var mockDebitDal = new MockDebitDal().MockGetList(new List<Debit>());
+            var mockDebitDal = new MockDebitDal().MockGetDetailList(new List<DebitForDetailDto>());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
