@@ -91,20 +91,12 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessDataResult<List<DebitForFixtureDetailDto>>(userDal.GetDebits(user));
         }
 
-        [SecuredOperationAspect("User.Get,User.Me")]
-        [CacheAspect()]
-        public IDataResult<UserForDetailDto> GetDetail(Guid userId)
-        {
-            var user = GetById(userId).Data;
-            return new SuccessDataResult<UserForDetailDto>(userDal.GetDetail(user));
-        }
-
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("User.List")]
         [CacheAspect(duration: 2)]
-        public IDataResult<List<User>> GetList()
+        public IDataResult<List<UserForDetailDto>> GetList()
         {
-            return new SuccessDataResult<List<User>>(userDal.GetList(u => u.IsEnable == true).ToList());
+            return new SuccessDataResult<List<UserForDetailDto>>(userDal.GetDetailList());
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

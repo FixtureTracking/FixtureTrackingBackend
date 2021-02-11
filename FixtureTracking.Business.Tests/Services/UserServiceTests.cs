@@ -94,25 +94,10 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetDetail_WhenCalledWithId_ShouldReturnUserDetailDto()
-        {
-            // Arrange
-            var userId = Guid.NewGuid();
-            var mockUserDal = new MockUserDal().MockGetDetail(new Entities.Dtos.User.UserForDetailDto()).MockGet(new User());
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act
-            var result = sut.GetDetail(userId);
-
-            // Assert
-            Assert.NotNull(result.Data);
-        }
-
-        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnUsers()
         {
             // Arrange
-            var mockUserDal = new MockUserDal().MockGetList(new List<User>());
+            var mockUserDal = new MockUserDal().MockGetDetail(new List<Entities.Dtos.User.UserForDetailDto>());
             var sut = new UserManager(mockUserDal.Object);
 
             // Act

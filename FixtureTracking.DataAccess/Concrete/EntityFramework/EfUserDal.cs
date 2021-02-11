@@ -37,24 +37,20 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework
             return result.ToList();
         }
 
-        public UserForDetailDto GetDetail(User user)
+        public List<UserForDetailDto> GetDetailList()
         {
             using var context = new FixtureTrackingContext();
-            var result = from department in context.Departments
-                         where department.Id == user.DepartmentId
+            var result = from user in context.Users
+                         join department in context.Departments
+                         on user.DepartmentId equals department.Id
+                         where user.IsEnable == true
                          select new UserForDetailDto()
                          {
-                             BirthDate = user.BirthDate,
-                             DepartmentId = user.DepartmentId,
+                             User = user,
                              DepartmentName = department.Name,
-                             Email = user.Email,
-                             FirstName = user.FirstName,
-                             FullName = $"{user.FirstName} {user.LastName}",
-                             Id = user.Id,
-                             LastName = user.LastName,
-                             Username = user.Username
+                             FullName = $"{user.FirstName} {user.LastName}"
                          };
-            return result.FirstOrDefault();
+            return result.ToList();
         }
     }
 }

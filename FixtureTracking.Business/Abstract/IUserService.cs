@@ -12,8 +12,7 @@ namespace FixtureTracking.Business.Abstract
         IDataResult<User> GetById(Guid userId);
         IDataResult<User> GetByUsername(string username);
         IDataResult<User> GetByEmail(string email);
-        IDataResult<UserForDetailDto> GetDetail(Guid userId);
-        IDataResult<List<User>> GetList();
+        IDataResult<List<UserForDetailDto>> GetList();
         IDataResult<List<DebitForFixtureDetailDto>> GetDebits(Guid userId);
         List<User> GetListByDepartmentId(int departmentId);
         bool IsAlreadyExistsEmail(string email);

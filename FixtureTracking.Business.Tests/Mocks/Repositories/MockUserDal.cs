@@ -25,9 +25,9 @@ namespace FixtureTracking.Business.Tests.Mocks.Repositories
             return this;
         }
 
-        public MockUserDal MockGetDetail(UserForDetailDto result)
+        public MockUserDal MockGetDetail(List<UserForDetailDto> result)
         {
-            Setup(x => x.GetDetail(It.IsAny<User>()))
+            Setup(x => x.GetDetailList())
                 .Returns(result);
 
             return this;
