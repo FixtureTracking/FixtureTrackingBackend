@@ -36,7 +36,7 @@ namespace FixtureTracking.Business.Concrete
         {
             var fixture = fixtureService.GetById(debitForAddDto.FixtureId).Data;
             if (fixture.FixturePositionId != (short)FixturePositions.Position.Available)
-                throw new LogicException(Messages.DebitFixtureIsNotAvailable);
+                throw new LogicException(Messages.DebitFixturePosIsNotAvailable);
 
             var debit = new Debit()
             {
@@ -61,11 +61,17 @@ namespace FixtureTracking.Business.Concrete
         public IResult Delete(Guid debitId)
         {
             var debit = GetById(debitId).Data;
+
+            var fixture = fixtureService.GetById(debit.FixtureId).Data;
+            if (fixture.FixturePositionId != (short)FixturePositions.Position.Debit)
+                throw new LogicException(Messages.DebitFixturePosIsNotDebit);
+
             debit.IsReturn = true;
             debit.DateReturn = DateTime.Now;
             debit.UpdatedAt = DateTime.Now;
-
             debitDal.Update(debit);
+
+            fixtureService.UpdatePosition(debit.FixtureId, FixturePositions.Position.Available);
             return new SuccessResult(Messages.DebitDeleted);
         }
 

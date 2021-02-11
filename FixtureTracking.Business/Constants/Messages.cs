@@ -21,7 +21,8 @@ namespace FixtureTracking.Business.Constants
         public static string DebitUpdated = "Debit updated";
         public static string DebitDeleted = "Debit deleted";
         public static string DebitNotFound = "Debit not found";
-        public static string DebitFixtureIsNotAvailable = "Debit - Fixture is not available";
+        public static string DebitFixturePosIsNotAvailable = "Debit - Fixture position is not 'available'";
+        public static string DebitFixturePosIsNotDebit = "Debit - Fixture position is not 'debit'";
 
         public static string DepartmentAdded = "Department added";
         public static string DepartmentUpdated = "Department updated";

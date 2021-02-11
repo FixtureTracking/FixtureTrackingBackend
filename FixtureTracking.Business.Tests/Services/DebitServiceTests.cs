@@ -132,12 +132,28 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void Delete_WhenFixturePositionIsNotDebit_ShouldThrowLogicException()
+        {
+            // Arrange
+            Guid debitId = Guid.NewGuid();
+            IDataResult<Fixture> fixtureDataResult = new SuccessDataResult<Fixture>(new Fixture() { FixturePositionId = 0 });
+            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(new Debit());
+            var mockFixtureService = new MockFixtureService().MockGetById(fixtureDataResult).MockUpdatePostiton(new SuccessResult());
+            var sut = new DebitManager(mockDebitDal.Object, mockFixtureService.Object);
+
+            // Act & Assert
+            Assert.Throws<LogicException>(() => sut.Delete(debitId));
+        }
+
+        [Fact]
         public void Delete_WhenDeletedDebit_ShouldUpdateReturnStatus()
         {
             // Arrange
             Guid debitId = Guid.NewGuid();
+            IDataResult<Fixture> fixtureDataResult = new SuccessDataResult<Fixture>(new Fixture() { FixturePositionId = 2 });
             var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(new Debit());
-            var sut = new DebitManager(mockDebitDal.Object, null);
+            var mockFixtureService = new MockFixtureService().MockGetById(fixtureDataResult).MockUpdatePostiton(new SuccessResult());
+            var sut = new DebitManager(mockDebitDal.Object, mockFixtureService.Object);
 
             // Act
             sut.Delete(debitId);
