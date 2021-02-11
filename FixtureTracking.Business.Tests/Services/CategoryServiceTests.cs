@@ -28,11 +28,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             short categoryId = 1;
-            Category category = new Category()
-            {
-                Id = categoryId
-            };
-            var mockCategoryDal = new MockCategoryDal().MockGet(category);
+            var mockCategoryDal = new MockCategoryDal().MockGet(new Category());
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
@@ -46,31 +42,14 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnCategories()
         {
             // Arrange
-            var categories = new List<Category>()
-            {
-                new Category(),
-                new Category()
-            };
-            var mockCategoryDal = new MockCategoryDal().MockGetList(categories);
+            var mockCategoryDal = new MockCategoryDal().MockGetList(new List<Category>());
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
             var result = sut.GetList();
 
             // Assert
-            Assert.NotEmpty(result.Data);
-        }
-
-        [Fact]
-        public void GetFixtures_WhenNotExistsCategory_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            short categoryId = 111;
-            var mockCategoryDal = new MockCategoryDal().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.GetFixtures(categoryId));
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
@@ -94,8 +73,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var categoryForAddDto = new CategoryForAddDto();
-            var category = new Category();
-            var mockCategoryDal = new MockCategoryDal().MockAdd(category);
+            var mockCategoryDal = new MockCategoryDal().MockAdd(new Category());
             var sut = new CategoryManager(mockCategoryDal.Object);
 
             // Act
@@ -103,18 +81,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.Equal(new short(), result.Data);
-        }
-
-        [Fact]
-        public void Update_WhenUpdatedNotExistsCategory_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            var categoryForUpdateDto = new CategoryForUpdateDto();
-            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Update(categoryForUpdateDto));
         }
 
         [Fact]
@@ -133,19 +99,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Deleted_WhenDeletedNotExistsCategory_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            short categoryId = 111;
-            var mockCategoryDal = new MockCategoryDal().MockUpdate().MockGet(null);
-            var sut = new CategoryManager(mockCategoryDal.Object);
-
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(categoryId));
-        }
-
-        [Fact]
         public void Deleted_WhenDeletedCategory_ShouldUpdateEnableStatus()
         {
             // Arrange
@@ -159,6 +112,5 @@ namespace FixtureTracking.Business.Tests.Services
             // Assert
             mockCategoryDal.VerifyUpdate(Times.Once());
         }
-
     }
 }

@@ -28,11 +28,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             int supplierId = 1;
-            var supplier = new Supplier()
-            {
-                Id = supplierId
-            };
-            var mockSupplierDal = new MockSupplierDal().MockGet(supplier);
+            var mockSupplierDal = new MockSupplierDal().MockGet(new Supplier());
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
@@ -46,30 +42,14 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnSuppliers()
         {
             // Arrange
-            var suppliers = new List<Supplier>() {
-                new Supplier(),
-                new Supplier()
-            };
-            var mockSupplierDal = new MockSupplierDal().MockGetList(suppliers);
+            var mockSupplierDal = new MockSupplierDal().MockGetList(new List<Supplier>());
             var sut = new SupplierManager(mockSupplierDal.Object);
 
             // Act
             var result = sut.GetList();
 
             // Assert
-            Assert.NotEmpty(result.Data);
-        }
-
-        [Fact]
-        public void GetFixtures_WhenNotExistsSupplier_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            int supplierId = 111;
-            var mockSupplierDal = new MockSupplierDal().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.GetFixtures(supplierId));
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
@@ -85,7 +65,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result.Data);
-            Assert.True(result.Success);
         }
 
         [Fact]
@@ -104,18 +83,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsSupplier_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            var supplierForUpdateDto = new SupplierForUpdateDto();
-            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Update(supplierForUpdateDto));
-        }
-
-        [Fact]
         public void Update_WhenUpdatedSupplier_ShouldUpdate()
         {
             // Arrange
@@ -128,18 +95,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             mockSupplierDal.VerifyUpdate(Times.Once());
-        }
-
-        [Fact]
-        public void Delete_WhenDeletedNotExistsSupplier_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            int supplierId = 111;
-            var mockSupplierDal = new MockSupplierDal().MockUpdate().MockGet(null);
-            var sut = new SupplierManager(mockSupplierDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(supplierId));
         }
 
         [Fact]

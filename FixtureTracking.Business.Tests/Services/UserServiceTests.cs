@@ -94,18 +94,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void GetDetail_WhenCalledNotExistUser_ShouldThrowObjectNotFoundExcepiton()
-        {
-            // Arrange
-            var userId = Guid.Empty;
-            var mockUserDal = new MockUserDal().MockGetDetail(null);
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.GetDetail(userId));
-        }
-
-        [Fact]
         public void GetDetail_WhenCalledWithId_ShouldReturnUserDetailDto()
         {
             // Arrange
@@ -124,32 +112,14 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnUsers()
         {
             // Arrange
-            var users = new List<User>()
-            {
-                new User(),
-                new User(),
-                new User()
-            };
-            var mockUserDal = new MockUserDal().MockGetList(users);
+            var mockUserDal = new MockUserDal().MockGetList(new List<User>());
             var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetList();
 
             // Assert
-            Assert.NotEmpty(result.Data);
-        }
-
-        [Fact]
-        public void GetDebits_WhenNotExistsUser_ShouldThrowObjectNotFoundExcepiton()
-        {
-            // Arrange
-            var userId = Guid.Empty;
-            var mockUserDal = new MockUserDal().MockGet(null);
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.GetDebits(userId));
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
@@ -172,21 +142,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             int departmentId = 1;
-            var users = new List<User>()
-            {
-                new User()
-                {
-                    DepartmentId = departmentId
-                },
-            };
-            var mockUserDal = new MockUserDal().MockGetList(users);
+            var mockUserDal = new MockUserDal().MockGetList(new List<User>());
             var sut = new UserManager(mockUserDal.Object);
 
             // Act
             var result = sut.GetListByDepartmentId(departmentId);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -237,18 +200,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsUser_ShouldThrowObjectNotFoundExcepiton()
-        {
-            // Arrange
-            var userId = Guid.Empty;
-            var mockUserDal = new MockUserDal().MockUpdate().MockGet(null);
-            var sut = new UserManager(mockUserDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(userId));
-        }
-
-        [Fact]
         public void Delete_WhenDeletedUser_ShouldUpdateEnableStatus()
         {
             // Arrange
@@ -267,9 +218,8 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetClaimsForLogin_WhenCalledClaimsForLogin_ShouldReturnClaimNameArray()
         {
             // Arrange
-            string[] claimNames = { "Fixture.Get", "Fixture.List" };
             var user = new User();
-            var mockUserDal = new MockUserDal().MockGetClaims(claimNames);
+            var mockUserDal = new MockUserDal().MockGetClaims(Array.Empty<string>());
             var sut = new UserManager(mockUserDal.Object);
 
             // Act
@@ -293,6 +243,5 @@ namespace FixtureTracking.Business.Tests.Services
             // Assert
             Assert.NotNull(result);
         }
-
     }
 }

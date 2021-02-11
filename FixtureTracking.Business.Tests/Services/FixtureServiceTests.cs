@@ -31,11 +31,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
-            Fixture fixture = new Fixture
-            {
-                Id = fixtureId
-            };
-            var mockFixtureDal = new MockFixtureDal().MockGet(fixture);
+            var mockFixtureDal = new MockFixtureDal().MockGet(new Fixture());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
@@ -49,19 +45,14 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnFixtures()
         {
             // Arrange
-            List<Fixture> fixtures = new List<Fixture>
-            {
-                new Fixture(),
-                new Fixture()
-            };
-            var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
+            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetList();
 
             // Assert
-            Assert.NotEmpty(result.Data);
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
@@ -77,18 +68,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             Assert.NotNull(result);
-        }
-
-        [Fact]
-        public void GetDebits_WhenNotExistsFixture_ReturnThrowObjectNotFoundException()
-        {
-            // Arrange
-            var fixtureId = Guid.Empty;
-            var mockFixtureDal = new MockFixtureDal().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.GetDebits(fixtureId));
         }
 
         [Fact]
@@ -111,23 +90,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             int supplierId = 1;
-            Fixture fixture = new Fixture()
-            {
-                Id = Guid.NewGuid(),
-                SupplierId = supplierId
-            };
-            List<Fixture> fixtures = new List<Fixture>
-            {
-                fixture
-            };
-            var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
+            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListBySupplierId(supplierId);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -135,23 +105,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             short categoryId = 1;
-            Fixture fixture = new Fixture()
-            {
-                Id = Guid.NewGuid(),
-                CategoryId = categoryId
-            };
-            List<Fixture> fixtures = new List<Fixture>
-            {
-                fixture
-            };
-            var mockFixtureDal = new MockFixtureDal().MockGetList(fixtures);
+            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListByCategoryId(categoryId);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -170,18 +131,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsFixture_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            var fixtureForUpdateDto = new FixtureForUpdateDto();
-            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Update(fixtureForUpdateDto));
-        }
-
-        [Fact]
         public void Update_WhenUpdatedFixture_ShouldUpdate()
         {
             // Arrange
@@ -194,19 +143,6 @@ namespace FixtureTracking.Business.Tests.Services
 
             // Assert
             mockFixtureDal.VerifyUpdate(Times.Once());
-        }
-
-        [Fact]
-        public void UpdatePosition_WhenUpdatedNotExistsFixture_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            Guid fixtureId = Guid.Empty;
-            var position = FixturePositions.Position.Debit;
-            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.UpdatePosition(fixtureId, position));
         }
 
         [Fact]
@@ -226,28 +162,11 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsFixture_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            Guid fixtureId = Guid.Empty;
-            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(null);
-            var sut = new FixtureManager(mockFixtureDal.Object);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(fixtureId));
-        }
-
-        [Fact]
         public void Delete_WhenFixturePositionIsNotAvailable_ShouldThrowLogicException()
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
-            Fixture fixture = new Fixture()
-            {
-                Id = fixtureId,
-                FixturePositionId = 2
-            };
-            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(new Fixture() { FixturePositionId = 2 });
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act & Assert
@@ -259,12 +178,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
-            Fixture fixture = new Fixture()
-            {
-                Id = fixtureId,
-                FixturePositionId = 1
-            };
-            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(fixture);
+            var mockFixtureDal = new MockFixtureDal().MockUpdate().MockGet(new Fixture() { FixturePositionId = 1 });
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act

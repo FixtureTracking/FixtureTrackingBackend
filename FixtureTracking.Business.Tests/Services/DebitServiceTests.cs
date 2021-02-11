@@ -31,11 +31,7 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid debitId = Guid.NewGuid();
-            Debit debit = new Debit()
-            {
-                Id = debitId
-            };
-            var mockDebitDal = new MockDebitDal().MockGet(debit);
+            var mockDebitDal = new MockDebitDal().MockGet(new Debit());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
@@ -49,20 +45,14 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnDebits()
         {
             // Arrange
-            List<Debit> debits = new List<Debit>
-            {
-                new Debit(),
-                new Debit(),
-                new Debit()
-            };
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
+            var mockDebitDal = new MockDebitDal().MockGetList(new List<Debit>());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetList();
 
             // Assert
-            Assert.NotEmpty(result.Data);
+            Assert.NotNull(result.Data);
         }
 
         [Fact]
@@ -70,24 +60,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid fixtureId = Guid.NewGuid();
-            Debit debit = new Debit()
-            {
-                Id = Guid.NewGuid(),
-                FixtureId = fixtureId
-            };
-            List<Debit> debits = new List<Debit>
-            {
-                debit
-            };
-
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
+            var mockDebitDal = new MockDebitDal().MockGetList(new List<Debit>());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetListByFixtureId(fixtureId);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -95,24 +75,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             Guid userId = Guid.NewGuid();
-            Debit debit = new Debit()
-            {
-                Id = Guid.NewGuid(),
-                UserId = userId
-            };
-            List<Debit> debits = new List<Debit>
-            {
-                debit
-            };
-
-            var mockDebitDal = new MockDebitDal().MockGetList(debits);
+            var mockDebitDal = new MockDebitDal().MockGetList(new List<Debit>());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
             var result = sut.GetListByUserId(userId);
 
             // Assert
-            Assert.NotEmpty(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -147,18 +117,6 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Update_WhenUpdatedNotExistsDebit_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            var debitForUpdateDto = new DebitForUpdateDto();
-            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
-            var sut = new DebitManager(mockDebitDal.Object, null);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Update(debitForUpdateDto));
-        }
-
-        [Fact]
         public void Update_WhenUpdatedDebit_ShouldUpdate()
         {
             // Arrange
@@ -174,27 +132,11 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
-        public void Delete_WhenDeletedNotExistsDebit_ShouldThrowObjectNotFoundException()
-        {
-            // Arrange
-            Guid debitId = Guid.Empty;
-            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(null);
-            var sut = new DebitManager(mockDebitDal.Object, null);
-
-            // Act & Assert
-            Assert.Throws<ObjectNotFoundException>(() => sut.Delete(debitId));
-        }
-
-        [Fact]
         public void Delete_WhenDeletedDebit_ShouldUpdateReturnStatus()
         {
             // Arrange
             Guid debitId = Guid.NewGuid();
-            Debit debit = new Debit()
-            {
-                Id = debitId
-            };
-            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(debit);
+            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(new Debit());
             var sut = new DebitManager(mockDebitDal.Object, null);
 
             // Act
