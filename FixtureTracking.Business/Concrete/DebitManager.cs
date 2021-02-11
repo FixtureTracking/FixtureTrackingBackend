@@ -4,6 +4,7 @@ using FixtureTracking.Business.Constants;
 using FixtureTracking.Business.ValidationRules.FluentValidation.DebitValidations;
 using FixtureTracking.Core.Aspects.Autofac.Caching;
 using FixtureTracking.Core.Aspects.Autofac.Performance;
+using FixtureTracking.Core.Aspects.Autofac.Transaction;
 using FixtureTracking.Core.Aspects.Autofac.Validation;
 using FixtureTracking.Core.CrossCuttingConcerns.Logging.NLog.Loggers;
 using FixtureTracking.Core.Utilities.CustomExceptions;
@@ -30,6 +31,8 @@ namespace FixtureTracking.Business.Concrete
 
         [SecuredOperationAspect("Debit.Add")]
         [ValidationAspect(typeof(DebitForAddValidator))]
+        [TransactionScopeAspect()]
+        [CacheRemoveAspect("IDebitService.Get")]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IDataResult<Guid> Add(DebitForAddDto debitForAddDto)
@@ -56,6 +59,8 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [SecuredOperationAspect("Debit.Delete")]
+        [TransactionScopeAspect()]
+        [CacheRemoveAspect("IDebitService.Get")]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]
         public IResult Delete(Guid debitId)
