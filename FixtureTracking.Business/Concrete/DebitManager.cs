@@ -108,22 +108,5 @@ namespace FixtureTracking.Business.Concrete
         {
             return debitDal.GetList(d => d.UserId == userId).ToList();
         }
-
-        [SecuredOperationAspect("Debit.Update")]
-        [ValidationAspect(typeof(DebitForUpdateValidator))]
-        [CacheRemoveAspect("IFixtureService.GetDebits")]
-        [CacheRemoveAspect("IUserService.GetDebits")]
-        public IResult Update(DebitForUpdateDto debitForUpdateDto)
-        {
-            var debit = GetById(debitForUpdateDto.Id).Data;
-            debit.DateDebit = debitForUpdateDto.DateDebit;
-            debit.Description = debitForUpdateDto.Description;
-            debit.FixtureId = debitForUpdateDto.FixtureId;
-            debit.UserId = debitForUpdateDto.UserId;
-            debit.UpdatedAt = DateTime.Now;
-
-            debitDal.Update(debit);
-            return new SuccessResult(Messages.DebitUpdated);
-        }
     }
 }

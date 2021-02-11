@@ -13,7 +13,6 @@ namespace FixtureTracking.Business.Abstract
         List<Debit> GetListByFixtureId(Guid fixtureId);
         List<Debit> GetListByUserId(Guid userId);
         IDataResult<Guid> Add(DebitForAddDto debitForAddDto);
-        IResult Update(DebitForUpdateDto debitForUpdateDto);
         IResult Delete(Guid debitId);
     }
 }
