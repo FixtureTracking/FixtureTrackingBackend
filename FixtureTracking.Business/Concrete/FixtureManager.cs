@@ -91,9 +91,9 @@ namespace FixtureTracking.Business.Concrete
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.List")]
         [CacheAspect(duration: 2)]
-        public IDataResult<List<Fixture>> GetList()
+        public IDataResult<List<FixtureForDetailDto>> GetList()
         {
-            return new SuccessDataResult<List<Fixture>>(fixtureDal.GetList(f => f.FixturePositionId != (short)FixturePositions.Position.NotActive).ToList());
+            return new SuccessDataResult<List<FixtureForDetailDto>>(fixtureDal.GetDetailList());
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

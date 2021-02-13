@@ -45,7 +45,7 @@ namespace FixtureTracking.Business.Tests.Services
         public void GetList_WhenCalledAll_ShouldReturnFixtures()
         {
             // Arrange
-            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
+            var mockFixtureDal = new MockFixtureDal().MockGetDetailList(new List<FixtureForDetailDto>());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act

@@ -11,7 +11,7 @@ namespace FixtureTracking.Business.Abstract
     public interface IFixtureService
     {
         IDataResult<Fixture> GetById(Guid fixtureId);
-        IDataResult<List<Fixture>> GetList();
+        IDataResult<List<FixtureForDetailDto>> GetList();
         IDataResult<List<Fixture>> GetListByPosition(FixturePositions.Position position);
         IDataResult<List<DebitForUserDetailDto>> GetDebits(Guid fixtureId);
         List<Fixture> GetListBySupplierId(int supplierId);
