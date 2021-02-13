@@ -109,7 +109,7 @@ namespace FixtureTracking.Business.Concrete
 
         public User GetUserByEmailForLogin(string email)
         {
-            return userDal.Get(u => u.Email == email);
+            return userDal.Get(u => u.Email == email && u.IsEnable == true);
         }
 
         [SecuredOperationAspect("User.Any,Auth.Register")]
