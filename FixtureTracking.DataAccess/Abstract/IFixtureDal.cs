@@ -9,6 +9,7 @@ namespace FixtureTracking.DataAccess.Abstract
     public interface IFixtureDal : IEntityRepository<Fixture>
     {
         List<FixtureForDetailDto> GetDetailList();
+        List<FixtureForDetailDto> GetDetailListByPosition(short positionId, string positionName);
         List<DebitForUserDetailDto> GetDebits(Fixture fixture);
     }
 }

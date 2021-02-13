@@ -17,6 +17,14 @@ namespace FixtureTracking.Business.Tests.Mocks.Repositories
             return this;
         }
 
+        public MockFixtureDal MockGetDetailListByPosition(List<FixtureForDetailDto> result)
+        {
+            Setup(x => x.GetDetailListByPosition(It.IsAny<short>(), It.IsAny<string>()))
+                .Returns(result);
+
+            return this;
+        }
+
         public MockFixtureDal MockGetDebits(List<DebitForUserDetailDto> result)
         {
             Setup(x => x.GetDebits(It.IsAny<Fixture>()))

@@ -12,7 +12,7 @@ namespace FixtureTracking.Business.Abstract
     {
         IDataResult<Fixture> GetById(Guid fixtureId);
         IDataResult<List<FixtureForDetailDto>> GetList();
-        IDataResult<List<Fixture>> GetListByPosition(FixturePositions.Position position);
+        IDataResult<List<FixtureForDetailDto>> GetListByPosition(FixturePositions.Position position);
         IDataResult<List<DebitForUserDetailDto>> GetDebits(Guid fixtureId);
         List<Fixture> GetListBySupplierId(int supplierId);
         List<Fixture> GetListByCategoryId(short categoryId);

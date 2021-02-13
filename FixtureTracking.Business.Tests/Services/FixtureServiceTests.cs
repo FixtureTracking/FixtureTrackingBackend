@@ -60,14 +60,14 @@ namespace FixtureTracking.Business.Tests.Services
         {
             // Arrange
             var position = FixturePositions.Position.Available;
-            var mockFixtureDal = new MockFixtureDal().MockGetList(new List<Fixture>());
+            var mockFixtureDal = new MockFixtureDal().MockGetDetailListByPosition(new List<FixtureForDetailDto>());
             var sut = new FixtureManager(mockFixtureDal.Object);
 
             // Act
             var result = sut.GetListByPosition(position);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.NotNull(result.Data);
         }
 
         [Fact]

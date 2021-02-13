@@ -4,7 +4,7 @@
     {
         public enum Position
         {
-            NotActive = 0, // deleteed fixture
+            NotActive = 0, // deleted fixture
             Available = 1, // not yet debited fixture
             Debit = 2      // debited fixture to the user
         }

@@ -49,5 +49,24 @@ namespace FixtureTracking.DataAccess.Concrete.EntityFramework
                          };
             return result.ToList();
         }
+
+        public List<FixtureForDetailDto> GetDetailListByPosition(short positionId, string positionName)
+        {
+            var context = new FixtureTrackingContext();
+            var result = from fixture in context.Fixtures
+                         join category in context.Categories
+                         on fixture.CategoryId equals category.Id
+                         join supplier in context.Suppliers
+                         on fixture.SupplierId equals supplier.Id
+                         where fixture.FixturePositionId == positionId
+                         select new FixtureForDetailDto()
+                         {
+                             Fixture = fixture,
+                             CategoryName = category.Name,
+                             FixturePosName = positionName,
+                             SupplierName = supplier.Name
+                         };
+            return result.ToList();
+        }
     }
 }
