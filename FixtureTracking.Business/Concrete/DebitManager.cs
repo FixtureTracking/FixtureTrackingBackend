@@ -115,7 +115,7 @@ namespace FixtureTracking.Business.Concrete
         }
 
         [SecuredOperationAspect("Debit.Update")]
-        //[ValidationAspect(typeof(DebitForUpdateValidator))] // TODO : debit update validator
+        [ValidationAspect(typeof(DebitForUpdateValidator))]
         [CacheRemoveAspect("IDebitService.Get")]
         [CacheRemoveAspect("IFixtureService.GetDebits")]
         [CacheRemoveAspect("IUserService.GetDebits")]

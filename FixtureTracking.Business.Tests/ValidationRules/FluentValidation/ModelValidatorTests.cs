@@ -208,6 +208,25 @@ namespace FixtureTracking.Business.Tests.ValidationRules.FluentValidation
         }
 
         [Fact]
+        public void DebitForUpdateValidator_TrueStory()
+        {
+            // Arrange
+            var model = new DebitForUpdateDto()
+            {
+                Id = Guid.NewGuid(),
+                DateDebit = DateTime.Now.AddDays(-1),
+                Description = "Desc Debit",
+            };
+            var sut = new DebitForUpdateValidator();
+
+            // Act
+            var result = sut.TestValidate(model);
+
+            // Assert
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Fact]
         public void DepartmentForAddValidator_TrueStory()
         {
             // Arrange
