@@ -57,7 +57,7 @@ namespace FixtureTracking.Business.Concrete
             throw new ObjectNotFoundException(Messages.UserNotFound);
         }
 
-        [SecuredOperationAspect("User.Get,User.Me")]
+        [SecuredOperationAspect("User.Get")]
         [CacheAspect()]
         public IDataResult<User> GetById(Guid userId)
         {
@@ -89,6 +89,14 @@ namespace FixtureTracking.Business.Concrete
         {
             var user = GetById(userId).Data;
             return new SuccessDataResult<List<DebitForFixtureDetailDto>>(userDal.GetDebits(user));
+        }
+
+        [SecuredOperationAspect("User.Get,User.Me")]
+        [CacheAspect()]
+        public IDataResult<UserForDetailDto> GetDetail(Guid userId)
+        {
+            var user = GetById(userId).Data;
+            return new SuccessDataResult<UserForDetailDto>(userDal.GetDetail(user));
         }
 
         [PerformanceLogAspect(1, typeof(FileLogger))]

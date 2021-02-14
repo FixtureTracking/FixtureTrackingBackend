@@ -3,6 +3,7 @@ using FixtureTracking.Business.Tests.Mocks.Repositories;
 using FixtureTracking.Core.Entities.Concrete;
 using FixtureTracking.Core.Utilities.CustomExceptions;
 using FixtureTracking.Entities.Dtos.Debit;
+using FixtureTracking.Entities.Dtos.User;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -94,10 +95,25 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void GetDetail_WhenCalledUserDetail_ShouldReturnUserDto()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            var mockUserDal = new MockUserDal().MockGetDetail(new UserForDetailDto()).MockGet(new User());
+            var sut = new UserManager(mockUserDal.Object);
+
+            // Act
+            var result = sut.GetDetail(userId);
+
+            // Assert
+            Assert.NotNull(result.Data);
+        }
+
+        [Fact]
         public void GetList_WhenCalledAll_ShouldReturnUsers()
         {
             // Arrange
-            var mockUserDal = new MockUserDal().MockGetDetail(new List<Entities.Dtos.User.UserForDetailDto>());
+            var mockUserDal = new MockUserDal().MockGetDetailList(new List<UserForDetailDto>());
             var sut = new UserManager(mockUserDal.Object);
 
             // Act

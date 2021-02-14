@@ -9,6 +9,7 @@ namespace FixtureTracking.DataAccess.Abstract
     public interface IUserDal : IEntityRepository<User>
     {
         string[] GetClaims(User user);
+        UserForDetailDto GetDetail(User user);
         List<UserForDetailDto> GetDetailList();
         List<DebitForFixtureDetailDto> GetDebits(User user);
     }
