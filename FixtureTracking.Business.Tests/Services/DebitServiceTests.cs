@@ -117,6 +117,21 @@ namespace FixtureTracking.Business.Tests.Services
         }
 
         [Fact]
+        public void Update_WhenUpdatedDebit_ShouldUpdated()
+        {
+            // Arrange
+            DebitForUpdateDto debitForUpdateDto = new DebitForUpdateDto();
+            var mockDebitDal = new MockDebitDal().MockUpdate().MockGet(new Debit());
+            var sut = new DebitManager(mockDebitDal.Object, null);
+
+            // Act
+            sut.Update(debitForUpdateDto);
+
+            // Assert
+            mockDebitDal.VerifyUpdate(Times.Once());
+        }
+
+        [Fact]
         public void Delete_WhenFixturePositionIsNotDebit_ShouldThrowLogicException()
         {
             // Arrange
