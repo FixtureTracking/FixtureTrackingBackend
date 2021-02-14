@@ -85,7 +85,7 @@ namespace FixtureTracking.Business.Concrete
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Department.GetUsers")]
-        [CacheAspect(duration: 1)]
+        [CacheAspect(duration: 2)]
         public IDataResult<List<User>> GetUsers(int departmentId)
         {
             var department = GetById(departmentId).Data;

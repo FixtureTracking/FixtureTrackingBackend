@@ -33,8 +33,7 @@ namespace FixtureTracking.Business.Concrete
         [ValidationAspect(typeof(DebitForAddValidator))]
         [TransactionScopeAspect()]
         [CacheRemoveAspect("IDebitService.Get")]
-        [CacheRemoveAspect("IFixtureService.GetDebits")]
-        [CacheRemoveAspect("IUserService.GetDebits")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IDataResult<Guid> Add(DebitForAddDto debitForAddDto)
         {
             var fixture = fixtureService.GetById(debitForAddDto.FixtureId).Data;
@@ -61,8 +60,7 @@ namespace FixtureTracking.Business.Concrete
         [SecuredOperationAspect("Debit.Delete")]
         [TransactionScopeAspect()]
         [CacheRemoveAspect("IDebitService.Get")]
-        [CacheRemoveAspect("IFixtureService.GetDebits")]
-        [CacheRemoveAspect("IUserService.GetDebits")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IResult Delete(Guid debitId)
         {
             var debit = GetById(debitId).Data;
@@ -117,8 +115,7 @@ namespace FixtureTracking.Business.Concrete
         [SecuredOperationAspect("Debit.Update")]
         [ValidationAspect(typeof(DebitForUpdateValidator))]
         [CacheRemoveAspect("IDebitService.Get")]
-        [CacheRemoveAspect("IFixtureService.GetDebits")]
-        [CacheRemoveAspect("IUserService.GetDebits")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IResult Update(DebitForUpdateDto debitForUpdateDto)
         {
             var debit = GetById(debitForUpdateDto.Id).Data;

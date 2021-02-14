@@ -26,7 +26,7 @@ namespace FixtureTracking.Business.Concrete
             this.tokenHelper = tokenHelper;
         }
 
-        [PerformanceLogAspect(2, typeof(DatabaseLogger))]
+        [PerformanceLogAspect(3, typeof(DatabaseLogger))]
         [ValidationAspect(typeof(UserForLoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {

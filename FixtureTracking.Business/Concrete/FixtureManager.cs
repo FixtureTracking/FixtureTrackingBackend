@@ -30,8 +30,7 @@ namespace FixtureTracking.Business.Concrete
         [SecuredOperationAspect("Fixture.Add")]
         [ValidationAspect(typeof(FixtureForAddValidator))]
         [CacheRemoveAspect("IFixtureService.Get")]
-        [CacheRemoveAspect("ICategoryService.GetFixtures")]
-        [CacheRemoveAspect("ISupplierService.GetFixtures")]
+        [CacheRemoveAspect("Service.GetFixtures")]
         public IDataResult<Guid> Add(FixtureForAddDto fixtureForAddDto)
         {
             var fixture = new Fixture()
@@ -54,8 +53,8 @@ namespace FixtureTracking.Business.Concrete
 
         [SecuredOperationAspect("Fixture.Delete")]
         [CacheRemoveAspect("IFixtureService.Get")]
-        [CacheRemoveAspect("ICategoryService.GetFixtures")]
-        [CacheRemoveAspect("ISupplierService.GetFixtures")]
+        [CacheRemoveAspect("Service.GetFixtures")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IResult Delete(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
@@ -69,7 +68,7 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessResult(Messages.FixtureDeleted);
         }
 
-        [SecuredOperationAspect("Fixture.Get")]
+        [SecuredOperationAspect("Fixture.Get,Debit.Add,Debit.Delete")]
         [CacheAspect()]
         public IDataResult<Fixture> GetById(Guid fixtureId)
         {
@@ -81,7 +80,7 @@ namespace FixtureTracking.Business.Concrete
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Fixture.GetDebits")]
-        [CacheAspect(duration: 1)]
+        [CacheAspect(duration: 2)]
         public IDataResult<List<DebitForUserDetailDto>> GetDebits(Guid fixtureId)
         {
             var fixture = GetById(fixtureId).Data;
@@ -123,8 +122,8 @@ namespace FixtureTracking.Business.Concrete
         [SecuredOperationAspect("Fixture.Update")]
         [ValidationAspect(typeof(FixtureForUpdateValidator))]
         [CacheRemoveAspect("IFixtureService.Get")]
-        [CacheRemoveAspect("ICategoryService.GetFixtures")]
-        [CacheRemoveAspect("ISupplierService.GetFixtures")]
+        [CacheRemoveAspect("Service.GetFixtures")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IResult Update(FixtureForUpdateDto fixtureForUpdateDto)
         {
             var fixture = GetById(fixtureForUpdateDto.Id).Data;
@@ -142,14 +141,15 @@ namespace FixtureTracking.Business.Concrete
             return new SuccessResult(Messages.FixtureUpdated);
         }
 
-        [SecuredOperationAspect("Fixture.Update")]
+        [SecuredOperationAspect("Fixture.Update,Debit.Add,Debit.Delete")]
         [CacheRemoveAspect("IFixtureService.Get")]
-        [CacheRemoveAspect("ICategoryService.GetFixtures")]
-        [CacheRemoveAspect("ISupplierService.GetFixtures")]
+        [CacheRemoveAspect("Service.GetFixtures")]
+        [CacheRemoveAspect("Service.GetDebits")]
         public IResult UpdatePosition(Guid fixtureId, FixturePositions.Position position)
         {
             var fixture = GetById(fixtureId).Data;
             fixture.FixturePositionId = (short)position;
+            fixture.UpdatedAt = DateTime.Now;
 
             fixtureDal.Update(fixture);
             return new SuccessResult(Messages.FixturePositionUpdated);

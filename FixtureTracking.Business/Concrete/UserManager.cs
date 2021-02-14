@@ -84,7 +84,7 @@ namespace FixtureTracking.Business.Concrete
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("User.GetDebits,User.Me")]
-        [CacheAspect(duration: 1)]
+        [CacheAspect(duration: 2)]
         public IDataResult<List<DebitForFixtureDetailDto>> GetDebits(Guid userId)
         {
             var user = GetById(userId).Data;

@@ -67,7 +67,7 @@ namespace FixtureTracking.Business.Concrete
 
         [PerformanceLogAspect(1, typeof(FileLogger))]
         [SecuredOperationAspect("Supplier.GetFixtures")]
-        [CacheAspect(duration: 1)]
+        [CacheAspect(duration: 2)]
         public IDataResult<List<Fixture>> GetFixtures(int supplierId)
         {
             var supplier = GetById(supplierId).Data;
